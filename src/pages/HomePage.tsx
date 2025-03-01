@@ -1,5 +1,5 @@
 import { TimerPreset } from "../app/types.ts";
-import { BaseLayout } from "../components/BaseLayout.tsx";
+import { FullscreenLayout } from "../components/FullscreenLayout.tsx";
 import { PresetDisplay } from "../components/PresetDisplay.tsx";
 import { TimerPlayer } from "../components/TimerPlayer.tsx";
 
@@ -47,9 +47,10 @@ export function HomePage() {
   };
 
   return (
-    <BaseLayout>
+    <FullscreenLayout>
       <PresetDisplay preset={preset} />
+      <div style={{ height: "1rem" }} />
       <TimerPlayer preset={preset} />
-    </BaseLayout>
+    </FullscreenLayout>
   );
 }

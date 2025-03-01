@@ -67,6 +67,7 @@ export interface PlayerBeep {
 
 export interface PlayerDisplay {
   kind: "display";
+  round?: string;
   seconds: number;
   text: string;
 }

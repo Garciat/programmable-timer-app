@@ -3,7 +3,6 @@
   --window-color: light-dark(#ddd, #000);
   --background-color: light-dark(#fff, #333);
   --text-color: light-dark(#000, #fff);
-  --radius: 5px;
 }
 
 body {
@@ -22,6 +21,5 @@ body {
 }
 
 main {
-  border-radius: var(--radius);
   background-color: var(--background-color);
 }

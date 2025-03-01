@@ -5,6 +5,7 @@ import {
   TimerPreset,
   TimerSequence,
 } from "../app/types.ts";
+import { formatSeconds } from "../utils/time.ts";
 
 import "./PresetDisplay.css";
 
@@ -63,17 +64,4 @@ function PeriodDisplay(props: { period: TimerPeriod }) {
       <footer>{formatSeconds(period.seconds)}</footer>
     </article>
   );
-}
-
-function formatSeconds(seconds: number): string {
-  const minutes = Math.floor(seconds / 60);
-  const remainingSeconds = seconds % 60;
-
-  const f = formatTimeComponent;
-
-  return `${f(minutes)}:${f(remainingSeconds)}`;
-}
-
-function formatTimeComponent(value: number): string {
-  return value.toString().padStart(2, "0");
 }

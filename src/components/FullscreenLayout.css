@@ -1,0 +1,14 @@
+body {
+  display: flex;
+  flex-direction: column;
+  justify-items: center;
+  align-items: center;
+}
+
+main {
+  flex-grow: 1;
+  width: min(100%, 42rem);
+  display: flex;
+  flex-direction: column;
+  justify-items: center;
+}

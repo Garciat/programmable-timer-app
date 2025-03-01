@@ -42,9 +42,15 @@ function actionsForPeriodAtRelativeTime(
 ): PlayerAction[] {
   const remainingTime = period.source.seconds - time;
 
+  const round = period.contexts
+    .flatMap((context) => context.kind === "loop" ? [context] : [])
+    .map((context) => `${context.iteration + 1} / ${context.source.count}`)
+    .findLast(() => true);
+
   const actions: PlayerAction[] = [
     {
       kind: "display",
+      round: round,
       text: period.source.name,
       seconds: remainingTime,
     },

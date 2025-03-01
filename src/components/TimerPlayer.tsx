@@ -5,10 +5,14 @@ import {
   useRef,
   useState,
 } from "react";
+import { Pause, Play, RotateCcw } from "lucide-react";
 
-import { PlayerAction, TimerPreset } from "../app/types.ts";
+import { PlayerAction, PlayerDisplay, TimerPreset } from "../app/types.ts";
 import { actionsAtTime } from "../app/actions.ts";
 import { flatten } from "../app/flatten.ts";
+
+import "./TimerPlayer.css";
+import { formatSeconds } from "../utils/time.ts";
 
 export interface TimerPlayerProps {
   preset: TimerPreset;
@@ -48,19 +52,25 @@ export function TimerPlayer({ preset }: TimerPlayerProps) {
   const running = !paused && !done;
 
   return (
-    <>
+    <div className="timer-player">
       {running && <IntervalManager onTick={() => setTime((t) => t + 1)} />}
-      <div>
+      <header>
         <button type="button" disabled={running} onClick={() => resumePlayer()}>
-          Resume
+          <Play size={24} />
         </button>
         <button type="button" disabled={!running} onClick={() => pausePlayer()}>
-          Pause
+          <Pause size={24} />
         </button>
-        <button type="button" onClick={() => resetPlayer()}>Reset</button>
-      </div>
-      {!paused && <ActionsRenderer actions={actions} />}
-    </>
+        <button
+          type="button"
+          disabled={time === 0}
+          onClick={() => resetPlayer()}
+        >
+          <RotateCcw size={24} />
+        </button>
+      </header>
+      {(!paused || time > 0) && <ActionsRenderer actions={actions} />}
+    </div>
   );
 }
 
@@ -77,8 +87,7 @@ function ActionsRenderer(props: { actions: PlayerAction[] }) {
         return (
           <DisplayActionRenderer
             key={action.seconds}
-            seconds={action.seconds}
-            text={action.text}
+            action={action}
           />
         );
       case "finished":
@@ -126,10 +135,13 @@ function BeepActionRenderer() {
   return null;
 }
 
-function DisplayActionRenderer(props: { seconds: number; text: string }) {
+function DisplayActionRenderer(props: { action: PlayerDisplay }) {
+  const { round, seconds, text } = props.action;
   return (
-    <div>
-      <strong>{props.text}</strong> {props.seconds}
+    <div className="timer-player-display">
+      <div className="round">{round}</div>
+      <div className="time">{formatSeconds(seconds)}</div>
+      <div className="text">{text}</div>
     </div>
   );
 }

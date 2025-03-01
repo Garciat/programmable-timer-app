@@ -1,0 +1,55 @@
+.timer-player {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
+}
+
+.timer-player > header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+.timer-player > header > button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  padding: 0.5rem;
+}
+
+.timer-player-display {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.timer-player-display > .round {
+  flex-grow: 1;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+
+  padding-bottom: 2rem;
+  font-size: 2rem;
+}
+.timer-player-display > .time {
+  font-size: 5rem;
+  font-variant-numeric: tabular-nums;
+}
+.timer-player-display > .text {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+
+  padding-bottom: 2rem;
+  font-size: 2rem;
+}
