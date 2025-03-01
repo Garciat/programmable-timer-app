@@ -56,11 +56,13 @@ export type PlayerAction =
 
 export interface PlayerSpeak {
   kind: "speak";
+  id: string;
   text: string;
 }
 
 export interface PlayerBeep {
   kind: "beep";
+  id: string;
 }
 
 export interface PlayerDisplay {

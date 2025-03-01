@@ -1,5 +1,6 @@
 import { TimerPreset } from "../app/types.ts";
 import { BaseLayout } from "../components/BaseLayout.tsx";
+import { PresetDisplay } from "../components/PresetDisplay.tsx";
 import { TimerPlayer } from "../components/TimerPlayer.tsx";
 
 export function HomePage() {
@@ -9,13 +10,37 @@ export function HomePage() {
       elements: [
         {
           kind: "period",
-          name: "Work",
+          name: "Prepare",
           seconds: 5,
         },
         {
-          kind: "period",
-          name: "Rest",
-          seconds: 3,
+          kind: "loop",
+          count: 10,
+          element: {
+            kind: "sequence",
+            elements: [
+              {
+                kind: "period",
+                name: "Left",
+                seconds: 10,
+              },
+              {
+                kind: "period",
+                name: "Switch",
+                seconds: 3,
+              },
+              {
+                kind: "period",
+                name: "Right",
+                seconds: 10,
+              },
+              {
+                kind: "period",
+                name: "Rest",
+                seconds: 10,
+              },
+            ],
+          },
         },
       ],
     },
@@ -23,7 +48,7 @@ export function HomePage() {
 
   return (
     <BaseLayout>
-      <h1>Home</h1>
+      <PresetDisplay preset={preset} />
       <TimerPlayer preset={preset} />
     </BaseLayout>
   );

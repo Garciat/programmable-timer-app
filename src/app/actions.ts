@@ -51,9 +51,16 @@ function actionsForPeriodAtRelativeTime(
   ];
 
   if (time === 0) {
-    actions.push({ kind: "speak", text: period.source.name });
+    actions.push({
+      kind: "speak",
+      id: crypto.randomUUID(),
+      text: period.source.name,
+    });
   } else if (remainingTime <= 3) {
-    actions.push({ kind: "beep" });
+    actions.push({
+      kind: "beep",
+      id: crypto.randomUUID(),
+    });
   }
 
   return actions;

@@ -1,0 +1,32 @@
+.preset-display {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.loop-display {
+  display: flex;
+  align-items: stretch;
+  justify-content: flex-start;
+
+  border: 1px solid black;
+}
+.loop-display > header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0.25rem;
+  background-color: black;
+}
+
+.period-display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0.5rem 1rem;
+  background-color: #926e19;
+}
