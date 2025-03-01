@@ -1,18 +1,13 @@
-import {
-  useCallback,
-  useEffect,
-  useMemo, // @ts-types="react"
-  useRef,
-  useState,
-} from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Pause, Play, RotateCcw } from "lucide-react";
 
+import { useAudioContext } from "../lib/audio/ReactAudioContext.ts";
+import { formatSeconds } from "../utils/time.ts";
 import { PlayerAction, PlayerDisplay, TimerPreset } from "../app/types.ts";
 import { actionsAtTime } from "../app/actions.ts";
 import { flatten } from "../app/flatten.ts";
 
 import "./TimerPlayer.css";
-import { formatSeconds } from "../utils/time.ts";
 
 export interface TimerPlayerProps {
   preset: TimerPreset;
@@ -112,25 +107,32 @@ function SpeakActionRenderer(props: { text: string }) {
 }
 
 function BeepActionRenderer() {
-  const context = useRef<AudioContext | null>(null);
+  const duration = 0.2;
+
+  const audioContext = useAudioContext();
+
+  const { gain } = useMemo(() => {
+    const gain = audioContext.createGain();
+    gain.gain.value = 0;
+    gain.connect(audioContext.destination);
+
+    const osc = audioContext.createOscillator();
+    osc.frequency.value = 440;
+    osc.connect(gain);
+    osc.start();
+
+    return { gain, osc };
+  }, [audioContext]);
 
   useEffect(() => {
-    if (!context.current) {
-      context.current = new AudioContext();
-      const oscillator = context.current.createOscillator();
-      oscillator.frequency.value = 440;
-      oscillator.connect(context.current.destination);
-      oscillator.start();
-    }
-    setTimeout(() => {
-      context.current?.close();
-      context.current = null;
-    }, 200);
+    const now = audioContext.currentTime;
+    gain.gain.setValueAtTime(1, now);
+    gain.gain.setValueAtTime(0, now + duration);
+
     return () => {
-      context.current?.close();
-      context.current = null;
+      gain.gain.cancelScheduledValues(now);
     };
-  }, []);
+  }, [gain]);
 
   return null;
 }
