@@ -1,0 +1,27 @@
+:root {
+  color-scheme: light dark;
+  --window-color: light-dark(#ddd, #000);
+  --background-color: light-dark(#fff, #333);
+  --text-color: light-dark(#000, #fff);
+  --radius: 5px;
+}
+
+body {
+  background-color: var(--window-color);
+  color: var(--text-color);
+  font-family:
+    system-ui,
+    -apple-system,
+    Segoe UI,
+    Roboto,
+    Helvetica,
+    Arial,
+    sans-serif,
+    Apple Color Emoji,
+    Segoe UI Emoji;
+}
+
+main {
+  border-radius: var(--radius);
+  background-color: var(--background-color);
+}

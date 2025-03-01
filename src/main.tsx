@@ -6,7 +6,7 @@ import { App } from "./App.tsx";
 
 import "./index.css";
 
-createRoot(document.getElementById("root")!).render(
+createRoot(document.body).render(
   <StrictMode>
     <BrowserRouter>
       <App />

@@ -1,3 +1,9 @@
+import { BaseLayout } from "../components/BaseLayout.tsx";
+
 export function HomePage() {
-  return <h1>Home</h1>;
+  return (
+    <BaseLayout>
+      <h1>Home</h1>
+    </BaseLayout>
+  );
 }
