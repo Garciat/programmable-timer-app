@@ -17,6 +17,11 @@ export function TimerPlayer({ preset }: TimerPlayerProps) {
   const [time, setTime] = useState(0);
   const [paused, setPaused] = useState(true);
 
+  useEffect(() => {
+    setTime(0);
+    setPaused(true);
+  }, [preset]);
+
   const resumePlayer = useCallback(() => {
     setPaused(false);
   }, []);
@@ -64,27 +69,32 @@ export function TimerPlayer({ preset }: TimerPlayerProps) {
           <RotateCcw size={24} />
         </button>
       </header>
-      {(!paused || time > 0) && <ActionsRenderer actions={actions} />}
+      <ActionsRenderer actions={actions} active={!paused} />
     </div>
   );
 }
 
-function ActionsRenderer(props: { actions: PlayerAction[] }) {
-  const { actions } = props;
+function ActionsRenderer(props: { actions: PlayerAction[]; active: boolean }) {
+  const { actions, active } = props;
 
-  const elements = actions.map((action) => {
+  // using `active` as an indirect user action signal to trigger sounds
+  // otherwise, the browser may block them
+
+  const elements = actions.map((action, index) => {
     switch (action.kind) {
-      case "speak":
-        return <SpeakActionRenderer key={action.id} text={action.text} />;
-      case "beep":
-        return <BeepActionRenderer key={action.id} />;
       case "display":
         return (
           <DisplayActionRenderer
-            key={action.seconds}
+            key={index}
             action={action}
           />
         );
+      case "speak":
+        return active && (
+          <SpeakActionRenderer key={action.id} text={action.text} />
+        );
+      case "beep":
+        return active && <BeepActionRenderer key={action.id} />;
       case "finished":
         return <FinishedActionRenderer key={action.kind} />;
     }
@@ -131,6 +141,7 @@ function BeepActionRenderer() {
 
     return () => {
       gain.gain.cancelScheduledValues(now);
+      gain.gain.setValueAtTime(0, now);
     };
   }, [gain]);
 
@@ -141,7 +152,7 @@ function DisplayActionRenderer(props: { action: PlayerDisplay }) {
   const { round, seconds, text } = props.action;
   return (
     <div className="timer-player-display">
-      <div className="round">{round}</div>
+      <div className="round">{round ?? <>&nbsp;</>}</div>
       <div className="time">{formatSeconds(seconds)}</div>
       <div className="text">{text}</div>
     </div>
@@ -149,7 +160,7 @@ function DisplayActionRenderer(props: { action: PlayerDisplay }) {
 }
 
 function FinishedActionRenderer() {
-  return <div>Finished</div>;
+  return <div className="timer-finished-display">Finished</div>;
 }
 
 function IntervalManager(props: { onTick: () => void }) {
