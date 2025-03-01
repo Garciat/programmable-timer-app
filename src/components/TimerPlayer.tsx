@@ -1,75 +1,51 @@
-import { // @ts-types="react"
-  // @ts-types="react"
-  useCallback,
-  useEffect,
-  useState,
-} from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
-import { PlayerAction, TimerPreset } from "../app/types.ts";
-import { Interpreter } from "../app/player.ts";
+import { TimerPreset } from "../app/types.ts";
+import { actionsAtTime } from "../app/actions.ts";
+import { flatten } from "../app/flatten.ts";
 
 export interface TimerPlayerProps {
   preset: TimerPreset;
 }
 
-function InterpreterDriver(props: {
-  interpreter: Interpreter;
-  onStep: (actions: PlayerAction[]) => void;
-}) {
-  const { interpreter, onStep } = props;
-
-  useEffect(() => {
-    const id = setInterval(() => {
-      onStep(interpreter.step());
-    }, 1000);
-
-    return () => {
-      clearInterval(id);
-    };
-  }, [interpreter, onStep]);
-
-  return null;
-}
-
 export function TimerPlayer({ preset }: TimerPlayerProps) {
-  const [actions, setActions] = useState<PlayerAction[]>([]);
-  const [interpreter, setInterpreter] = useState<Interpreter>(() =>
-    Interpreter.of(preset.root)
-  );
-  const [running, setRunning] = useState(true);
-
-  useEffect(() => {
-    const snapshot = interpreter.snapshot();
-    setActions(interpreter.step());
-    return () => {
-      snapshot.restore();
-    };
-  }, [interpreter]);
+  const [time, setTime] = useState(0);
+  const [paused, setPaused] = useState(false);
 
   const resumePlayer = useCallback(() => {
-    setRunning(true);
+    setPaused(false);
   }, []);
 
   const pausePlayer = useCallback(() => {
-    setRunning(false);
+    setPaused(true);
   }, []);
 
   const resetPlayer = useCallback(() => {
-    setInterpreter(Interpreter.of(preset.root));
-  }, [preset]);
+    setTime(0);
+  }, []);
+
+  const flat = useMemo(
+    () => flatten(preset.root),
+    [preset],
+  );
+
+  const { done, actions } = useMemo(
+    () => actionsAtTime(flat, time),
+    [flat, time],
+  );
+
+  const running = !paused && !done;
 
   return (
     <>
-      {running && !interpreter.isFinished && (
-        <InterpreterDriver
-          interpreter={interpreter}
-          onStep={(actions) => setActions(actions)}
-        />
-      )}
+      {running && <IntervalManager onTick={() => setTime((t) => t + 1)} />}
       <div>
         <button type="button" onClick={() => resumePlayer()}>Resume</button>
         <button type="button" onClick={() => pausePlayer()}>Pause</button>
         <button type="button" onClick={() => resetPlayer()}>Reset</button>
+      </div>
+      <div>
+        {running ? "Running" : paused ? "Paused" : "Done"}
       </div>
       <h2>Preset</h2>
       <pre>{JSON.stringify(preset, null, 2)}</pre>
@@ -77,4 +53,14 @@ export function TimerPlayer({ preset }: TimerPlayerProps) {
       <pre>{JSON.stringify(actions, null, 2)}</pre>
     </>
   );
+}
+
+function IntervalManager(props: { onTick: () => void }) {
+  useEffect(() => {
+    const id = setInterval(props.onTick, 1000);
+
+    return () => clearInterval(id);
+  }, [props.onTick]);
+
+  return null;
 }

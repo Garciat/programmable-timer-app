@@ -1,9 +1,12 @@
 export interface TimerPreset {
-  root: TimerElement;
+  root: TimerControlElement;
 }
 
 export type TimerElement =
   | TimerPeriod
+  | TimerControlElement;
+
+export type TimerControlElement =
   | TimerSequence
   | TimerLoop;
 
@@ -15,13 +18,34 @@ export interface TimerPeriod {
 
 export interface TimerSequence {
   kind: "sequence";
-  elements: TimerElement[];
+  elements: readonly TimerElement[];
 }
 
 export interface TimerLoop {
   kind: "loop";
   count: number;
   element: TimerElement;
+}
+
+export interface TimerSequenceState {
+  kind: "sequence";
+  source: TimerSequence;
+  index: number;
+}
+
+export interface TimerLoopState {
+  kind: "loop";
+  source: TimerLoop;
+  iteration: number;
+}
+
+export type FlatTimerContext =
+  | TimerSequenceState
+  | TimerLoopState;
+
+export interface FlatTimerPeriod {
+  contexts: readonly FlatTimerContext[];
+  source: TimerPeriod;
 }
 
 export type PlayerAction =
