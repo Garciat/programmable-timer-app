@@ -19,3 +19,9 @@
   flex-grow: 1;
   flex-basis: 0;
 }
+.play-page > header > h1 {
+  padding: 0 1rem;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
