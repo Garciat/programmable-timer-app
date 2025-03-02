@@ -2,10 +2,11 @@ import { useState } from "react";
 import { useNavigate } from "react-router";
 import { MoveLeft, Save } from "lucide-react";
 
+import { TimerPreset } from "../app/types.ts";
+import { useAppPresetAdd } from "../state/context.tsx";
 import { BaseLayout } from "../components/BaseLayout.tsx";
 import { PresetEditor } from "../components/PresetEditor.tsx";
-import { useAppPresetAdd } from "../state/context.tsx";
-import { TimerPreset } from "../app/types.ts";
+import { TitleBar } from "../components/TitleBar.tsx";
 
 import classes from "./CreatePage.module.css";
 
@@ -33,23 +34,28 @@ export function CreatePage() {
     navigate("/");
   }
 
+  const backButton = (
+    <button
+      type="button"
+      onClick={goBack}
+    >
+      <MoveLeft size={24} />
+    </button>
+  );
+
+  const saveButton = (
+    <button
+      type="button"
+      onClick={savePreset}
+    >
+      <Save size={24} />
+    </button>
+  );
+
   return (
     <BaseLayout>
       <div className={classes["create-page"]}>
-        <header>
-          <button
-            type="button"
-            onClick={goBack}
-          >
-            <MoveLeft size={24} />
-          </button>
-          <button
-            type="button"
-            onClick={savePreset}
-          >
-            <Save size={24} />
-          </button>
-        </header>
+        <TitleBar left={backButton} right={saveButton} />
         <PresetEditor preset={preset} onChange={setPreset} />
       </div>
     </BaseLayout>

@@ -6,11 +6,3 @@
 
   padding: 1rem;
 }
-.edit-page > header {
-  display: flex;
-  flex-direction: row;
-  align-items: stretch;
-  justify-content: space-between;
-
-  margin-bottom: 1rem;
-}

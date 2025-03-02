@@ -2,9 +2,10 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { MoveLeft, Save } from "lucide-react";
 
+import { useAppPreset } from "../state/context.tsx";
 import { BaseLayout } from "../components/BaseLayout.tsx";
 import { PresetEditor } from "../components/PresetEditor.tsx";
-import { useAppPreset } from "../state/context.tsx";
+import { TitleBar } from "../components/TitleBar.tsx";
 
 import classes from "./EditPage.module.css";
 
@@ -33,23 +34,31 @@ export function EditPage() {
     navigate("/");
   }
 
+  const backButton = (
+    <button
+      type="button"
+      onClick={goBack}
+    >
+      <MoveLeft size={24} />
+    </button>
+  );
+
+  const saveButton = (
+    <button
+      type="button"
+      onClick={savePreset}
+    >
+      <Save size={24} />
+    </button>
+  );
+
   return (
     <BaseLayout>
       <div className={classes["edit-page"]}>
-        <header>
-          <button
-            type="button"
-            onClick={goBack}
-          >
-            <MoveLeft size={24} />
-          </button>
-          <button
-            type="button"
-            onClick={savePreset}
-          >
-            <Save size={24} />
-          </button>
-        </header>
+        <TitleBar
+          left={backButton}
+          right={saveButton}
+        />
         {preset && <PresetEditor preset={preset} onChange={setPreset} />}
       </div>
     </BaseLayout>
