@@ -4,8 +4,6 @@
   align-items: stretch;
   justify-content: flex-start;
   gap: 1rem;
-
-  padding: 0.5rem;
 }
 
 .sequence-editor {
@@ -51,11 +49,29 @@
 .sequence-editor > footer {
   display: flex;
   flex-direction: row;
-  justify-content: center;
   align-items: center;
+  justify-content: space-between;
 
   padding: 0.5rem;
   background-color: var(--background-color-alt);
+}
+.sequence-editor > footer > .left, .sequence-editor > footer > .right {
+  flex-grow: 1;
+  flex-basis: 0;
+}
+.sequence-editor > footer > .left {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.5rem;
+}
+.sequence-editor > footer > .right {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.5rem;
 }
 .sequence-editor > footer > button {
   border-radius: 50%;

@@ -17,6 +17,7 @@ import {
 import { formatSeconds } from "../utils/time.ts";
 
 import classes from "./PresetEditor.module.css";
+import { duration } from "../app/flatten.ts";
 
 export interface PresetEditorProps {
   preset: TimerPreset;
@@ -149,12 +150,16 @@ function SequenceEditor(
       </div>
 
       <footer>
+        <div className={classes["left"]}></div>
         <button
           type="button"
           onClick={() => appendNewElement()}
         >
           <Plus size={24} />
         </button>
+        <div className={classes["right"]}>
+          {formatSeconds(duration(timer))}
+        </div>
       </footer>
     </div>
   );
