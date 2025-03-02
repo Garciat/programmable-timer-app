@@ -1,3 +1,5 @@
+import { Minus, Plus, Repeat } from "lucide-react";
+
 import {
   TimerElement,
   TimerLoop,
@@ -5,6 +7,9 @@ import {
   TimerPreset,
   TimerSequence,
 } from "../app/types.ts";
+import { formatSeconds } from "../utils/time.ts";
+
+import classes from "./PresetEditor.module.css";
 
 export interface PresetEditorProps {
   preset: TimerPreset;
@@ -19,7 +24,7 @@ export function PresetEditor(
   }
 
   return (
-    <div className="preset-editor">
+    <div className={classes["preset-editor"]}>
       <SequenceEditor timer={preset.root} onChange={updateRoot} />
     </div>
   );
@@ -68,12 +73,22 @@ function SequenceEditor(
 function LoopEditor(
   { timer, onChange }: TimerEditorProps<TimerLoop>,
 ) {
+  function updateCount(count: number) {
+    onChange({ ...timer, count });
+  }
+
   function updateElement(newElement: TimerElement) {
     onChange({ ...timer, element: newElement });
   }
 
   return (
-    <div className="loop-editor">
+    <div className={classes["loop-editor"]}>
+      <header className={classes["loop-editor-header"]}>
+        <div className={classes["loop-editor-label"]}>
+          <Repeat size={16} />
+        </div>
+        <NumberEditor value={timer.count} onChange={updateCount} />
+      </header>
       <TimerEditor
         timer={timer.element}
         onChange={(newElement) => updateElement(newElement)}
@@ -94,18 +109,65 @@ function PeriodEditor(
   }
 
   return (
-    <div className="period-editor">
+    <div className={classes["period-editor"]}>
       <input
         type="text"
         value={timer.name}
         onChange={(event) => updateName(event.target.value)}
       />
-      <input
-        type="number"
-        min={1}
-        value={timer.seconds}
-        onChange={(event) => updateSeconds(Number(event.target.value))}
-      />
+      <SecondsEditor value={timer.seconds} onChange={updateSeconds} />
+    </div>
+  );
+}
+
+function SecondsEditor(
+  { value, onChange }: { value: number; onChange: (value: number) => void },
+) {
+  return (
+    <div className={classes["seconds-editor"]}>
+      <button
+        type="button"
+        onClick={() => onChange(value - 1)}
+        className={classes["seconds-editor-button"]}
+      >
+        <Minus size={16} />
+      </button>
+      <div className={classes["seconds-editor-value"]}>
+        {formatSeconds(value)}
+      </div>
+      <button
+        type="button"
+        onClick={() => onChange(value + 1)}
+        className={classes["seconds-editor-button"]}
+      >
+        <Plus size={16} />
+      </button>
+    </div>
+  );
+}
+
+function NumberEditor(
+  { value, onChange }: { value: number; onChange: (value: number) => void },
+) {
+  return (
+    <div className={classes["number-editor"]}>
+      <button
+        type="button"
+        onClick={() => onChange(value - 1)}
+        className={classes["number-editor-button"]}
+      >
+        <Minus size={16} />
+      </button>
+      <div className={classes["number-editor-value"]}>
+        {value}
+      </div>
+      <button
+        type="button"
+        onClick={() => onChange(value + 1)}
+        className={classes["number-editor-button"]}
+      >
+        <Plus size={16} />
+      </button>
     </div>
   );
 }

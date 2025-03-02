@@ -1,0 +1,90 @@
+.preset-editor {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+
+  padding: 0.5rem;
+}
+
+.loop-editor {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+
+  border: 2px solid black;
+}
+.loop-editor-header {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+  gap: 0.5rem;
+
+  padding: 0.5rem;
+  background-color: black;
+}
+.loop-editor-label {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.period-editor {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+
+  padding: 1rem;
+}
+
+.seconds-editor {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+.seconds-editor-value {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  min-width: 6ch;
+  font-size: 2rem;
+  font-variant-numeric: tabular-nums;
+}
+.seconds-editor-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  padding: 0.25rem;
+}
+
+.number-editor {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+.number-editor-value {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  min-width: 6ch;
+  font-size: 2rem;
+  font-variant-numeric: tabular-nums;
+}
+.number-editor-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  padding: 0.25rem;
+}
