@@ -1,8 +1,10 @@
 .preset-display {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 0.5rem;
+
+  overflow-x: scroll;
 }
 
 .loop-display {
@@ -10,7 +12,7 @@
   align-items: stretch;
   justify-content: flex-start;
 
-  border: 1px solid var(--background-color-alt);
+  border: 2px solid var(--background-color-alt);
 }
 .loop-display > header {
   display: flex;
@@ -28,6 +30,12 @@
   align-items: center;
   justify-content: center;
 
-  padding: 0.5rem 1rem;
-  background-color: #926e19;
+  border: 2px solid var(--background-color-alt);
+  padding: 1rem 2rem;
+  background-color: #b88a1d;
+  color: black;
+}
+
+.loop-display .period-display {
+  border: 0;
 }

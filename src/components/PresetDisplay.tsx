@@ -7,13 +7,13 @@ import {
 } from "../app/types.ts";
 import { formatSeconds } from "../utils/time.ts";
 
-import "./PresetDisplay.css";
+import classes from "./PresetDisplay.module.css";
 
 export function PresetDisplay(props: { preset: TimerPreset }) {
   const { preset } = props;
 
   return (
-    <div className="preset-display">
+    <div className={classes["preset-display"]}>
       <TimerDisplay timer={preset.root} />
     </div>
   );
@@ -48,7 +48,7 @@ function LoopDisplay(props: { loop: TimerLoop }) {
   const { loop } = props;
 
   return (
-    <div className="loop-display">
+    <div className={classes["loop-display"]}>
       <header>{`${loop.count}x`}</header>
       <TimerDisplay timer={loop.element} />
     </div>
@@ -59,7 +59,7 @@ function PeriodDisplay(props: { period: TimerPeriod }) {
   const { period } = props;
 
   return (
-    <article className="period-display">
+    <article className={classes["period-display"]}>
       <header>{period.name}</header>
       <footer>{formatSeconds(period.seconds)}</footer>
     </article>
