@@ -1,5 +1,5 @@
 export interface TimerPreset {
-  root: TimerControlElement;
+  root: TimerSequence;
 }
 
 export type TimerElement =

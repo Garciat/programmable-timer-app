@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Route, Routes } from "react-router";
 
 import {
@@ -8,6 +9,7 @@ import { HomePage } from "./pages/HomePage.tsx";
 import { EditPage } from "./pages/EditPage.tsx";
 
 import "./App.css";
+import { AppStateContextProvider } from "./state/context.tsx";
 
 export function App() {
   const audioContext = new AudioContext();
@@ -15,10 +17,12 @@ export function App() {
 
   return (
     <ReactAudioContext.Provider value={audioContext}>
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/edit" element={<EditPage />} />
-      </Routes>
+      <AppStateContextProvider>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/edit" element={<EditPage />} />
+        </Routes>
+      </AppStateContextProvider>
     </ReactAudioContext.Provider>
   );
 }
