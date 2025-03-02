@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 
 import { useAppState } from "../state/context.tsx";
 import { AppState } from "../state/types.ts";
+import { AppStateSchema } from "../state/schema.ts";
 
 const STORAGE_KEY = "programmable-timer-app-state";
 
@@ -30,10 +31,14 @@ export function AppStateLocalStorage() {
 
 function loadState() {
   const serializedState = localStorage.getItem(STORAGE_KEY);
-  if (serializedState === null) {
+  try {
+    return AppStateSchema.parse(JSON.parse(serializedState ?? ""));
+  } catch (e) {
+    console.error("Failed to load state from local storage", e);
+    console.log("Clearing local storage");
+    localStorage.removeItem(STORAGE_KEY);
     return undefined;
   }
-  return JSON.parse(serializedState) as AppState;
 }
 
 function saveState(state: AppState) {

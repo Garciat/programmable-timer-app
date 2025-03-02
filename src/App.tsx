@@ -10,6 +10,7 @@ import { HomePage } from "./pages/HomePage.tsx";
 import { EditPage } from "./pages/EditPage.tsx";
 import { CreatePage } from "./pages/CreatePage.tsx";
 import { PlayPage } from "./pages/PlayPage.tsx";
+import { SharePage } from "./pages/SharePage.tsx";
 
 import "./App.css";
 
@@ -26,6 +27,7 @@ export function App() {
           <Route path="/new" element={<CreatePage />} />
           <Route path="/edit/:presetId" element={<EditPage />} />
           <Route path="/play/:presetId" element={<PlayPage />} />
+          <Route path="/share/:content" element={<SharePage />} />
         </Routes>
       </AppStateContextProvider>
     </ReactAudioContext.Provider>

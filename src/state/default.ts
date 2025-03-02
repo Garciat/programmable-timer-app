@@ -3,7 +3,7 @@ import { AppState } from "./types.ts";
 export const DEFAULT_APP_STATE: AppState = {
   presets: [
     {
-      id: "example-1",
+      id: crypto.randomUUID(),
       name: "Carry No-hangs",
       root: {
         kind: "sequence",
@@ -46,7 +46,7 @@ export const DEFAULT_APP_STATE: AppState = {
       },
     },
     {
-      id: "example-2",
+      id: crypto.randomUUID(),
       name: "On-the-minute pull-ups",
       root: {
         kind: "sequence",

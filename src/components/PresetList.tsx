@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router";
-import { Pencil, Play, Trash2 } from "lucide-react";
+import { Pencil, Play, Share, Trash2 } from "lucide-react";
 
 import { duration } from "../app/flatten.ts";
 import { TimerPreset } from "../app/types.ts";
@@ -8,6 +8,7 @@ import { PresetDisplay } from "./PresetDisplay.tsx";
 
 import classes from "./PresetList.module.css";
 import { useAppPresetDelete } from "../state/context.tsx";
+import { encodeShare } from "../app/share.ts";
 
 export interface PresetListProps {
   presets: TimerPreset[];
@@ -29,6 +30,17 @@ export function PresetList({ presets }: PresetListProps) {
 
   function playPreset(preset: TimerPreset) {
     navigate(`/play/${preset.id}`);
+  }
+
+  async function sharePreset(preset: TimerPreset) {
+    const content = await encodeShare(preset);
+
+    const url = new URL(globalThis.location.href);
+    url.pathname = `/share/${encodeURIComponent(content)}`;
+
+    await navigator.clipboard.writeText(url.toString());
+
+    globalThis.alert("Copied share link to clipboard.");
   }
 
   const buttonSize = 24;
@@ -58,7 +70,13 @@ export function PresetList({ presets }: PresetListProps) {
               <button
                 type="button"
                 onClick={() =>
-                  deletePreset(preset)}
+                  sharePreset(preset)}
+              >
+                <Share size={buttonSize} />
+              </button>
+              <button
+                type="button"
+                onClick={() => deletePreset(preset)}
               >
                 <Trash2 size={buttonSize} />
               </button>

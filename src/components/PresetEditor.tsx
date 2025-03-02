@@ -8,6 +8,9 @@ import {
   Trash2,
 } from "lucide-react";
 
+import { formatSeconds } from "../utils/time.ts";
+import { clamp } from "../utils/number.ts";
+import { PERIOD_TIME_MAX, PERIOD_TIME_MIN } from "../app/constants.ts";
 import {
   TimerElement,
   TimerLoop,
@@ -15,11 +18,9 @@ import {
   TimerPreset,
   TimerSequence,
 } from "../app/types.ts";
-import { formatSeconds } from "../utils/time.ts";
+import { duration } from "../app/flatten.ts";
 
 import classes from "./PresetEditor.module.css";
-import { duration } from "../app/flatten.ts";
-import { clamp } from "../utils/number.ts";
 
 export interface PresetEditorProps {
   preset: TimerPreset;
@@ -202,7 +203,10 @@ function PeriodEditor(
   }
 
   function updateSeconds(seconds: number) {
-    onChange({ ...timer, seconds: clamp(seconds, 1, 99 * 60 + 59) });
+    onChange({
+      ...timer,
+      seconds: clamp(seconds, PERIOD_TIME_MIN, PERIOD_TIME_MAX),
+    });
   }
 
   return (
