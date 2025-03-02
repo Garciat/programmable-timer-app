@@ -38,9 +38,27 @@ export function PresetList({ presets }: PresetListProps) {
     const url = new URL(globalThis.location.href);
     url.pathname = `/share/${encodeURIComponent(content)}`;
 
-    await navigator.clipboard.writeText(url.toString());
+    try {
+      await navigator.clipboard.writeText(url.toString());
+      globalThis.alert("Copied share link to clipboard.");
+      return;
+    } catch (error) {
+      console.error("Error copying share link to clipboard:", error);
+    }
 
-    globalThis.alert("Copied share link to clipboard.");
+    const shareData = {
+      title: `Timer Preset: ${preset.name}`,
+      text: `Check out my timer preset: ${preset.name}`,
+      url: url.toString(),
+    };
+
+    if (navigator.canShare(shareData)) {
+      try {
+        return await navigator.share(shareData);
+      } catch (error) {
+        console.error("Error sharing:", error);
+      }
+    }
   }
 
   const buttonSize = 24;
