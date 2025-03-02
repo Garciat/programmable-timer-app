@@ -5,9 +5,9 @@ import { useAudioContext } from "../lib/audio/ReactAudioContext.ts";
 import { formatSeconds } from "../utils/time.ts";
 import { PlayerAction, PlayerDisplay, TimerPreset } from "../app/types.ts";
 import { actionsAtTime, timeForRelativePeriod } from "../app/actions.ts";
-import { flatten } from "../app/flatten.ts";
+import { duration, flatten } from "../app/flatten.ts";
 
-import "./TimerPlayer.css";
+import classes from "./TimerPlayer.module.css";
 
 export interface TimerPlayerProps {
   preset: TimerPreset;
@@ -36,6 +36,8 @@ export function TimerPlayer({ preset, autoplay }: TimerPlayerProps) {
     [preset],
   );
 
+  const presetDuration = useMemo(() => duration(preset.root), [preset]);
+
   const skipBack = useCallback(() => {
     setTime((t) => timeForRelativePeriod(flat, t, -1));
   }, [flat]);
@@ -56,7 +58,7 @@ export function TimerPlayer({ preset, autoplay }: TimerPlayerProps) {
   const running = !paused && !done;
 
   return (
-    <div className="timer-player">
+    <div className={classes["timer-player"]}>
       {running && <IntervalManager onTick={() => setTime((t) => t + 1)} />}
       <header>
         <button type="button" disabled={running} onClick={() => resumePlayer()}>
@@ -86,6 +88,12 @@ export function TimerPlayer({ preset, autoplay }: TimerPlayerProps) {
         </button>
       </header>
       <ActionsRenderer actions={actions} active={!paused} />
+      <footer>
+        <progress
+          value={time}
+          max={presetDuration}
+        />
+      </footer>
     </div>
   );
 }
@@ -167,16 +175,16 @@ function BeepActionRenderer() {
 function DisplayActionRenderer(props: { action: PlayerDisplay }) {
   const { round, seconds, text } = props.action;
   return (
-    <div className="timer-player-display">
-      <div className="round">{round ?? <>&nbsp;</>}</div>
-      <div className="time">{formatSeconds(seconds)}</div>
-      <div className="text">{text}</div>
+    <div className={classes["timer-player-display"]}>
+      <div className={classes["round"]}>{round ?? <>&nbsp;</>}</div>
+      <div className={classes["time"]}>{formatSeconds(seconds)}</div>
+      <div className={classes["text"]}>{text}</div>
     </div>
   );
 }
 
 function FinishedActionRenderer() {
-  return <div className="timer-finished-display">Finished</div>;
+  return <div className={classes["timer-finished-display"]}>Finished</div>;
 }
 
 function IntervalManager(props: { onTick: () => void }) {
