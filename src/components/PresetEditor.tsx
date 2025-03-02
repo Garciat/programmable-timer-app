@@ -177,7 +177,7 @@ function LoopEditor(
         <div className={classes["loop-editor-label"]}>
           <Repeat size={16} />
         </div>
-        <NumberEditor value={timer.count} onChange={updateCount} />
+        <NumberEditor value={timer.count} min={1} onChange={updateCount} />
       </header>
       <TimerEditor
         timer={timer.element}
@@ -210,14 +210,29 @@ function PeriodEditor(
   );
 }
 
+interface SecondsEditorProps {
+  value: number;
+  onChange: (value: number) => void;
+}
+
 function SecondsEditor(
-  { value, onChange }: { value: number; onChange: (value: number) => void },
+  { value, onChange }: SecondsEditorProps,
 ) {
+  function decrement() {
+    if (value > 1) {
+      onChange(value - 1);
+    }
+  }
+
+  function increment() {
+    onChange(value + 1);
+  }
+
   return (
     <div className={classes["seconds-editor"]}>
       <button
         type="button"
-        onClick={() => onChange(value - 1)}
+        onClick={decrement}
         className={classes["seconds-editor-button"]}
       >
         <Minus size={16} />
@@ -227,7 +242,7 @@ function SecondsEditor(
       </div>
       <button
         type="button"
-        onClick={() => onChange(value + 1)}
+        onClick={increment}
         className={classes["seconds-editor-button"]}
       >
         <Plus size={16} />
@@ -236,14 +251,30 @@ function SecondsEditor(
   );
 }
 
+interface NumberEditorProps {
+  value: number;
+  min: number;
+  onChange: (value: number) => void;
+}
+
 function NumberEditor(
-  { value, onChange }: { value: number; onChange: (value: number) => void },
+  { value, min, onChange }: NumberEditorProps,
 ) {
+  function decrement() {
+    if (value > min) {
+      onChange(value - 1);
+    }
+  }
+
+  function increment() {
+    onChange(value + 1);
+  }
+
   return (
     <div className={classes["number-editor"]}>
       <button
         type="button"
-        onClick={() => onChange(value - 1)}
+        onClick={decrement}
         className={classes["number-editor-button"]}
       >
         <Minus size={16} />
@@ -253,7 +284,7 @@ function NumberEditor(
       </div>
       <button
         type="button"
-        onClick={() => onChange(value + 1)}
+        onClick={increment}
         className={classes["number-editor-button"]}
       >
         <Plus size={16} />
