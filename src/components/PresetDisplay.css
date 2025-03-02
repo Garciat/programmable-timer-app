@@ -10,7 +10,7 @@
   align-items: stretch;
   justify-content: flex-start;
 
-  border: 1px solid black;
+  border: 1px solid var(--background-color-alt);
 }
 .loop-display > header {
   display: flex;
@@ -18,7 +18,8 @@
   justify-content: center;
 
   padding: 0.25rem;
-  background-color: black;
+  background-color: var(--background-color-alt);
+  color: var(--text-color-alt);
 }
 
 .period-display {

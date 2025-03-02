@@ -78,7 +78,8 @@
   gap: 0.5rem;
 
   padding: 0.5rem;
-  background-color: black;
+  background-color: var(--background-color-alt);
+  color: var(--text-color-alt);
 }
 .loop-editor-label {
   display: flex;
