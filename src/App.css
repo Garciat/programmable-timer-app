@@ -5,6 +5,7 @@
   --background-color-alt: light-dark(#000, #000);
   --text-color: light-dark(#000, #fff);
   --text-color-alt: light-dark(#fff, #fff);
+  --radius: 5px;
 }
 
 body {

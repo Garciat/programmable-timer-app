@@ -21,16 +21,26 @@
   justify-content: flex-start;
   gap: 0.5rem;
 
-  border: 1px solid var(--background-color-alt);
+  border: 2px solid var(--background-color-alt);
+  border-radius: var(--radius);
+}
+.sequence-editor-items {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+  gap: 0.5rem;
+
   padding: 0.5rem;
 }
 .sequence-editor-item {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: stretch;
-  justify-content: space-between;
-
+  justify-content: flex-start;
   gap: 0.5rem;
+
+  padding: 0.5rem;
 }
 .sequence-editor-item-value {
   flex-grow: 1;
@@ -39,35 +49,23 @@
   align-items: stretch;
   justify-content: flex-start;
 }
-.sequence-editor-item-controls {
+.sequence-editor-item > footer {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
 }
-.sequence-editor-item-controls > button {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  border: 0;
-  padding: 0.25rem;
-}
-.sequence-editor-add {
+.sequence-editor > footer {
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
 
   padding: 0.5rem;
+  background-color: var(--background-color-alt);
 }
-.sequence-editor-add > button {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  border: 0;
+.sequence-editor > footer > button {
   border-radius: 50%;
   padding: 0.5rem;
 }
@@ -77,8 +75,6 @@
   flex-direction: column;
   align-items: stretch;
   justify-content: flex-start;
-
-  border: 2px solid black;
 }
 .loop-editor-header {
   display: flex;
@@ -89,12 +85,16 @@
 
   padding: 0.5rem;
   background-color: var(--background-color-alt);
+  border-radius: var(--radius) var(--radius) 0 0;
   color: var(--text-color-alt);
 }
 .loop-editor-label {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.loop-editor > .sequence-editor {
+  border-radius: 0 0 var(--radius) var(--radius);
 }
 
 .period-editor {
@@ -103,8 +103,6 @@
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-
-  padding: 1rem;
 }
 
 .seconds-editor {
