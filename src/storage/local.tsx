@@ -14,8 +14,8 @@ export function AppStateLocalStorage() {
     if (savedState !== undefined) {
       console.log("Loaded state from local storage");
       setState(savedState);
-      setReady(true);
     }
+    setReady(true);
   }, [setState]);
 
   useEffect(() => {
