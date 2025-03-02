@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { MoveLeft, Save } from "lucide-react";
 
@@ -8,22 +8,33 @@ import { PresetEditor } from "../components/PresetEditor.tsx";
 import { TitleBar } from "../components/TitleBar.tsx";
 
 import classes from "./EditPage.module.css";
+import { TimerPreset } from "../app/types.ts";
 
 export function EditPage() {
   const navigate = useNavigate();
 
   const { presetId } = useParams();
-  const [savedPreset, setSavedPreset] = useAppPreset(presetId ?? "");
+  const [preset, setPreset] = useAppPreset(presetId ?? "");
 
-  const [preset, setPreset] = useState(savedPreset);
+  const [editedPreset, setEditedPreset] = useState<TimerPreset | undefined>(
+    undefined,
+  );
+
+  useEffect(() => {
+    setEditedPreset(preset);
+  }, [preset]);
 
   function goBack() {
     navigate("/");
   }
 
+  function updateName(name: string) {
+    setEditedPreset((prev) => prev && { ...prev, name });
+  }
+
   function savePreset() {
-    if (preset) {
-      setSavedPreset(preset);
+    if (editedPreset) {
+      setPreset(editedPreset);
     }
     navigate("/");
   }
@@ -46,12 +57,12 @@ export function EditPage() {
     </button>
   );
 
-  const titleEditor = preset &&
+  const titleEditor = editedPreset &&
     (
       <input
         type="text"
-        value={preset.name}
-        onChange={(e) => setPreset({ ...preset, name: e.target.value })}
+        value={editedPreset.name}
+        onChange={(e) => updateName(e.target.value)}
         className={classes["title-editor"]}
       />
     );
@@ -64,8 +75,8 @@ export function EditPage() {
           middle={titleEditor ?? <h1>Not Found</h1>}
           right={saveButton}
         />
-        {preset
-          ? <PresetEditor preset={preset} onChange={setPreset} />
+        {editedPreset
+          ? <PresetEditor preset={editedPreset} onChange={setEditedPreset} />
           : <p style={{ textAlign: "center" }}>This preset does not exist.</p>}
       </div>
     </BaseLayout>
