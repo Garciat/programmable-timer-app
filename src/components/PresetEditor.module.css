@@ -3,7 +3,62 @@
   flex-direction: column;
   align-items: stretch;
   justify-content: flex-start;
+}
 
+.sequence-editor {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+  gap: 0.5rem;
+
+  padding: 0.5rem;
+}
+.sequence-editor-item {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  justify-content: space-between;
+
+  gap: 0.5rem;
+}
+.sequence-editor-item-value {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+}
+.sequence-editor-item-controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+.sequence-editor-item-controls > button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  border: 0;
+  padding: 0.25rem;
+}
+.sequence-editor-add {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+
+  padding: 0.5rem;
+}
+.sequence-editor-add > button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  border: 0;
+  border-radius: 50%;
   padding: 0.5rem;
 }
 

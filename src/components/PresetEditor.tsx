@@ -1,4 +1,11 @@
-import { Minus, Plus, Repeat } from "lucide-react";
+import {
+  ChevronDown,
+  ChevronUp,
+  Minus,
+  Plus,
+  Repeat,
+  Trash2,
+} from "lucide-react";
 
 import {
   TimerElement,
@@ -57,15 +64,98 @@ function SequenceEditor(
     onChange({ ...timer, elements });
   }
 
+  function appendNewElement() {
+    onChange({
+      ...timer,
+      elements: [
+        ...timer.elements,
+        { kind: "period", name: "New entry", seconds: 60 },
+      ],
+    });
+  }
+
+  function moveElement(index: number, offset: number) {
+    const newIndex = index + offset;
+    if (newIndex < 0 || newIndex >= timer.elements.length) {
+      return;
+    }
+
+    const elements = [...timer.elements];
+    const [element] = elements.splice(index, 1);
+    elements.splice(newIndex, 0, element);
+    onChange({ ...timer, elements });
+  }
+
+  function loopElement(index: number) {
+    const elements = [...timer.elements];
+    const element = elements[index];
+    elements[index] = {
+      kind: "loop",
+      count: 1,
+      element: { kind: "sequence", elements: [element] },
+    };
+    onChange({ ...timer, elements });
+  }
+
+  function removeElement(index: number) {
+    const elements = [...timer.elements];
+    elements.splice(index, 1);
+    onChange({ ...timer, elements });
+  }
+
+  const buttonSize = 16;
+
   return (
-    <div className="sequence-editor">
+    <div className={classes["sequence-editor"]}>
       {timer.elements.map((element, index) => (
-        <TimerEditor
-          key={index}
-          timer={element}
-          onChange={(newElement) => updateElement(index, newElement)}
-        />
+        <div key={index} className={classes["sequence-editor-item"]}>
+          <div className={classes["sequence-editor-item-controls"]}>
+            <button
+              type="button"
+              onClick={() =>
+                loopElement(index)}
+            >
+              <Repeat size={buttonSize} />
+            </button>
+            <button
+              type="button"
+              onClick={() =>
+                removeElement(index)}
+            >
+              <Trash2 size={buttonSize} />
+            </button>
+          </div>
+          <div className={classes["sequence-editor-item-value"]}>
+            <TimerEditor
+              timer={element}
+              onChange={(newElement) => updateElement(index, newElement)}
+            />
+          </div>
+          <div className={classes["sequence-editor-item-controls"]}>
+            <button
+              type="button"
+              onClick={() => moveElement(index, -1)}
+            >
+              <ChevronUp size={buttonSize} />
+            </button>
+            <button
+              type="button"
+              onClick={() => moveElement(index, 1)}
+            >
+              <ChevronDown size={buttonSize} />
+            </button>
+          </div>
+        </div>
       ))}
+
+      <div className={classes["sequence-editor-add"]}>
+        <button
+          type="button"
+          onClick={() => appendNewElement()}
+        >
+          <Plus size={24} />
+        </button>
+      </div>
     </div>
   );
 }
