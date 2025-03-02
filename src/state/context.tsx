@@ -31,17 +31,51 @@ function useAppState(): [AppState, (action: Action) => void] {
   return [context.state, context.dispatch];
 }
 
-// TODO: temporary
-export function useAppPreset(): [TimerPreset, (preset: TimerPreset) => void] {
+export function useAppPresets(): TimerPreset[] {
+  const [state] = useAppState();
+  return state.presets;
+}
+
+export function useAppPreset(
+  id: string,
+): [TimerPreset | undefined, (preset: TimerPreset) => void] {
   const [state, dispatch] = useAppState();
 
+  const preset = useMemo(() => {
+    return state.presets.find((preset) => preset.id === id);
+  }, [state.presets, id]);
+
   const setter = useMemo(() => {
-    return (preset: TimerPreset) => {
-      dispatch({ type: "setPreset", preset });
+    return (updated: TimerPreset) => {
+      dispatch({ type: "updatePreset", preset: updated });
     };
   }, [dispatch]);
 
-  return [state.preset, setter];
+  return [preset, setter];
+}
+
+export function useAppPresetAdd(): (preset: Omit<TimerPreset, "id">) => void {
+  const [, dispatch] = useAppState();
+
+  const adder = useMemo(() => {
+    return (preset: Omit<TimerPreset, "id">) => {
+      dispatch({ type: "addPreset", preset });
+    };
+  }, [dispatch]);
+
+  return adder;
+}
+
+export function useAppPresetDelete(): (id: string) => void {
+  const [, dispatch] = useAppState();
+
+  const deleter = useMemo(() => {
+    return (id: string) => {
+      dispatch({ type: "deletePreset", id });
+    };
+  }, [dispatch]);
+
+  return deleter;
 }
 
 function useAppStateReducer(): [AppState, (action: Action) => void] {
@@ -51,9 +85,28 @@ function useAppStateReducer(): [AppState, (action: Action) => void] {
 
 function appStateReducer(state: AppState, action: Action): AppState {
   switch (action.type) {
-    case "setPreset":
-      return { ...state, preset: action.preset };
+    case "addPreset":
+      return {
+        ...state,
+        presets: [...state.presets, {
+          ...action.preset,
+          id: crypto.randomUUID(),
+        }],
+      };
+    case "updatePreset":
+      return {
+        ...state,
+        presets: state.presets.map((preset) =>
+          preset.id === action.preset.id ? action.preset : preset
+        ),
+      };
+    case "deletePreset":
+      return {
+        ...state,
+        presets: state.presets.filter((preset) => preset.id !== action.id),
+      };
     default:
+      action satisfies never;
       return state;
   }
 }

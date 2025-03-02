@@ -1,7 +1,10 @@
 import { TimerPreset } from "../app/types.ts";
 
 export interface AppState {
-  preset: TimerPreset;
+  presets: TimerPreset[];
 }
 
-export type Action = { type: "setPreset"; preset: TimerPreset };
+export type Action =
+  | { type: "addPreset"; preset: Omit<TimerPreset, "id"> }
+  | { type: "updatePreset"; preset: TimerPreset }
+  | { type: "deletePreset"; id: string };

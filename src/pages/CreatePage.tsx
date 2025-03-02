@@ -1,41 +1,41 @@
-import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router";
+import { useState } from "react";
+import { useNavigate } from "react-router";
 import { MoveLeft, Save } from "lucide-react";
 
 import { BaseLayout } from "../components/BaseLayout.tsx";
 import { PresetEditor } from "../components/PresetEditor.tsx";
-import { useAppPreset } from "../state/context.tsx";
+import { useAppPresetAdd } from "../state/context.tsx";
+import { TimerPreset } from "../app/types.ts";
 
-import classes from "./EditPage.module.css";
+import classes from "./CreatePage.module.css";
 
-export function EditPage() {
+export function CreatePage() {
   const navigate = useNavigate();
+  const doPresetAdd = useAppPresetAdd();
 
-  const { presetId } = useParams();
-  const [savedPreset, setSavedPreset] = useAppPreset(presetId ?? "");
-
-  const [preset, setPreset] = useState(savedPreset);
-
-  useEffect(() => {
-    if (!savedPreset) {
-      navigate("/");
-    }
-  }, [savedPreset, navigate]);
+  const [preset, setPreset] = useState<TimerPreset>({
+    id: crypto.randomUUID(),
+    name: "New Preset",
+    root: {
+      kind: "sequence",
+      elements: [
+        { kind: "period", seconds: 60, name: "Work" },
+      ],
+    },
+  });
 
   function goBack() {
     navigate("/");
   }
 
   function savePreset() {
-    if (preset) {
-      setSavedPreset(preset);
-    }
+    doPresetAdd(preset);
     navigate("/");
   }
 
   return (
     <BaseLayout>
-      <div className={classes["edit-page"]}>
+      <div className={classes["create-page"]}>
         <header>
           <button
             type="button"
@@ -50,7 +50,7 @@ export function EditPage() {
             <Save size={24} />
           </button>
         </header>
-        {preset && <PresetEditor preset={preset} onChange={setPreset} />}
+        <PresetEditor preset={preset} onChange={setPreset} />
       </div>
     </BaseLayout>
   );

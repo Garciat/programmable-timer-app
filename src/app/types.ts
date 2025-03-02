@@ -1,4 +1,6 @@
 export interface TimerPreset {
+  id: string;
+  name: string;
   root: TimerSequence;
 }
 

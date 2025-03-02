@@ -1,0 +1,23 @@
+.home-page {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+
+  padding: 1rem;
+}
+.home-page > header {
+  display: flex;
+  flex-direction: reow;
+  align-items: stretch;
+  justify-content: space-between;
+
+  margin-bottom: 1rem;
+}
+
+.header-actions {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}

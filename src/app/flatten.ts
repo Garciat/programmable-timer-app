@@ -17,6 +17,20 @@ export function flatten(root: TimerControlElement): FlatTimerPeriod[] {
   }
 }
 
+export function duration(timer: TimerElement): number {
+  switch (timer.kind) {
+    case "period":
+      return timer.seconds;
+    case "sequence":
+      return timer.elements.reduce(
+        (acc, element) => acc + duration(element),
+        0,
+      );
+    case "loop":
+      return timer.count * duration(timer.element);
+  }
+}
+
 function flattenTimer(
   timer: TimerElement,
   contexts: FlatTimerContext[],

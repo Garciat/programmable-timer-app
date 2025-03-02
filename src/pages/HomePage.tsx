@@ -1,28 +1,34 @@
 import { useNavigate } from "react-router";
+import { Plus } from "lucide-react";
 
-import { FullscreenLayout } from "../components/FullscreenLayout.tsx";
-import { PresetDisplay } from "../components/PresetDisplay.tsx";
-import { TimerPlayer } from "../components/TimerPlayer.tsx";
-import { useAppPreset } from "../state/context.tsx";
+import { useAppPresets } from "../state/context.tsx";
+import { BaseLayout } from "../components/BaseLayout.tsx";
+import { PresetList } from "../components/PresetList.tsx";
+
+import classes from "./HomePage.module.css";
 
 export function HomePage() {
-  const [preset] = useAppPreset();
   const navigate = useNavigate();
 
+  const presets = useAppPresets();
+
+  function createPreset() {
+    navigate("/new");
+  }
+
   return (
-    <FullscreenLayout>
-      <PresetDisplay preset={preset} />
-      <div style={{ height: "1rem" }} />
-      <button
-        type="button"
-        onClick={() => {
-          navigate("/edit");
-        }}
-      >
-        Edit
-      </button>
-      <div style={{ height: "2rem" }} />
-      <TimerPlayer preset={preset} />
-    </FullscreenLayout>
+    <BaseLayout>
+      <div className={classes["home-page"]}>
+        <header>
+          <h1>Programmable Timer</h1>
+          <div className={classes["header-actions"]}>
+            <button type="button" onClick={() => createPreset()}>
+              <Plus size={24} />
+            </button>
+          </div>
+        </header>
+        <PresetList presets={presets} />
+      </div>
+    </BaseLayout>
   );
 }
