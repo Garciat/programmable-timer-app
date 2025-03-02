@@ -127,14 +127,31 @@
 
   min-width: 6ch;
   font-size: 2rem;
-  font-variant-numeric: tabular-nums;
 }
 .seconds-editor-button {
   display: flex;
+  flex-direction: row;
+  align-items: baseline;
   justify-content: center;
-  align-items: center;
 
   padding: 0.25rem;
+}
+
+.time-part-input {
+  all: unset;
+  appearance: textfield;
+  -moz-appearance: textfield;
+  width: 2ch;
+  border: 0;
+  padding: 0;
+  background-color: transparent;
+  color: inherit;
+  font-size: inherit;
+  font-variant-numeric: tabular-nums;
+}
+.time-part-input::-webkit-inner-spin-button,
+.time-part-input::-webkit-outer-spin-button {
+  appearance: none;
 }
 
 .number-editor {

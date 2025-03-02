@@ -1,3 +1,4 @@
+import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   ChevronDown,
   ChevronUp,
@@ -18,6 +19,7 @@ import { formatSeconds } from "../utils/time.ts";
 
 import classes from "./PresetEditor.module.css";
 import { duration } from "../app/flatten.ts";
+import { clamp } from "../utils/number.ts";
 
 export interface PresetEditorProps {
   preset: TimerPreset;
@@ -200,7 +202,7 @@ function PeriodEditor(
   }
 
   function updateSeconds(seconds: number) {
-    onChange({ ...timer, seconds });
+    onChange({ ...timer, seconds: clamp(seconds, 1, 99 * 60 + 59) });
   }
 
   return (
@@ -233,6 +235,17 @@ function SecondsEditor(
     onChange(value + 1);
   }
 
+  const minutes = useMemo(() => new NumberBox(Math.floor(value / 60)), [value]);
+  const seconds = useMemo(() => new NumberBox(value % 60), [value]);
+
+  const setMinutes = useCallback((newMinutes: number) => {
+    onChange(newMinutes * 60 + seconds.value);
+  }, [seconds]);
+
+  const setSeconds = useCallback((newSeconds: number) => {
+    onChange(minutes.value * 60 + newSeconds);
+  }, [minutes]);
+
   return (
     <div className={classes["seconds-editor"]}>
       <button
@@ -243,7 +256,9 @@ function SecondsEditor(
         <Minus size={16} />
       </button>
       <div className={classes["seconds-editor-value"]}>
-        {formatSeconds(value)}
+        <TimePartInput value={minutes} onChange={setMinutes} />
+        <span>:</span>
+        <TimePartInput value={seconds} onChange={setSeconds} />
       </div>
       <button
         type="button"
@@ -253,6 +268,63 @@ function SecondsEditor(
         <Plus size={16} />
       </button>
     </div>
+  );
+}
+
+// we want newly-computer numbers to trigger re-renders
+// didn't use built-in Number because of lint
+class NumberBox {
+  constructor(public value: number) {}
+  toString() {
+    return this.value.toString();
+  }
+}
+
+interface TimePartInputProps {
+  value: NumberBox;
+  onChange: (value: number) => void;
+}
+
+function TimePartInput({ value, onChange }: TimePartInputProps) {
+  const [text, setText] = useState("");
+
+  useEffect(() => {
+    setText(value.toString().padStart(2, "0"));
+  }, [value]);
+
+  function update(value: string) {
+    if (value.length <= 2) {
+      setText(value);
+    }
+  }
+
+  function commit() {
+    const newValue = parseInt(text, 10);
+    if (isNaN(newValue) || newValue === value.value) {
+      // reset to previous value
+      return setText(value.toString().padStart(2, "0"));
+    } else {
+      // send new value
+      return onChange(newValue);
+    }
+  }
+
+  return (
+    <input
+      type="number"
+      inputMode="numeric"
+      value={text}
+      onChange={(event) => update(event.target.value)}
+      onBlur={commit}
+      onFocus={(event) => event.target.select()}
+      onKeyDown={(event) => {
+        if (event.key === "Enter") {
+          commit();
+          (event.target as HTMLInputElement).blur();
+        }
+      }}
+      className={classes["time-part-input"]}
+    />
   );
 }
 
