@@ -26,13 +26,41 @@ export function AppStateLocalStorage() {
     }
   }, [state, ready]);
 
+  useEffect(() => {
+    if (!ready) {
+      return;
+    }
+
+    function listener(event: StorageEvent) {
+      if (event.key === STORAGE_KEY) {
+        const state = readStateValue(event.newValue);
+        if (state !== undefined) {
+          console.log("Received state from local storage");
+          setState(state);
+        }
+      }
+    }
+
+    console.log("Listening for storage events");
+
+    globalThis.addEventListener("storage", listener);
+
+    return () => {
+      globalThis.removeEventListener("storage", listener);
+    };
+  }, [ready, setState]);
+
   return null;
 }
 
 function loadState() {
   const serializedState = localStorage.getItem(STORAGE_KEY);
+  return readStateValue(serializedState);
+}
+
+function readStateValue(value: string | null): AppState | undefined {
   try {
-    return AppStateSchema.parse(JSON.parse(serializedState ?? ""));
+    return AppStateSchema.parse(JSON.parse(value ?? ""));
   } catch (e) {
     console.error("Failed to load state from local storage", e);
     console.log("Clearing local storage");
