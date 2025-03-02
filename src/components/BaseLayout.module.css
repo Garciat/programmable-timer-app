@@ -5,7 +5,7 @@ body {
   align-items: center;
 }
 
-main {
+.layout {
   width: min(100%, 42rem);
   display: flex;
   flex-direction: column;

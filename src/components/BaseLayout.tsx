@@ -1,4 +1,4 @@
-import "./BaseLayout.css";
+import classes from "./BaseLayout.module.css";
 
 export interface BaseLayoutProps {
   children: React.ReactNode;
@@ -6,7 +6,7 @@ export interface BaseLayoutProps {
 
 export function BaseLayout({ children }: BaseLayoutProps) {
   return (
-    <main>
+    <main className={classes.layout}>
       {children}
     </main>
   );

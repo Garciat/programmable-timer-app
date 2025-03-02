@@ -1,13 +1,8 @@
-import { useNavigate } from "react-router";
-
 import { TimerPreset } from "../app/types.ts";
-import { FullscreenLayout } from "../components/FullscreenLayout.tsx";
-import { PresetDisplay } from "../components/PresetDisplay.tsx";
-import { TimerPlayer } from "../components/TimerPlayer.tsx";
+import { BaseLayout } from "../components/BaseLayout.tsx";
+import { PresetEditor } from "../components/PresetEditor.tsx";
 
-export function HomePage() {
-  const navigate = useNavigate();
-
+export function EditPage() {
   const preset: TimerPreset = {
     root: {
       kind: "sequence",
@@ -51,19 +46,8 @@ export function HomePage() {
   };
 
   return (
-    <FullscreenLayout>
-      <PresetDisplay preset={preset} />
-      <div style={{ height: "1rem" }} />
-      <button
-        type="button"
-        onClick={() => {
-          navigate("/edit");
-        }}
-      >
-        Edit
-      </button>
-      <div style={{ height: "2rem" }} />
-      <TimerPlayer preset={preset} />
-    </FullscreenLayout>
+    <BaseLayout>
+      <PresetEditor preset={preset} />
+    </BaseLayout>
   );
 }

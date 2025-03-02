@@ -5,6 +5,7 @@ import {
   unlockAudioContext,
 } from "./lib/audio/ReactAudioContext.ts";
 import { HomePage } from "./pages/HomePage.tsx";
+import { EditPage } from "./pages/EditPage.tsx";
 
 import "./App.css";
 
@@ -16,6 +17,7 @@ export function App() {
     <ReactAudioContext.Provider value={audioContext}>
       <Routes>
         <Route path="/" element={<HomePage />} />
+        <Route path="/edit" element={<EditPage />} />
       </Routes>
     </ReactAudioContext.Provider>
   );

@@ -1,4 +1,4 @@
-import "./FullscreenLayout.css";
+import classes from "./FullscreenLayout.module.css";
 
 export interface FullscreenLayoutProps {
   children: React.ReactNode;
@@ -6,7 +6,7 @@ export interface FullscreenLayoutProps {
 
 export function FullscreenLayout({ children }: FullscreenLayoutProps) {
   return (
-    <main>
+    <main className={classes.layout}>
       {children}
     </main>
   );
