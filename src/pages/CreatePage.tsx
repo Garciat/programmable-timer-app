@@ -20,7 +20,17 @@ export function CreatePage() {
     root: {
       kind: "sequence",
       elements: [
-        { kind: "period", seconds: 60, name: "Work" },
+        {
+          kind: "loop",
+          count: 4,
+          element: {
+            kind: "sequence",
+            elements: [
+              { kind: "period", seconds: 60, name: "Work" },
+              { kind: "period", seconds: 60, name: "Rest" },
+            ],
+          },
+        },
       ],
     },
   });
@@ -55,6 +65,7 @@ export function CreatePage() {
   const titleEditor = (
     <input
       type="text"
+      autoFocus
       value={preset.name}
       onChange={(e) => setPreset({ ...preset, name: e.target.value })}
       className={classes["title-editor"]}

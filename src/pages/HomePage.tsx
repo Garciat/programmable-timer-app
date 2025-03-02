@@ -28,6 +28,11 @@ export function HomePage() {
       <div className={classes["home-page"]}>
         <TitleBar middle={<h1>Programmable Timer</h1>} right={createButton} />
         <PresetList presets={presets} />
+        {presets.length === 0 && (
+          <p style={{ textAlign: "center" }}>
+            No presets yet. Click the plus button to create one.
+          </p>
+        )}
       </div>
     </BaseLayout>
   );

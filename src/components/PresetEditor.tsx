@@ -73,7 +73,7 @@ function SequenceEditor(
       ...timer,
       elements: [
         ...timer.elements,
-        { kind: "period", name: "New entry", seconds: 60 },
+        { kind: "period", name: "Work", seconds: 60 },
       ],
     });
   }
