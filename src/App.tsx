@@ -10,6 +10,7 @@ import { EditPage } from "./pages/EditPage.tsx";
 import { CreatePage } from "./pages/CreatePage.tsx";
 
 import "./App.css";
+import { AppStateLocalStorage } from "./storage/local.tsx";
 
 export function App() {
   const audioContext = new AudioContext();
@@ -18,6 +19,7 @@ export function App() {
   return (
     <ReactAudioContext.Provider value={audioContext}>
       <AppStateContextProvider>
+        <AppStateLocalStorage />
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/new" element={<CreatePage />} />

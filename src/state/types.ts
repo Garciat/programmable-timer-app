@@ -5,6 +5,7 @@ export interface AppState {
 }
 
 export type Action =
+  | { type: "loadState"; state: AppState }
   | { type: "addPreset"; preset: Omit<TimerPreset, "id"> }
   | { type: "updatePreset"; preset: TimerPreset }
   | { type: "deletePreset"; id: string };

@@ -21,7 +21,7 @@ export function AppStateContextProvider(
   );
 }
 
-function useAppState(): [AppState, (action: Action) => void] {
+function useAppStateCore(): [AppState, (action: Action) => void] {
   const context = useContext(AppStateContext);
   if (context === null) {
     throw new Error(
@@ -31,15 +31,27 @@ function useAppState(): [AppState, (action: Action) => void] {
   return [context.state, context.dispatch];
 }
 
+export function useAppState(): [AppState, (state: AppState) => void] {
+  const [state, dispatch] = useAppStateCore();
+
+  const setter = useMemo(() => {
+    return (state: AppState) => {
+      dispatch({ type: "loadState", state });
+    };
+  }, [dispatch]);
+
+  return [state, setter];
+}
+
 export function useAppPresets(): TimerPreset[] {
-  const [state] = useAppState();
+  const [state] = useAppStateCore();
   return state.presets;
 }
 
 export function useAppPreset(
   id: string,
 ): [TimerPreset | undefined, (preset: TimerPreset) => void] {
-  const [state, dispatch] = useAppState();
+  const [state, dispatch] = useAppStateCore();
 
   const preset = useMemo(() => {
     return state.presets.find((preset) => preset.id === id);
@@ -55,7 +67,7 @@ export function useAppPreset(
 }
 
 export function useAppPresetAdd(): (preset: Omit<TimerPreset, "id">) => void {
-  const [, dispatch] = useAppState();
+  const [, dispatch] = useAppStateCore();
 
   const adder = useMemo(() => {
     return (preset: Omit<TimerPreset, "id">) => {
@@ -67,7 +79,7 @@ export function useAppPresetAdd(): (preset: Omit<TimerPreset, "id">) => void {
 }
 
 export function useAppPresetDelete(): (id: string) => void {
-  const [, dispatch] = useAppState();
+  const [, dispatch] = useAppStateCore();
 
   const deleter = useMemo(() => {
     return (id: string) => {
@@ -85,6 +97,8 @@ function useAppStateReducer(): [AppState, (action: Action) => void] {
 
 function appStateReducer(state: AppState, action: Action): AppState {
   switch (action.type) {
+    case "loadState":
+      return action.state;
     case "addPreset":
       return {
         ...state,
