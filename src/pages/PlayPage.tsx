@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router";
 import { MoveLeft } from "lucide-react";
 
@@ -14,12 +13,6 @@ export function PlayPage() {
 
   const { presetId } = useParams();
   const [preset] = useAppPreset(presetId ?? "");
-
-  useEffect(() => {
-    if (!preset) {
-      navigate("/");
-    }
-  }, [preset, navigate]);
 
   function goBack() {
     navigate("/");
@@ -37,8 +30,13 @@ export function PlayPage() {
   return (
     <FullscreenLayout>
       <div className={classes["play-page"]}>
-        <TitleBar left={backButton} middle={<h1>{preset?.name}</h1>} />
-        {preset && <TimerPlayer preset={preset} autoplay />}
+        <TitleBar
+          left={backButton}
+          middle={<h1>{preset?.name ?? "Not Found"}</h1>}
+        />
+        {preset
+          ? <TimerPlayer preset={preset} autoplay />
+          : <p style={{ textAlign: "center" }}>This preset does not exist.</p>}
       </div>
     </FullscreenLayout>
   );

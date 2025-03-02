@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { MoveLeft, Save } from "lucide-react";
 
@@ -16,12 +16,6 @@ export function EditPage() {
   const [savedPreset, setSavedPreset] = useAppPreset(presetId ?? "");
 
   const [preset, setPreset] = useState(savedPreset);
-
-  useEffect(() => {
-    if (!savedPreset) {
-      navigate("/");
-    }
-  }, [savedPreset, navigate]);
 
   function goBack() {
     navigate("/");
@@ -67,10 +61,12 @@ export function EditPage() {
       <div className={classes["edit-page"]}>
         <TitleBar
           left={backButton}
-          middle={titleEditor}
+          middle={titleEditor ?? <h1>Not Found</h1>}
           right={saveButton}
         />
-        {preset && <PresetEditor preset={preset} onChange={setPreset} />}
+        {preset
+          ? <PresetEditor preset={preset} onChange={setPreset} />
+          : <p style={{ textAlign: "center" }}>This preset does not exist.</p>}
       </div>
     </BaseLayout>
   );
