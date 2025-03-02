@@ -1,0 +1,21 @@
+.play-page {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+
+  padding: 1rem;
+}
+.play-page > header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+
+  margin-bottom: 1rem;
+}
+.play-page > header > .around {
+  flex-grow: 1;
+  flex-basis: 0;
+}

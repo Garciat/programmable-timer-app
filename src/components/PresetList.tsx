@@ -28,7 +28,7 @@ export function PresetList({ presets }: PresetListProps) {
   }
 
   function playPreset(preset: TimerPreset) {
-    console.log("Play preset", preset);
+    navigate(`/play/${preset.id}`);
   }
 
   const buttonSize = 24;

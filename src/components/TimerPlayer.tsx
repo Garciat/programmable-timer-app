@@ -11,16 +11,12 @@ import "./TimerPlayer.css";
 
 export interface TimerPlayerProps {
   preset: TimerPreset;
+  autoplay?: boolean;
 }
 
-export function TimerPlayer({ preset }: TimerPlayerProps) {
+export function TimerPlayer({ preset, autoplay }: TimerPlayerProps) {
   const [time, setTime] = useState(0);
-  const [paused, setPaused] = useState(true);
-
-  useEffect(() => {
-    setTime(0);
-    setPaused(true);
-  }, [preset]);
+  const [paused, setPaused] = useState(!(autoplay ?? false));
 
   const resumePlayer = useCallback(() => {
     setPaused(false);

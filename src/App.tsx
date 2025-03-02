@@ -5,12 +5,13 @@ import {
   unlockAudioContext,
 } from "./lib/audio/ReactAudioContext.ts";
 import { AppStateContextProvider } from "./state/context.tsx";
+import { AppStateLocalStorage } from "./storage/local.tsx";
 import { HomePage } from "./pages/HomePage.tsx";
 import { EditPage } from "./pages/EditPage.tsx";
 import { CreatePage } from "./pages/CreatePage.tsx";
+import { PlayPage } from "./pages/PlayPage.tsx";
 
 import "./App.css";
-import { AppStateLocalStorage } from "./storage/local.tsx";
 
 export function App() {
   const audioContext = new AudioContext();
@@ -24,6 +25,7 @@ export function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/new" element={<CreatePage />} />
           <Route path="/edit/:presetId" element={<EditPage />} />
+          <Route path="/play/:presetId" element={<PlayPage />} />
         </Routes>
       </AppStateContextProvider>
     </ReactAudioContext.Provider>
