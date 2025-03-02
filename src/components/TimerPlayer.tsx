@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { Pause, Play, RotateCcw } from "lucide-react";
+import { Pause, Play, RotateCcw, SkipBack, SkipForward } from "lucide-react";
 
 import { useAudioContext } from "../lib/audio/ReactAudioContext.ts";
 import { formatSeconds } from "../utils/time.ts";
 import { PlayerAction, PlayerDisplay, TimerPreset } from "../app/types.ts";
-import { actionsAtTime } from "../app/actions.ts";
+import { actionsAtTime, timeForRelativePeriod } from "../app/actions.ts";
 import { flatten } from "../app/flatten.ts";
 
 import "./TimerPlayer.css";
@@ -18,23 +18,31 @@ export function TimerPlayer({ preset, autoplay }: TimerPlayerProps) {
   const [time, setTime] = useState(0);
   const [paused, setPaused] = useState(!(autoplay ?? false));
 
-  const resumePlayer = useCallback(() => {
+  function resumePlayer() {
     setPaused(false);
-  }, []);
+  }
 
-  const pausePlayer = useCallback(() => {
+  function pausePlayer() {
     setPaused(true);
-  }, []);
+  }
 
-  const resetPlayer = useCallback(() => {
+  function resetPlayer() {
     setTime(0);
     setPaused(true);
-  }, []);
+  }
 
   const flat = useMemo(
     () => flatten(preset.root),
     [preset],
   );
+
+  const skipBack = useCallback(() => {
+    setTime((t) => timeForRelativePeriod(flat, t, -1));
+  }, [flat]);
+
+  const skipForward = useCallback(() => {
+    setTime((t) => timeForRelativePeriod(flat, t, +1));
+  }, [flat]);
 
   const { done, actions } = useMemo(
     () => actionsAtTime(flat, time),
@@ -63,6 +71,18 @@ export function TimerPlayer({ preset, autoplay }: TimerPlayerProps) {
           onClick={() => resetPlayer()}
         >
           <RotateCcw size={24} />
+        </button>
+        <button
+          type="button"
+          onClick={() => skipBack()}
+        >
+          <SkipBack size={24} />
+        </button>
+        <button
+          type="button"
+          onClick={() => skipForward()}
+        >
+          <SkipForward size={24} />
         </button>
       </header>
       <ActionsRenderer actions={actions} active={!paused} />

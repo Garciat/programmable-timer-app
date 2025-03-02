@@ -21,6 +21,15 @@ export function actionsAtTime(
   }
 }
 
+export function timeForRelativePeriod(
+  periods: readonly FlatTimerPeriod[],
+  time: number,
+  offset: number,
+): number {
+  const { index } = indexOfTime(periods, time);
+  return startTimeForPeriod(periods, index + offset);
+}
+
 function indexOfTime(
   periods: readonly FlatTimerPeriod[],
   time: number,
@@ -33,7 +42,17 @@ function indexOfTime(
     }
     elapsed += period.source.seconds;
   }
-  return { done: true, index: -1, elapsedBefore: elapsed };
+  return { done: true, index: periods.length, elapsedBefore: elapsed };
+}
+
+function startTimeForPeriod(
+  periods: readonly FlatTimerPeriod[],
+  index: number,
+) {
+  return periods.slice(0, Math.max(0, index)).reduce(
+    (acc, period) => acc + period.source.seconds,
+    0,
+  );
 }
 
 function actionsForPeriodAtRelativeTime(
