@@ -52,10 +52,19 @@ export function CreatePage() {
     </button>
   );
 
+  const titleEditor = (
+    <input
+      type="text"
+      value={preset.name}
+      onChange={(e) => setPreset({ ...preset, name: e.target.value })}
+      className={classes["title-editor"]}
+    />
+  );
+
   return (
     <BaseLayout>
       <div className={classes["create-page"]}>
-        <TitleBar left={backButton} right={saveButton} />
+        <TitleBar left={backButton} middle={titleEditor} right={saveButton} />
         <PresetEditor preset={preset} onChange={setPreset} />
       </div>
     </BaseLayout>

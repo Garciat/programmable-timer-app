@@ -7,12 +7,6 @@
 
   padding: 0.5rem;
 }
-.preset-editor > header {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-}
 
 .sequence-editor {
   display: flex;

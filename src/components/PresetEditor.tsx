@@ -26,23 +26,12 @@ export interface PresetEditorProps {
 export function PresetEditor(
   { preset, onChange }: PresetEditorProps,
 ) {
-  function updateName(name: string) {
-    onChange({ ...preset, name });
-  }
-
   function updateRoot(root: TimerSequence) {
     onChange({ ...preset, root });
   }
 
   return (
     <div className={classes["preset-editor"]}>
-      <header>
-        <input
-          type="text"
-          value={preset.name}
-          onChange={(event) => updateName(event.target.value)}
-        />
-      </header>
       <SequenceEditor timer={preset.root} onChange={updateRoot} />
     </div>
   );

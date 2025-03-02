@@ -52,11 +52,22 @@ export function EditPage() {
     </button>
   );
 
+  const titleEditor = preset &&
+    (
+      <input
+        type="text"
+        value={preset.name}
+        onChange={(e) => setPreset({ ...preset, name: e.target.value })}
+        className={classes["title-editor"]}
+      />
+    );
+
   return (
     <BaseLayout>
       <div className={classes["edit-page"]}>
         <TitleBar
           left={backButton}
+          middle={titleEditor}
           right={saveButton}
         />
         {preset && <PresetEditor preset={preset} onChange={setPreset} />}
