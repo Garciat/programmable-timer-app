@@ -64,7 +64,7 @@ export function CreatePage() {
           <NavButton
             icon={MoveLeft}
             href="/"
-            transitions={["from-left-backwards"]}
+            transitions={["from-right-backwards"]}
           />
         }
         middle={titleEditor}

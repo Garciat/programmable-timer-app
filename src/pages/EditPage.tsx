@@ -28,10 +28,6 @@ export function EditPage() {
     setEditedPreset(preset);
   }, [preset]);
 
-  function goBack() {
-    navigate("/");
-  }
-
   function updateName(name: string) {
     setEditedPreset((prev) => prev && { ...prev, name });
   }
@@ -56,7 +52,7 @@ export function EditPage() {
   return (
     <BaseLayout>
       <TitleBar
-        left={<NavButton icon={MoveLeft} onClick={goBack} />}
+        left={<NavButton icon={MoveLeft} href="/" />}
         middle={titleEditor ?? <TitleBarText value="Not Found" />}
         right={<NavButton icon={Save} onClick={savePreset} />}
       />

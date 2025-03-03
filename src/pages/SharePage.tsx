@@ -28,10 +28,6 @@ export function SharePage() {
     }
   }, [content]);
 
-  function goBack() {
-    navigate("/");
-  }
-
   function savePreset() {
     if (preset) {
       doPresetAdd(preset);
@@ -51,7 +47,7 @@ export function SharePage() {
   return (
     <BaseLayout>
       <TitleBar
-        left={<NavButton icon={MoveLeft} onClick={goBack} />}
+        left={<NavButton icon={MoveLeft} href="/" />}
         middle={titleEditor ?? <TitleBarText value="Invalid Share" />}
         right={<NavButton icon={Save} onClick={savePreset} />}
       />
