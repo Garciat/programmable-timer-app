@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router";
+import { useParams } from "react-router";
 import { MoveLeft, Volume2, VolumeOff, VolumeX } from "lucide-react";
 
 import { switching } from "../utils/switch.ts";
@@ -16,17 +16,11 @@ import { TitleBar, TitleBarText } from "../components/TitleBar.tsx";
 import stylesAll from "./all.module.css";
 
 export function PlayPage() {
-  const navigate = useNavigate();
-
   const { presetId } = useParams();
   const [preset] = useAppPreset(presetId ?? "");
 
   const audioContext = useAudioContext();
   const audioContextState = useAudioContextState();
-
-  function goBack() {
-    navigate("/");
-  }
 
   function suspendAudio() {
     audioContext.suspend();
@@ -45,7 +39,13 @@ export function PlayPage() {
   return (
     <BaseLayout>
       <TitleBar
-        left={<NavButton icon={MoveLeft} onClick={goBack} />}
+        left={
+          <NavButton
+            icon={MoveLeft}
+            href="/"
+            transitions={["from-bottom-backwards"]}
+          />
+        }
         middle={<TitleBarText value={preset?.name ?? "Not Found"} />}
         right={audioButton}
       />

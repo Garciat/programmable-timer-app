@@ -1,20 +1,20 @@
 import { useState } from "react";
-import { useNavigate } from "react-router";
 import { MoveLeft, Save } from "lucide-react";
 
 import { VFrame } from "../lib/box/VFrame.tsx";
+import { useNavigateTransition } from "../utils/transition.ts";
 import { TimerPreset } from "../app/types.ts";
 import { useAppPresetAdd } from "../state/context.tsx";
 import { BaseLayout } from "./BaseLayout.tsx";
+import { NavButton } from "../components/NavButton.tsx";
 import { PresetEditor } from "../components/PresetEditor.tsx";
 import { TitleBar } from "../components/TitleBar.tsx";
 
 import stylesAll from "./all.module.css";
 import classes from "./Editor.module.css";
-import { NavButton } from "../components/NavButton.tsx";
 
 export function CreatePage() {
-  const navigate = useNavigate();
+  const navigate = useNavigateTransition();
   const doPresetAdd = useAppPresetAdd();
 
   const [preset, setPreset] = useState<TimerPreset>({
@@ -38,10 +38,6 @@ export function CreatePage() {
     },
   });
 
-  function goBack() {
-    navigate("/");
-  }
-
   function updateName(name: string) {
     setPreset((prev) => prev && { ...prev, name });
   }
@@ -64,7 +60,13 @@ export function CreatePage() {
   return (
     <BaseLayout>
       <TitleBar
-        left={<NavButton icon={MoveLeft} onClick={goBack} />}
+        left={
+          <NavButton
+            icon={MoveLeft}
+            href="/"
+            transitions={["from-left-backwards"]}
+          />
+        }
         middle={titleEditor}
         right={<NavButton icon={Save} onClick={savePreset} />}
       />

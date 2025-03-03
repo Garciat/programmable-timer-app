@@ -1,4 +1,3 @@
-import { useNavigate } from "react-router";
 import { MoveLeft } from "lucide-react";
 
 import { VFrame } from "../lib/box/VFrame.tsx";
@@ -9,16 +8,16 @@ import { TitleBar, TitleBarText } from "../components/TitleBar.tsx";
 import stylesAll from "./all.module.css";
 
 export function SettingsPage() {
-  const navigate = useNavigate();
-
-  function goBack() {
-    navigate("/");
-  }
-
   return (
     <BaseLayout>
       <TitleBar
-        left={<NavButton icon={MoveLeft} onClick={goBack} />}
+        left={
+          <NavButton
+            icon={MoveLeft}
+            href="/"
+            transitions={["from-left-backwards"]}
+          />
+        }
         middle={<TitleBarText value="Settings" />}
       />
       <VFrame className={stylesAll["content-frame"]}>

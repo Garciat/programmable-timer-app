@@ -11,6 +11,7 @@ import { SettingsPage } from "./pages/SettingsPage.tsx";
 import { SharePage } from "./pages/SharePage.tsx";
 
 import "./App.css";
+import "./transitions.css";
 
 export function App() {
   return (

@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router";
+import { useParams } from "react-router";
 import { MoveLeft, Save } from "lucide-react";
 
 import { VFrame } from "../lib/box/VFrame.tsx";
+import { useNavigateTransition } from "../utils/transition.ts";
 import { decodeShare } from "../app/share.ts";
 import { TimerPreset } from "../app/types.ts";
 import { useAppPresetAdd } from "../state/context.tsx";
@@ -15,7 +16,7 @@ import stylesAll from "./all.module.css";
 import classes from "./Editor.module.css";
 
 export function SharePage() {
-  const navigate = useNavigate();
+  const navigate = useNavigateTransition();
   const { content } = useParams();
   const doPresetAdd = useAppPresetAdd();
 
