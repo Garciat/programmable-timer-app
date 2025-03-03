@@ -14,6 +14,8 @@ export function TitleBar({ left, middle, right }: TitleBarProps) {
         direction="row"
         alignItems="center"
         justify="flex-start"
+        grow={1}
+        basis={0}
       >
         {left}
       </FlexBox>
@@ -21,7 +23,6 @@ export function TitleBar({ left, middle, right }: TitleBarProps) {
         direction="row"
         alignItems="center"
         justify="center"
-        grow={1}
         className={classes["title-bar-middle"]}
       >
         {middle}
@@ -30,6 +31,8 @@ export function TitleBar({ left, middle, right }: TitleBarProps) {
         direction="row"
         alignItems="center"
         justify="flex-end"
+        grow={1}
+        basis={0}
       >
         {right}
       </FlexBox>
