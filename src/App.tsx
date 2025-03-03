@@ -1,9 +1,6 @@
 import { Route, Routes } from "react-router";
 
-import {
-  ReactAudioContext,
-  unlockAudioContext,
-} from "./lib/audio/ReactAudioContext.ts";
+import { ReactAudioContextProvider } from "./lib/audio/context.tsx";
 import { AppStateContextProvider } from "./state/context.tsx";
 import { AppStateLocalStorage } from "./storage/local.tsx";
 import { HomePage } from "./pages/HomePage.tsx";
@@ -15,11 +12,8 @@ import { SharePage } from "./pages/SharePage.tsx";
 import "./App.css";
 
 export function App() {
-  const audioContext = new AudioContext();
-  unlockAudioContext(audioContext);
-
   return (
-    <ReactAudioContext.Provider value={audioContext}>
+    <ReactAudioContextProvider>
       <AppStateContextProvider>
         <AppStateLocalStorage />
         <Routes>
@@ -30,6 +24,6 @@ export function App() {
           <Route path="/share/:content" element={<SharePage />} />
         </Routes>
       </AppStateContextProvider>
-    </ReactAudioContext.Provider>
+    </ReactAudioContextProvider>
   );
 }

@@ -1,7 +1,10 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Pause, Play, RotateCcw, SkipBack, SkipForward } from "lucide-react";
 
-import { useAudioContext } from "../lib/audio/ReactAudioContext.ts";
+import {
+  useAudioContext,
+  useAudioContextState,
+} from "../lib/audio/context.tsx";
 import { formatSeconds } from "../utils/time.ts";
 import { PlayerAction, PlayerDisplay, TimerPreset } from "../app/types.ts";
 import { actionsAtTime, timeForRelativePeriod } from "../app/actions.ts";
@@ -18,18 +21,22 @@ export function TimerPlayer({ preset, autoplay }: TimerPlayerProps) {
   const [time, setTime] = useState(0);
   const [paused, setPaused] = useState(!(autoplay ?? false));
 
-  function resumePlayer() {
+  const resumePlayer = useCallback(() => {
     setPaused(false);
-  }
+  }, []);
 
-  function pausePlayer() {
+  const pausePlayer = useCallback(() => {
     setPaused(true);
-  }
+  }, []);
 
-  function resetPlayer() {
+  const resetPlayer = useCallback(() => {
     setTime(0);
     setPaused(true);
-  }
+  }, []);
+
+  const tick = useCallback(() => {
+    setTime((t) => t + 1);
+  }, []);
 
   const flat = useMemo(
     () => flatten(preset.root),
@@ -59,30 +66,30 @@ export function TimerPlayer({ preset, autoplay }: TimerPlayerProps) {
 
   return (
     <div className={classes["timer-player"]}>
-      {running && <IntervalManager onTick={() => setTime((t) => t + 1)} />}
+      {running && <IntervalManager onTick={tick} />}
       <header>
-        <button type="button" disabled={running} onClick={() => resumePlayer()}>
+        <button type="button" disabled={running} onClick={resumePlayer}>
           <Play size={24} />
         </button>
-        <button type="button" disabled={!running} onClick={() => pausePlayer()}>
+        <button type="button" disabled={!running} onClick={pausePlayer}>
           <Pause size={24} />
         </button>
         <button
           type="button"
           disabled={time === 0}
-          onClick={() => resetPlayer()}
+          onClick={resetPlayer}
         >
           <RotateCcw size={24} />
         </button>
         <button
           type="button"
-          onClick={() => skipBack()}
+          onClick={skipBack}
         >
           <SkipBack size={24} />
         </button>
         <button
           type="button"
-          onClick={() => skipForward()}
+          onClick={skipForward}
         >
           <SkipForward size={24} />
         </button>
@@ -128,14 +135,17 @@ function ActionsRenderer(props: { actions: PlayerAction[]; active: boolean }) {
 }
 
 function SpeakActionRenderer(props: { text: string }) {
-  const utterance = new SpeechSynthesisUtterance();
+  const audioContextState = useAudioContextState();
 
   useEffect(() => {
+    if (audioContextState !== "running") {
+      return;
+    }
     if (!speechSynthesis.speaking) {
-      utterance.text = props.text;
+      const utterance = new SpeechSynthesisUtterance(props.text);
       speechSynthesis.speak(utterance);
     }
-  }, [props.text]);
+  }, [audioContextState, props.text]);
 
   return null;
 }
@@ -144,8 +154,17 @@ function BeepActionRenderer() {
   const duration = 0.2;
 
   const audioContext = useAudioContext();
+  const audioContextState = useAudioContextState();
+
+  // snapshot the current time at the start of the component
+  // this ensures the beep is fixed in time
+  const [now] = useState(() => audioContext.currentTime);
 
   const { gain } = useMemo(() => {
+    if (audioContextState !== "running") {
+      return {};
+    }
+
     const gain = audioContext.createGain();
     gain.gain.value = 0;
     gain.connect(audioContext.destination);
@@ -156,10 +175,13 @@ function BeepActionRenderer() {
     osc.start();
 
     return { gain, osc };
-  }, [audioContext]);
+  }, [audioContext, audioContextState]);
 
   useEffect(() => {
-    const now = audioContext.currentTime;
+    if (!gain) {
+      return;
+    }
+
     gain.gain.setValueAtTime(1, now);
     gain.gain.setValueAtTime(0, now + duration);
 
