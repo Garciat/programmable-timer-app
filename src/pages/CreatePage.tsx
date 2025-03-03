@@ -11,6 +11,7 @@ import { TitleBar } from "../components/TitleBar.tsx";
 
 import stylesAll from "./all.module.css";
 import classes from "./Editor.module.css";
+import { NavButton } from "../components/NavButton.tsx";
 
 export function CreatePage() {
   const navigate = useNavigate();
@@ -50,24 +51,6 @@ export function CreatePage() {
     navigate("/");
   }
 
-  const backButton = (
-    <button
-      type="button"
-      onClick={goBack}
-    >
-      <MoveLeft size={24} />
-    </button>
-  );
-
-  const saveButton = (
-    <button
-      type="button"
-      onClick={savePreset}
-    >
-      <Save size={24} />
-    </button>
-  );
-
   const titleEditor = (
     <input
       type="text"
@@ -80,7 +63,11 @@ export function CreatePage() {
 
   return (
     <BaseLayout>
-      <TitleBar left={backButton} middle={titleEditor} right={saveButton} />
+      <TitleBar
+        left={<NavButton icon={MoveLeft} onClick={goBack} />}
+        middle={titleEditor}
+        right={<NavButton icon={Save} onClick={savePreset} />}
+      />
       <VFrame className={stylesAll["content-frame"]}>
         <PresetEditor preset={preset} onChange={setPreset} />
       </VFrame>

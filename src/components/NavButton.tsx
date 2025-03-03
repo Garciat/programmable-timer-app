@@ -2,13 +2,21 @@ import type { FileQuestion } from "lucide-react";
 
 export interface NavButtonProps {
   icon: typeof FileQuestion;
-  onClick: () => unknown;
+  disabled?: boolean;
+  onClick?: () => unknown;
 }
 
-export function NavButton({ icon, onClick }: NavButtonProps) {
+export function NavButton(
+  { icon, disabled, onClick }: NavButtonProps,
+) {
   const Icon = icon;
   return (
-    <button type="button" onClick={onClick} className="plain">
+    <button
+      type="button"
+      disabled={disabled}
+      onClick={onClick}
+      className="plain"
+    >
       <Icon size={24} />
     </button>
   );

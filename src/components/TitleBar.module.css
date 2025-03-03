@@ -1,10 +1,11 @@
 .title-bar {
-  padding: 1rem;
+  height: 4.5rem;
+  padding: 0 1rem;
   box-shadow: 0 0 0.5rem 0 rgba(0, 0, 0, 0.1);
 }
 
-.title-bar-middle {
-  line-height: 2rem;
+.title-bar-title {
+  width: 100%;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;

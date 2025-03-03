@@ -7,6 +7,7 @@ import { decodeShare } from "../app/share.ts";
 import { TimerPreset } from "../app/types.ts";
 import { useAppPresetAdd } from "../state/context.tsx";
 import { BaseLayout } from "./BaseLayout.tsx";
+import { NavButton } from "../components/NavButton.tsx";
 import { PresetEditor } from "../components/PresetEditor.tsx";
 import { TitleBar, TitleBarText } from "../components/TitleBar.tsx";
 
@@ -37,24 +38,6 @@ export function SharePage() {
     navigate("/");
   }
 
-  const backButton = (
-    <button
-      type="button"
-      onClick={goBack}
-    >
-      <MoveLeft size={24} />
-    </button>
-  );
-
-  const saveButton = (
-    <button
-      type="button"
-      onClick={savePreset}
-    >
-      <Save size={24} />
-    </button>
-  );
-
   const titleEditor = preset && (
     <input
       type="text"
@@ -67,9 +50,9 @@ export function SharePage() {
   return (
     <BaseLayout>
       <TitleBar
-        left={backButton}
+        left={<NavButton icon={MoveLeft} onClick={goBack} />}
         middle={titleEditor ?? <TitleBarText value="Invalid Share" />}
-        right={saveButton}
+        right={<NavButton icon={Save} onClick={savePreset} />}
       />
       <VFrame className={stylesAll["content-frame"]}>
         {preset

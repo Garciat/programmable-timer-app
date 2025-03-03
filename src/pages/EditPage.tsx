@@ -6,6 +6,7 @@ import { VFrame } from "../lib/box/VFrame.tsx";
 import { TimerPreset } from "../app/types.ts";
 import { useAppPreset } from "../state/context.tsx";
 import { BaseLayout } from "./BaseLayout.tsx";
+import { NavButton } from "../components/NavButton.tsx";
 import { PresetEditor } from "../components/PresetEditor.tsx";
 import { TitleBar, TitleBarText } from "../components/TitleBar.tsx";
 
@@ -41,24 +42,6 @@ export function EditPage() {
     navigate("/");
   }
 
-  const backButton = (
-    <button
-      type="button"
-      onClick={goBack}
-    >
-      <MoveLeft size={24} />
-    </button>
-  );
-
-  const saveButton = (
-    <button
-      type="button"
-      onClick={savePreset}
-    >
-      <Save size={24} />
-    </button>
-  );
-
   const titleEditor = editedPreset &&
     (
       <input
@@ -72,9 +55,9 @@ export function EditPage() {
   return (
     <BaseLayout>
       <TitleBar
-        left={backButton}
+        left={<NavButton icon={MoveLeft} onClick={goBack} />}
         middle={titleEditor ?? <TitleBarText value="Not Found" />}
-        right={saveButton}
+        right={<NavButton icon={Save} onClick={savePreset} />}
       />
       <VFrame className={stylesAll["content-frame"]}>
         {editedPreset

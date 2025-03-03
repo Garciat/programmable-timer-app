@@ -9,6 +9,7 @@ import {
 import { VFrame } from "../lib/box/VFrame.tsx";
 import { useAppPreset } from "../state/context.tsx";
 import { BaseLayout } from "./BaseLayout.tsx";
+import { NavButton } from "../components/NavButton.tsx";
 import { TimerPlayer } from "../components/TimerPlayer.tsx";
 import { TitleBar, TitleBarText } from "../components/TitleBar.tsx";
 
@@ -27,46 +28,24 @@ export function PlayPage() {
     navigate("/");
   }
 
-  const backButton = (
-    <button
-      type="button"
-      onClick={goBack}
-    >
-      <MoveLeft size={24} />
-    </button>
-  );
+  function suspendAudio() {
+    audioContext.suspend();
+  }
+
+  function resumeAudio() {
+    audioContext.resume();
+  }
 
   const audioButton = switching(audioContextState, {
-    running: () => (
-      <button
-        type="button"
-        onClick={() => audioContext.suspend()}
-      >
-        <Volume2 size={24} />
-      </button>
-    ),
-    suspended: () => (
-      <button
-        type="button"
-        onClick={() => audioContext.resume()}
-      >
-        <VolumeOff size={24} />
-      </button>
-    ),
-    closed: () => (
-      <button
-        type="button"
-        disabled
-      >
-        <VolumeX size={24} />
-      </button>
-    ),
+    running: () => <NavButton icon={Volume2} onClick={suspendAudio} />,
+    suspended: () => <NavButton icon={VolumeOff} onClick={resumeAudio} />,
+    closed: () => <NavButton icon={VolumeX} disabled />,
   });
 
   return (
     <BaseLayout>
       <TitleBar
-        left={backButton}
+        left={<NavButton icon={MoveLeft} onClick={goBack} />}
         middle={<TitleBarText value={preset?.name ?? "Not Found"} />}
         right={audioButton}
       />
