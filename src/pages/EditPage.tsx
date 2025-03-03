@@ -2,13 +2,14 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { MoveLeft, Save } from "lucide-react";
 
+import { VStack } from "../lib/box/VStack.tsx";
+import { TimerPreset } from "../app/types.ts";
 import { useAppPreset } from "../state/context.tsx";
 import { BaseLayout } from "./BaseLayout.tsx";
 import { PresetEditor } from "../components/PresetEditor.tsx";
 import { TitleBar, TitleBarText } from "../components/TitleBar.tsx";
 
 import classes from "./EditPage.module.css";
-import { TimerPreset } from "../app/types.ts";
 
 export function EditPage() {
   const navigate = useNavigate();
@@ -69,7 +70,7 @@ export function EditPage() {
 
   return (
     <BaseLayout>
-      <div className={classes["edit-page"]}>
+      <VStack className={classes["edit-page"]}>
         <TitleBar
           left={backButton}
           middle={titleEditor ?? <TitleBarText value="Not Found" />}
@@ -78,7 +79,7 @@ export function EditPage() {
         {editedPreset
           ? <PresetEditor preset={editedPreset} onChange={setEditedPreset} />
           : <p style={{ textAlign: "center" }}>This preset does not exist.</p>}
-      </div>
+      </VStack>
     </BaseLayout>
   );
 }

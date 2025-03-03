@@ -1,13 +1,9 @@
 .create-page {
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  justify-content: flex-start;
-
   padding: 1rem;
 }
 
 .title-editor {
+  width: 100%;
   appearance: none;
   box-sizing: content-box;
   border: 0;

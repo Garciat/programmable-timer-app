@@ -29,6 +29,7 @@ export function FlexBox(props: FlexBoxProps) {
     wrap,
     gap,
     children,
+    style,
     ...rest
   } = props;
 
@@ -48,6 +49,7 @@ export function FlexBox(props: FlexBoxProps) {
         gap: gap instanceof CSSUnitValue
           ? `${gap}`
           : gap && `${gap.row} ${gap.column}`,
+        ...style,
       }}
       {...rest}
     >

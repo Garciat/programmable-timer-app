@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router";
 import { MoveLeft, Save } from "lucide-react";
 
+import { VStack } from "../lib/box/VStack.tsx";
 import { TimerPreset } from "../app/types.ts";
 import { useAppPresetAdd } from "../state/context.tsx";
 import { BaseLayout } from "./BaseLayout.tsx";
@@ -74,10 +75,10 @@ export function CreatePage() {
 
   return (
     <BaseLayout>
-      <div className={classes["create-page"]}>
+      <VStack className={classes["create-page"]}>
         <TitleBar left={backButton} middle={titleEditor} right={saveButton} />
         <PresetEditor preset={preset} onChange={setPreset} />
-      </div>
+      </VStack>
     </BaseLayout>
   );
 }

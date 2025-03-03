@@ -6,6 +6,7 @@ import {
   useAudioContext,
   useAudioContextState,
 } from "../lib/audio/context.tsx";
+import { VStack } from "../lib/box/VStack.tsx";
 import { useAppPreset } from "../state/context.tsx";
 import { BaseLayout } from "./BaseLayout.tsx";
 import { TimerPlayer } from "../components/TimerPlayer.tsx";
@@ -64,7 +65,7 @@ export function PlayPage() {
 
   return (
     <BaseLayout>
-      <div className={classes["play-page"]}>
+      <VStack grow={1} className={classes["play-page"]}>
         <TitleBar
           left={backButton}
           middle={<TitleBarText value={preset?.name ?? "Not Found"} />}
@@ -73,7 +74,7 @@ export function PlayPage() {
         {preset
           ? <TimerPlayer preset={preset} />
           : <p style={{ textAlign: "center" }}>This preset does not exist.</p>}
-      </div>
+      </VStack>
     </BaseLayout>
   );
 }

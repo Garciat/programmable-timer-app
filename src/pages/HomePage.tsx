@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router";
 import { Plus } from "lucide-react";
 
+import { VStack } from "../lib/box/VStack.tsx";
 import { useAppPresets } from "../state/context.tsx";
 import { BaseLayout } from "./BaseLayout.tsx";
 import { PresetList } from "../components/PresetList.tsx";
@@ -25,7 +26,7 @@ export function HomePage() {
 
   return (
     <BaseLayout>
-      <div className={classes["home-page"]}>
+      <VStack className={classes["home-page"]}>
         <TitleBar
           middle={<TitleBarText value="Programmable Timer" />}
           right={createButton}
@@ -36,7 +37,7 @@ export function HomePage() {
             No presets yet. Click the plus button to create one.
           </p>
         )}
-      </div>
+      </VStack>
     </BaseLayout>
   );
 }
