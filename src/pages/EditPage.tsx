@@ -5,7 +5,7 @@ import { MoveLeft, Save } from "lucide-react";
 import { useAppPreset } from "../state/context.tsx";
 import { BaseLayout } from "../components/BaseLayout.tsx";
 import { PresetEditor } from "../components/PresetEditor.tsx";
-import { TitleBar } from "../components/TitleBar.tsx";
+import { TitleBar, TitleBarText } from "../components/TitleBar.tsx";
 
 import classes from "./EditPage.module.css";
 import { TimerPreset } from "../app/types.ts";
@@ -72,7 +72,7 @@ export function EditPage() {
       <div className={classes["edit-page"]}>
         <TitleBar
           left={backButton}
-          middle={titleEditor ?? <h1>Not Found</h1>}
+          middle={titleEditor ?? <TitleBarText value="Not Found" />}
           right={saveButton}
         />
         {editedPreset

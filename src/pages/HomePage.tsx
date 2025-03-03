@@ -4,7 +4,7 @@ import { Plus } from "lucide-react";
 import { useAppPresets } from "../state/context.tsx";
 import { BaseLayout } from "../components/BaseLayout.tsx";
 import { PresetList } from "../components/PresetList.tsx";
-import { TitleBar } from "../components/TitleBar.tsx";
+import { TitleBar, TitleBarText } from "../components/TitleBar.tsx";
 
 import classes from "./HomePage.module.css";
 
@@ -26,7 +26,10 @@ export function HomePage() {
   return (
     <BaseLayout>
       <div className={classes["home-page"]}>
-        <TitleBar middle={<h1>Programmable Timer</h1>} right={createButton} />
+        <TitleBar
+          middle={<TitleBarText value="Programmable Timer" />}
+          right={createButton}
+        />
         <PresetList presets={presets} />
         {presets.length === 0 && (
           <p style={{ textAlign: "center" }}>

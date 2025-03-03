@@ -6,7 +6,7 @@ import { TimerPreset } from "../app/types.ts";
 import { useAppPresetAdd } from "../state/context.tsx";
 import { BaseLayout } from "../components/BaseLayout.tsx";
 import { PresetEditor } from "../components/PresetEditor.tsx";
-import { TitleBar } from "../components/TitleBar.tsx";
+import { TitleBar, TitleBarText } from "../components/TitleBar.tsx";
 
 import classes from "./CreatePage.module.css";
 import { decodeShare } from "../app/share.ts";
@@ -67,7 +67,7 @@ export function SharePage() {
       <div className={classes["create-page"]}>
         <TitleBar
           left={backButton}
-          middle={titleEditor ?? <h1>Invalid Link</h1>}
+          middle={titleEditor ?? <TitleBarText value="Invalid Share" />}
           right={saveButton}
         />
         {preset

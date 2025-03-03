@@ -9,7 +9,7 @@ import {
 import { useAppPreset } from "../state/context.tsx";
 import { FullscreenLayout } from "../components/FullscreenLayout.tsx";
 import { TimerPlayer } from "../components/TimerPlayer.tsx";
-import { TitleBar } from "../components/TitleBar.tsx";
+import { TitleBar, TitleBarText } from "../components/TitleBar.tsx";
 
 import classes from "./PlayPage.module.css";
 import { switching } from "../utils/switch.ts";
@@ -72,7 +72,7 @@ export function PlayPage() {
       <div className={classes["play-page"]}>
         <TitleBar
           left={backButton}
-          middle={<h1>{preset?.name ?? "Not Found"}</h1>}
+          middle={<TitleBarText value={preset?.name ?? "Not Found"} />}
           right={audioButton}
         />
         {preset
