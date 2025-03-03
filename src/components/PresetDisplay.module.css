@@ -9,6 +9,7 @@
 
 .loop-display {
   overflow: hidden;
+  min-width: fit-content;
 
   display: flex;
   align-items: stretch;
