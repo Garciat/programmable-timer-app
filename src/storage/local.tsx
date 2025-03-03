@@ -18,7 +18,7 @@ export function AppStateLocalStorage() {
       setState(loadedState);
     }
     setReady(true);
-  }, [loadedState]);
+  }, [state, setState, loadedState]);
 
   useEffect(() => {
     if (ready && state.version > (loadedState?.version ?? 0)) {

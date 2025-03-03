@@ -30,9 +30,9 @@ export interface PresetEditorProps {
 export function PresetEditor(
   { preset, onChange }: PresetEditorProps,
 ) {
-  function updateRoot(root: TimerSequence) {
+  const updateRoot = useCallback((root: TimerSequence) => {
     onChange({ ...preset, root });
-  }
+  }, [onChange, preset]);
 
   return (
     <div className={classes["preset-editor"]}>
@@ -62,13 +62,13 @@ function TimerEditor(
 function SequenceEditor(
   { timer, onChange }: TimerEditorProps<TimerSequence>,
 ) {
-  function updateElement(index: number, element: TimerElement) {
+  const updateElement = useCallback((index: number, element: TimerElement) => {
     const elements = [...timer.elements];
     elements[index] = element;
     onChange({ ...timer, elements });
-  }
+  }, [onChange, timer]);
 
-  function appendNewElement() {
+  const appendNewElement = useCallback(() => {
     onChange({
       ...timer,
       elements: [
@@ -76,9 +76,9 @@ function SequenceEditor(
         { kind: "period", name: "Work", seconds: 60 },
       ],
     });
-  }
+  }, [onChange, timer]);
 
-  function moveElement(index: number, offset: number) {
+  const moveElement = useCallback((index: number, offset: number) => {
     const newIndex = index + offset;
     if (newIndex < 0 || newIndex >= timer.elements.length) {
       return;
@@ -88,9 +88,9 @@ function SequenceEditor(
     const [element] = elements.splice(index, 1);
     elements.splice(newIndex, 0, element);
     onChange({ ...timer, elements });
-  }
+  }, [onChange, timer]);
 
-  function loopElement(index: number) {
+  const loopElement = useCallback((index: number) => {
     const elements = [...timer.elements];
     const element = elements[index];
     elements[index] = {
@@ -99,13 +99,13 @@ function SequenceEditor(
       element: { kind: "sequence", elements: [element] },
     };
     onChange({ ...timer, elements });
-  }
+  }, [onChange, timer]);
 
-  function removeElement(index: number) {
+  const removeElement = useCallback((index: number) => {
     const elements = [...timer.elements];
     elements.splice(index, 1);
     onChange({ ...timer, elements });
-  }
+  }, [onChange, timer]);
 
   const buttonSize = 16;
 
@@ -171,13 +171,13 @@ function SequenceEditor(
 function LoopEditor(
   { timer, onChange }: TimerEditorProps<TimerLoop>,
 ) {
-  function updateCount(count: number) {
+  const updateCount = useCallback((count: number) => {
     onChange({ ...timer, count });
-  }
+  }, [onChange, timer]);
 
-  function updateElement(newElement: TimerElement) {
+  const updateElement = useCallback((newElement: TimerElement) => {
     onChange({ ...timer, element: newElement });
-  }
+  }, [onChange, timer]);
 
   return (
     <div className={classes["loop-editor"]}>
@@ -198,16 +198,16 @@ function LoopEditor(
 function PeriodEditor(
   { timer, onChange }: TimerEditorProps<TimerPeriod>,
 ) {
-  function updateName(name: string) {
+  const updateName = useCallback((name: string) => {
     onChange({ ...timer, name });
-  }
+  }, [onChange, timer]);
 
-  function updateSeconds(seconds: number) {
+  const updateSeconds = useCallback((seconds: number) => {
     onChange({
       ...timer,
       seconds: clamp(seconds, PERIOD_TIME_MIN, PERIOD_TIME_MAX),
     });
-  }
+  }, [onChange, timer]);
 
   return (
     <div className={classes["period-editor"]}>
@@ -229,26 +229,26 @@ interface SecondsEditorProps {
 function SecondsEditor(
   { value, onChange }: SecondsEditorProps,
 ) {
-  function decrement() {
+  const decrement = useCallback(() => {
     if (value > 1) {
       onChange(value - 1);
     }
-  }
+  }, [onChange, value]);
 
-  function increment() {
+  const increment = useCallback(() => {
     onChange(value + 1);
-  }
+  }, [onChange, value]);
 
   const minutes = useMemo(() => new NumberBox(Math.floor(value / 60)), [value]);
   const seconds = useMemo(() => new NumberBox(value % 60), [value]);
 
   const setMinutes = useCallback((newMinutes: number) => {
     onChange(newMinutes * 60 + seconds.value);
-  }, [seconds]);
+  }, [onChange, seconds]);
 
   const setSeconds = useCallback((newSeconds: number) => {
     onChange(minutes.value * 60 + newSeconds);
-  }, [minutes]);
+  }, [onChange, minutes]);
 
   return (
     <div className={classes["seconds-editor"]}>
@@ -296,13 +296,13 @@ function TimePartInput({ value, onChange }: TimePartInputProps) {
     setText(value.toString().padStart(2, "0"));
   }, [value]);
 
-  function update(value: string) {
+  const update = useCallback((value: string) => {
     if (value.length <= 2) {
       setText(value);
     }
-  }
+  }, []);
 
-  function commit() {
+  const commit = useCallback(() => {
     const newValue = parseInt(text, 10);
     if (isNaN(newValue) || newValue === value.value) {
       // reset to previous value
@@ -311,7 +311,7 @@ function TimePartInput({ value, onChange }: TimePartInputProps) {
       // send new value
       return onChange(newValue);
     }
-  }
+  }, [onChange, text, value]);
 
   return (
     <input
@@ -341,15 +341,15 @@ interface NumberEditorProps {
 function NumberEditor(
   { value, min, onChange }: NumberEditorProps,
 ) {
-  function decrement() {
+  const decrement = useCallback(() => {
     if (value > min) {
       onChange(value - 1);
     }
-  }
+  }, [onChange, value, min]);
 
-  function increment() {
+  const increment = useCallback(() => {
     onChange(value + 1);
-  }
+  }, [onChange, value]);
 
   return (
     <div className={classes["number-editor"]}>

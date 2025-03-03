@@ -188,7 +188,7 @@ function BeepActionRenderer() {
       gain.gain.cancelScheduledValues(now);
       gain.gain.setValueAtTime(0, now);
     };
-  }, [gain]);
+  }, [gain, now]);
 
   return null;
 }
