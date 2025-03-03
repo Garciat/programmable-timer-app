@@ -8,23 +8,24 @@ const STORAGE_KEY = "programmable-timer-app-state";
 
 export function AppStateLocalStorage() {
   const [state, setState] = useAppState();
+
+  const [loadedState, setLoadedState] = useState(() => loadState());
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    const savedState = loadState();
-    if (savedState !== undefined) {
+    if (loadedState && loadedState.version > state.version) {
       console.log("Loaded state from local storage");
-      setState(savedState);
+      setState(loadedState);
     }
     setReady(true);
-  }, [setState]);
+  }, [loadedState]);
 
   useEffect(() => {
-    if (ready) {
+    if (ready && state.version > (loadedState?.version ?? 0)) {
       console.log("Saved state to local storage");
       saveState(state);
     }
-  }, [state, ready]);
+  }, [state, loadedState, ready]);
 
   useEffect(() => {
     if (!ready) {
@@ -33,11 +34,8 @@ export function AppStateLocalStorage() {
 
     function listener(event: StorageEvent) {
       if (event.key === STORAGE_KEY) {
-        const state = readStateValue(event.newValue);
-        if (state !== undefined) {
-          console.log("Received state from local storage");
-          setState(state);
-        }
+        console.log("Received state from local storage");
+        setLoadedState(readStateValue(event.newValue));
       }
     }
 

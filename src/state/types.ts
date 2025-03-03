@@ -1,6 +1,7 @@
 import { TimerPreset } from "../app/types.ts";
 
 export interface AppState {
+  version: number;
   presets: TimerPreset[];
 }
 

@@ -106,6 +106,7 @@ function appStateReducer(state: AppState, action: Action): AppState {
           ...action.preset,
           id: crypto.randomUUID(),
         }],
+        version: state.version + 1,
       };
     case "updatePreset":
       return {
@@ -113,11 +114,13 @@ function appStateReducer(state: AppState, action: Action): AppState {
         presets: state.presets.map((preset) =>
           preset.id === action.preset.id ? action.preset : preset
         ),
+        version: state.version + 1,
       };
     case "deletePreset":
       return {
         ...state,
         presets: state.presets.filter((preset) => preset.id !== action.id),
+        version: state.version + 1,
       };
     default:
       action satisfies never;
