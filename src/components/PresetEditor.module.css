@@ -54,6 +54,7 @@
 
   padding: 0.5rem;
   background-color: var(--background-color-alt);
+  color: var(--text-color-alt);
 }
 .sequence-editor > footer > .left, .sequence-editor > footer > .right {
   flex-grow: 1;
