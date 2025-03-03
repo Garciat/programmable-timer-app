@@ -23,6 +23,8 @@ export function TitleBar({ left, middle, right }: TitleBarProps) {
         direction="row"
         alignItems="center"
         justify="center"
+        // https://stackoverflow.com/a/26535469/612169
+        style={{ minWidth: 0 }}
       >
         {middle}
       </FlexBox>
