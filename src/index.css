@@ -19,3 +19,7 @@ button {
   border: 0;
   padding: 0.25rem;
 }
+button.plain {
+  background: none;
+  color: inherit;
+}

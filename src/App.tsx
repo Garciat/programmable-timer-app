@@ -7,6 +7,7 @@ import { HomePage } from "./pages/HomePage.tsx";
 import { EditPage } from "./pages/EditPage.tsx";
 import { CreatePage } from "./pages/CreatePage.tsx";
 import { PlayPage } from "./pages/PlayPage.tsx";
+import { SettingsPage } from "./pages/SettingsPage.tsx";
 import { SharePage } from "./pages/SharePage.tsx";
 
 import "./App.css";
@@ -22,6 +23,7 @@ export function App() {
           <Route path="/edit/:presetId" element={<EditPage />} />
           <Route path="/play/:presetId" element={<PlayPage />} />
           <Route path="/share/:content" element={<SharePage />} />
+          <Route path="/settings" element={<SettingsPage />} />
         </Routes>
       </AppStateContextProvider>
     </ReactAudioContextProvider>

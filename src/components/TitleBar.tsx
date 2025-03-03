@@ -22,6 +22,7 @@ export function TitleBar({ left, middle, right }: TitleBarProps) {
         alignItems="center"
         justify="center"
         grow={1}
+        className={classes["title-bar-middle"]}
       >
         {middle}
       </FlexBox>
@@ -37,5 +38,5 @@ export function TitleBar({ left, middle, right }: TitleBarProps) {
 }
 
 export function TitleBarText({ value }: { value: string }) {
-  return <h1 className={classes["title-bar-text"]}>{value}</h1>;
+  return <h1>{value}</h1>;
 }
