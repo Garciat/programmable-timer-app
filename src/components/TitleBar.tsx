@@ -9,13 +9,11 @@ export interface TitleBarProps {
 
 export function TitleBar({ left, middle, right }: TitleBarProps) {
   return (
-    <FlexBox kind="header" className={classes["title-bar"]}>
+    <FlexBox kind="header" gap={CSS.rem(1)} className={classes["title-bar"]}>
       <FlexBox
         direction="row"
         alignItems="center"
         justify="flex-start"
-        grow={1}
-        basis={0}
       >
         {left}
       </FlexBox>
@@ -23,6 +21,7 @@ export function TitleBar({ left, middle, right }: TitleBarProps) {
         direction="row"
         alignItems="center"
         justify="center"
+        grow={1}
       >
         {middle}
       </FlexBox>
@@ -30,8 +29,6 @@ export function TitleBar({ left, middle, right }: TitleBarProps) {
         direction="row"
         alignItems="center"
         justify="flex-end"
-        grow={1}
-        basis={0}
       >
         {right}
       </FlexBox>
