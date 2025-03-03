@@ -8,10 +8,13 @@
 }
 
 .loop-display {
+  overflow: hidden;
+
   display: flex;
   align-items: stretch;
   justify-content: flex-start;
 
+  border-radius: var(--radius);
   border: 2px solid var(--background-color-alt);
 }
 .loop-display > header {
@@ -30,6 +33,7 @@
   align-items: center;
   justify-content: center;
 
+  border-radius: var(--radius);
   border: 2px solid var(--background-color-alt);
   padding: 1rem 2rem;
   background-color: #b88a1d;
@@ -37,5 +41,6 @@
 }
 
 .loop-display .period-display {
+  border-radius: 0;
   border: 0;
 }

@@ -13,7 +13,7 @@
   justify-content: flex-start;
   gap: 0.5rem;
 
-  border: 2px solid var(--background-color-alt);
+  border: 2px solid var(--background-color-off1);
   border-radius: var(--radius);
 }
 .sequence-editor-items {
@@ -53,8 +53,8 @@
   justify-content: space-between;
 
   padding: 0.5rem;
-  background-color: var(--background-color-alt);
-  color: var(--text-color-alt);
+  background-color: var(--background-color-off1);
+  color: var(--text-color-off1);
 }
 .sequence-editor > footer > .left, .sequence-editor > footer > .right {
   flex-grow: 1;
@@ -93,9 +93,9 @@
   gap: 0.5rem;
 
   padding: 0.5rem;
-  background-color: var(--background-color-alt);
   border-radius: var(--radius) var(--radius) 0 0;
-  color: var(--text-color-alt);
+  background-color: var(--background-color-off1);
+  color: var(--text-color-off1);
 }
 .loop-editor-label {
   display: flex;

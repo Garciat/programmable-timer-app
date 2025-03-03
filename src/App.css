@@ -1,11 +1,17 @@
 :root {
   color-scheme: light dark;
+
   --window-color: light-dark(#fff, #000);
+
   --background-color: light-dark(#fff, #333);
-  --background-color-alt: light-dark(#000, #fff);
-  --background-color-off1: light-dark(#ddd, #111);
   --text-color: light-dark(#000, #fff);
+
+  --background-color-alt: light-dark(#000, #fff);
   --text-color-alt: light-dark(#fff, #000);
+
+  --background-color-off1: light-dark(#ccc, #222);
+  --text-color-off1: light-dark(#000, #fff);
+
   --radius: 5px;
 }
 
