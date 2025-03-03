@@ -1,7 +1,7 @@
-import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router";
 import { MoveLeft, Volume2, VolumeOff, VolumeX } from "lucide-react";
 
+import { switching } from "../utils/switch.ts";
 import {
   useAudioContext,
   useAudioContextState,
@@ -12,7 +12,6 @@ import { TimerPlayer } from "../components/TimerPlayer.tsx";
 import { TitleBar, TitleBarText } from "../components/TitleBar.tsx";
 
 import classes from "./PlayPage.module.css";
-import { switching } from "../utils/switch.ts";
 
 export function PlayPage() {
   const navigate = useNavigate();
@@ -22,10 +21,6 @@ export function PlayPage() {
 
   const audioContext = useAudioContext();
   const audioContextState = useAudioContextState();
-
-  useEffect(() => {
-    audioContext.resume();
-  }, [audioContext]);
 
   function goBack() {
     navigate("/");
@@ -76,7 +71,7 @@ export function PlayPage() {
           right={audioButton}
         />
         {preset
-          ? <TimerPlayer preset={preset} autoplay />
+          ? <TimerPlayer preset={preset} />
           : <p style={{ textAlign: "center" }}>This preset does not exist.</p>}
       </div>
     </FullscreenLayout>

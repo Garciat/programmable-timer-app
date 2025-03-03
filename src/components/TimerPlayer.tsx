@@ -14,12 +14,11 @@ import classes from "./TimerPlayer.module.css";
 
 export interface TimerPlayerProps {
   preset: TimerPreset;
-  autoplay?: boolean;
 }
 
-export function TimerPlayer({ preset, autoplay }: TimerPlayerProps) {
+export function TimerPlayer({ preset }: TimerPlayerProps) {
   const [time, setTime] = useState(0);
-  const [paused, setPaused] = useState(!(autoplay ?? false));
+  const [paused, setPaused] = useState(false);
 
   const resumePlayer = useCallback(() => {
     setPaused(false);

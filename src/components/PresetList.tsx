@@ -1,14 +1,15 @@
 import { useNavigate } from "react-router";
 import { Pencil, Play, Share, Trash2 } from "lucide-react";
 
-import { duration } from "../app/flatten.ts";
-import { TimerPreset } from "../app/types.ts";
+import { useAudioContext } from "../lib/audio/context.tsx";
 import { formatSeconds } from "../utils/time.ts";
+import { duration } from "../app/flatten.ts";
+import { encodeShare } from "../app/share.ts";
+import { TimerPreset } from "../app/types.ts";
+import { useAppPresetDelete } from "../state/context.tsx";
 import { PresetDisplay } from "./PresetDisplay.tsx";
 
 import classes from "./PresetList.module.css";
-import { useAppPresetDelete } from "../state/context.tsx";
-import { encodeShare } from "../app/share.ts";
 
 export interface PresetListProps {
   presets: TimerPreset[];
@@ -17,6 +18,8 @@ export interface PresetListProps {
 export function PresetList({ presets }: PresetListProps) {
   const navigate = useNavigate();
   const doDelete = useAppPresetDelete();
+
+  const audioContext = useAudioContext();
 
   function editPreset(preset: TimerPreset) {
     navigate(`/edit/${preset.id}`);
@@ -28,7 +31,9 @@ export function PresetList({ presets }: PresetListProps) {
     }
   }
 
-  function playPreset(preset: TimerPreset) {
+  async function playPreset(preset: TimerPreset) {
+    // We just got a user interaction, so we can resume the audio context.
+    await audioContext.resume();
     navigate(`/play/${preset.id}`);
   }
 
