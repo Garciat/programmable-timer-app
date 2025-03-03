@@ -2,14 +2,15 @@ import { useState } from "react";
 import { useNavigate } from "react-router";
 import { MoveLeft, Save } from "lucide-react";
 
-import { VStack } from "../lib/box/VStack.tsx";
+import { VFrame } from "../lib/box/VFrame.tsx";
 import { TimerPreset } from "../app/types.ts";
 import { useAppPresetAdd } from "../state/context.tsx";
 import { BaseLayout } from "./BaseLayout.tsx";
 import { PresetEditor } from "../components/PresetEditor.tsx";
 import { TitleBar } from "../components/TitleBar.tsx";
 
-import classes from "./CreatePage.module.css";
+import stylesAll from "./all.module.css";
+import classes from "./Editor.module.css";
 
 export function CreatePage() {
   const navigate = useNavigate();
@@ -40,6 +41,10 @@ export function CreatePage() {
     navigate("/");
   }
 
+  function updateName(name: string) {
+    setPreset((prev) => prev && { ...prev, name });
+  }
+
   function savePreset() {
     doPresetAdd(preset);
     navigate("/");
@@ -68,17 +73,17 @@ export function CreatePage() {
       type="text"
       autoFocus
       value={preset.name}
-      onChange={(e) => setPreset({ ...preset, name: e.target.value })}
-      className={classes["title-editor"]}
+      onChange={(e) => updateName(e.target.value)}
+      className={classes["title-input"]}
     />
   );
 
   return (
     <BaseLayout>
-      <VStack className={classes["create-page"]}>
-        <TitleBar left={backButton} middle={titleEditor} right={saveButton} />
+      <TitleBar left={backButton} middle={titleEditor} right={saveButton} />
+      <VFrame className={stylesAll["content-frame"]}>
         <PresetEditor preset={preset} onChange={setPreset} />
-      </VStack>
+      </VFrame>
     </BaseLayout>
   );
 }

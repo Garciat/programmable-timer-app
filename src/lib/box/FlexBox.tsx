@@ -1,5 +1,5 @@
 import { JSX } from "npm:react@19/jsx-runtime";
-import { FlexProps } from "./css.ts";
+import { FlexProps } from "./types.ts";
 
 export type BoxKind =
   | "div"

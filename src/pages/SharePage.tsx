@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { MoveLeft, Save } from "lucide-react";
 
-import { VStack } from "../lib/box/VStack.tsx";
+import { VFrame } from "../lib/box/VFrame.tsx";
 import { decodeShare } from "../app/share.ts";
 import { TimerPreset } from "../app/types.ts";
 import { useAppPresetAdd } from "../state/context.tsx";
@@ -10,7 +10,8 @@ import { BaseLayout } from "./BaseLayout.tsx";
 import { PresetEditor } from "../components/PresetEditor.tsx";
 import { TitleBar, TitleBarText } from "../components/TitleBar.tsx";
 
-import classes from "./CreatePage.module.css";
+import stylesAll from "./all.module.css";
+import classes from "./Editor.module.css";
 
 export function SharePage() {
   const navigate = useNavigate();
@@ -65,16 +66,16 @@ export function SharePage() {
 
   return (
     <BaseLayout>
-      <VStack className={classes["create-page"]}>
-        <TitleBar
-          left={backButton}
-          middle={titleEditor ?? <TitleBarText value="Invalid Share" />}
-          right={saveButton}
-        />
+      <TitleBar
+        left={backButton}
+        middle={titleEditor ?? <TitleBarText value="Invalid Share" />}
+        right={saveButton}
+      />
+      <VFrame className={stylesAll["content-frame"]}>
         {preset
           ? <PresetEditor preset={preset} onChange={setPreset} />
           : <p style={{ textAlign: "center" }}>This share link is invalid.</p>}
-      </VStack>
+      </VFrame>
     </BaseLayout>
   );
 }

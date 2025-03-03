@@ -1,6 +1,6 @@
 :root {
   color-scheme: light dark;
-  --window-color: light-dark(#ddd, #000);
+  --window-color: light-dark(#fff, #000);
   --background-color: light-dark(#fff, #333);
   --background-color-alt: light-dark(#000, #fff);
   --background-color-off1: light-dark(#ddd, #111);

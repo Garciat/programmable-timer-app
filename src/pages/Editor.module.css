@@ -1,8 +1,4 @@
-.create-page {
-  padding: 1rem;
-}
-
-.title-editor {
+.title-input {
   width: 100%;
   appearance: none;
   box-sizing: content-box;

@@ -11,6 +11,7 @@ export function BaseLayout({ children }: BaseLayoutProps) {
     <VStack
       kind="main"
       grow={1}
+      style={{ height: "100%" }}
       className={classes.layout}
     >
       {children}

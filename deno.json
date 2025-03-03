@@ -6,6 +6,10 @@
     "deploy": {
       "command": "deno run -A npm:netlify-cli deploy --prod --dir dist/",
       "dependencies": ["build"]
+    },
+    "deploy-dev": {
+      "command": "deno run -A npm:netlify-cli deploy --dir dist/",
+      "dependencies": ["build"]
     }
   },
   "compilerOptions": {

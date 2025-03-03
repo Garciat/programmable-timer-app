@@ -1,13 +1,13 @@
 import { useNavigate } from "react-router";
 import { Plus } from "lucide-react";
 
-import { VStack } from "../lib/box/VStack.tsx";
+import { VFrame } from "../lib/box/VFrame.tsx";
 import { useAppPresets } from "../state/context.tsx";
 import { BaseLayout } from "./BaseLayout.tsx";
 import { PresetList } from "../components/PresetList.tsx";
 import { TitleBar, TitleBarText } from "../components/TitleBar.tsx";
 
-import classes from "./HomePage.module.css";
+import stylesAll from "./all.module.css";
 
 export function HomePage() {
   const navigate = useNavigate();
@@ -26,18 +26,18 @@ export function HomePage() {
 
   return (
     <BaseLayout>
-      <VStack className={classes["home-page"]}>
-        <TitleBar
-          middle={<TitleBarText value="Programmable Timer" />}
-          right={createButton}
-        />
+      <TitleBar
+        middle={<TitleBarText value="Programmable Timer" />}
+        right={createButton}
+      />
+      <VFrame className={stylesAll["content-frame"]}>
         <PresetList presets={presets} />
         {presets.length === 0 && (
           <p style={{ textAlign: "center" }}>
             No presets yet. Click the plus button to create one.
           </p>
         )}
-      </VStack>
+      </VFrame>
     </BaseLayout>
   );
 }
