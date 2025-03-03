@@ -9,7 +9,7 @@ export interface TitleBarProps {
 
 export function TitleBar({ left, middle, right }: TitleBarProps) {
   return (
-    <FlexBox kind="header" gap={CSS.rem(1)} className={classes["title-bar"]}>
+    <FlexBox kind="header" gap="1rem" className={classes["title-bar"]}>
       <FlexBox
         direction="row"
         alignItems="center"

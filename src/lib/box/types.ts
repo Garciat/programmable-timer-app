@@ -17,5 +17,5 @@ export interface FlexProps {
     | "space-around"
     | "stretch";
   wrap?: "wrap" | "nowrap" | "wrap-reverse";
-  gap?: CSSUnitValue | { row: CSSUnitValue; column: CSSUnitValue };
+  gap?: string | { row: string; column: string };
 }

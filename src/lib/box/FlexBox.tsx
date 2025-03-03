@@ -46,9 +46,7 @@ export function FlexBox(props: FlexBoxProps) {
         alignItems: alignItems,
         alignContent: alignContent,
         flexWrap: wrap,
-        gap: gap instanceof CSSUnitValue
-          ? `${gap}`
-          : gap && `${gap.row} ${gap.column}`,
+        gap: typeof gap === "string" ? gap : gap && `${gap.row} ${gap.column}`,
         ...style,
       }}
       {...rest}
