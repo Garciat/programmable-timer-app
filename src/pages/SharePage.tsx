@@ -4,7 +4,7 @@ import { MoveLeft, Save } from "lucide-react";
 
 import { TimerPreset } from "../app/types.ts";
 import { useAppPresetAdd } from "../state/context.tsx";
-import { BaseLayout } from "../components/BaseLayout.tsx";
+import { BaseLayout } from "./BaseLayout.tsx";
 import { PresetEditor } from "../components/PresetEditor.tsx";
 import { TitleBar, TitleBarText } from "../components/TitleBar.tsx";
 

@@ -2,10 +2,10 @@
   color-scheme: light dark;
   --window-color: light-dark(#ddd, #000);
   --background-color: light-dark(#fff, #333);
-  --background-color-alt: light-dark(#000, #000);
+  --background-color-alt: light-dark(#000, #fff);
   --background-color-off1: light-dark(#ddd, #111);
   --text-color: light-dark(#000, #fff);
-  --text-color-alt: light-dark(#fff, #fff);
+  --text-color-alt: light-dark(#fff, #000);
   --radius: 5px;
 }
 
@@ -22,8 +22,4 @@ body {
     sans-serif,
     Apple Color Emoji,
     Segoe UI Emoji;
-}
-
-main {
-  background-color: var(--background-color);
 }

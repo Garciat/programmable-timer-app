@@ -7,7 +7,7 @@ import {
   useAudioContextState,
 } from "../lib/audio/context.tsx";
 import { useAppPreset } from "../state/context.tsx";
-import { FullscreenLayout } from "../components/FullscreenLayout.tsx";
+import { BaseLayout } from "./BaseLayout.tsx";
 import { TimerPlayer } from "../components/TimerPlayer.tsx";
 import { TitleBar, TitleBarText } from "../components/TitleBar.tsx";
 
@@ -63,7 +63,7 @@ export function PlayPage() {
   });
 
   return (
-    <FullscreenLayout>
+    <BaseLayout>
       <div className={classes["play-page"]}>
         <TitleBar
           left={backButton}
@@ -74,6 +74,6 @@ export function PlayPage() {
           ? <TimerPlayer preset={preset} />
           : <p style={{ textAlign: "center" }}>This preset does not exist.</p>}
       </div>
-    </FullscreenLayout>
+    </BaseLayout>
   );
 }

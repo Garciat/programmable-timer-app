@@ -2,7 +2,7 @@ import { useNavigate } from "react-router";
 import { Plus } from "lucide-react";
 
 import { useAppPresets } from "../state/context.tsx";
-import { BaseLayout } from "../components/BaseLayout.tsx";
+import { BaseLayout } from "./BaseLayout.tsx";
 import { PresetList } from "../components/PresetList.tsx";
 import { TitleBar, TitleBarText } from "../components/TitleBar.tsx";
 

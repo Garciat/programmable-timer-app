@@ -1,3 +1,5 @@
+import { VStack } from "../lib/box/VStack.tsx";
+
 import classes from "./BaseLayout.module.css";
 
 export interface BaseLayoutProps {
@@ -6,8 +8,12 @@ export interface BaseLayoutProps {
 
 export function BaseLayout({ children }: BaseLayoutProps) {
   return (
-    <main className={classes.layout}>
+    <VStack
+      kind="main"
+      grow={1}
+      className={classes.layout}
+    >
       {children}
-    </main>
+    </VStack>
   );
 }
