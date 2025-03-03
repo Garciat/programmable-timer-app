@@ -4,8 +4,6 @@
   align-items: stretch;
   justify-content: flex-start;
   gap: 2rem;
-
-  padding: 0.5rem;
 }
 .preset-list-item {
   display: flex;
