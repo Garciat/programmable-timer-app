@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router";
-import { Calculator, Timer } from "lucide-react";
+import { Calculator, Menu, Plus, Timer } from "lucide-react";
 
 import { VFrame } from "../lib/box/VFrame.tsx";
 import { useAppPresets } from "../state/context.tsx";
@@ -26,14 +26,14 @@ export function HomePage() {
   return (
     <BaseLayout>
       <TitleBar
-        left={<NavButton icon="menu" onClick={openSettings} />}
+        left={<NavButton icon={Menu} onClick={openSettings} />}
         middle={
           <>
             <Calculator size={24} />
             <Timer size={24} />
           </>
         }
-        right={<NavButton icon="plus" onClick={createPreset} />}
+        right={<NavButton icon={Plus} onClick={createPreset} />}
       />
       <VFrame className={stylesAll["content-frame"]}>
         <PresetList presets={presets} />

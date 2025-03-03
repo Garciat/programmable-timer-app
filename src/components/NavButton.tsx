@@ -1,14 +1,15 @@
-import { DynamicIcon, type IconName } from "lucide-react/dynamic";
+import type { FileQuestion } from "lucide-react";
 
 export interface NavButtonProps {
-  icon: IconName;
+  icon: typeof FileQuestion;
   onClick: () => unknown;
 }
 
 export function NavButton({ icon, onClick }: NavButtonProps) {
+  const Icon = icon;
   return (
     <button type="button" onClick={onClick} className="plain">
-      <DynamicIcon name={icon} size={28} />
+      <Icon size={24} />
     </button>
   );
 }
