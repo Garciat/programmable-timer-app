@@ -53,7 +53,9 @@ export function CreatePage() {
             transitions={["from-right-backwards"]}
           />
         }
-        middle={<PresetTitleEditor preset={preset} onChange={setPreset} />}
+        middle={
+          <PresetTitleEditor preset={preset} autoFocus onChange={setPreset} />
+        }
         right={<NavButton icon={Save} onClick={savePreset} />}
       />
       <VFrame className={stylesAll["content-frame"]}>

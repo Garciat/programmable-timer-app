@@ -6,11 +6,12 @@ import classes from "./PresetTitleEditor.module.css";
 
 export interface PresetTitleEditorProps {
   preset: TimerPreset;
+  autoFocus?: boolean;
   onChange: (preset: TimerPreset) => void;
 }
 
 export function PresetTitleEditor(
-  { preset, onChange }: PresetTitleEditorProps,
+  { preset, autoFocus, onChange }: PresetTitleEditorProps,
 ) {
   const updateName = useCallback((name: string) => {
     onChange({ ...preset, name });
@@ -19,7 +20,7 @@ export function PresetTitleEditor(
   return (
     <input
       type="text"
-      autoFocus
+      autoFocus={autoFocus}
       value={preset.name}
       onChange={(e) => updateName(e.target.value)}
       className={classes["title-input"]}
