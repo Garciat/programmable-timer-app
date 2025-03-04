@@ -1,3 +1,7 @@
+import { HFrame } from "../lib/box/HFrame.tsx";
+import { HStack } from "../lib/box/HStack.tsx";
+import { VStack } from "../lib/box/VStack.tsx";
+import { formatSeconds } from "../utils/time.ts";
 import {
   TimerElement,
   TimerLoop,
@@ -5,7 +9,6 @@ import {
   TimerPreset,
   TimerSequence,
 } from "../app/types.ts";
-import { formatSeconds } from "../utils/time.ts";
 
 import classes from "./PresetDisplay.module.css";
 
@@ -13,9 +16,9 @@ export function PresetDisplay(props: { preset: TimerPreset }) {
   const { preset } = props;
 
   return (
-    <div className={classes["preset-display"]}>
+    <HFrame gap="0.5rem">
       <TimerDisplay timer={preset.root} />
-    </div>
+    </HFrame>
   );
 }
 
@@ -48,10 +51,12 @@ function LoopDisplay(props: { loop: TimerLoop }) {
   const { loop } = props;
 
   return (
-    <div className={classes["loop-display"]}>
-      <header>{`${loop.count}x`}</header>
+    <HStack className={classes["loop-display"]}>
+      <VStack kind="header" justify="center">
+        <span>{`${loop.count}x`}</span>
+      </VStack>
       <TimerDisplay timer={loop.element} />
-    </div>
+    </HStack>
   );
 }
 
@@ -59,9 +64,13 @@ function PeriodDisplay(props: { period: TimerPeriod }) {
   const { period } = props;
 
   return (
-    <article className={classes["period-display"]}>
+    <VStack
+      alignItems="center"
+      justify="center"
+      className={classes["period-display"]}
+    >
       <header>{period.name}</header>
       <footer>{formatSeconds(period.seconds)}</footer>
-    </article>
+    </VStack>
   );
 }
