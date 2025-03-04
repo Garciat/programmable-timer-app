@@ -20,7 +20,3 @@ button {
   border-radius: var(--radius);
   padding: 0.25rem;
 }
-button.plain {
-  background: none;
-  color: inherit;
-}

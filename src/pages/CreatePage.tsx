@@ -6,7 +6,7 @@ import { useNavigateTransition } from "../utils/transition.ts";
 import { TimerPreset } from "../app/types.ts";
 import { useAppPresetAdd } from "../state/context.tsx";
 import { BaseLayout } from "./BaseLayout.tsx";
-import { NavButton } from "../components/NavButton.tsx";
+import { IconButton } from "../components/IconButton.tsx";
 import { PresetEditor } from "../components/PresetEditor.tsx";
 import { PresetTitleEditor } from "../components/PresetTitleEditor.tsx";
 import { TitleBar } from "../components/TitleBar.tsx";
@@ -47,7 +47,7 @@ export function CreatePage() {
     <BaseLayout>
       <TitleBar
         left={
-          <NavButton
+          <IconButton
             icon={MoveLeft}
             href="/"
             transitions={["from-right-backwards"]}
@@ -56,7 +56,7 @@ export function CreatePage() {
         middle={
           <PresetTitleEditor preset={preset} autoFocus onChange={setPreset} />
         }
-        right={<NavButton icon={Save} onClick={savePreset} />}
+        right={<IconButton icon={Save} onClick={savePreset} />}
       />
       <VFrame
         alignItems="stretch"

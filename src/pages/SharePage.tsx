@@ -8,7 +8,7 @@ import { decodeShare } from "../app/share.ts";
 import { TimerPreset } from "../app/types.ts";
 import { useAppPresetAdd } from "../state/context.tsx";
 import { BaseLayout } from "./BaseLayout.tsx";
-import { NavButton } from "../components/NavButton.tsx";
+import { IconButton } from "../components/IconButton.tsx";
 import { PresetEditor } from "../components/PresetEditor.tsx";
 import { PresetTitleEditor } from "../components/PresetTitleEditor.tsx";
 import { TitleBar, TitleBarText } from "../components/TitleBar.tsx";
@@ -38,11 +38,11 @@ export function SharePage() {
   return (
     <BaseLayout>
       <TitleBar
-        left={<NavButton icon={MoveLeft} href="/" />}
+        left={<IconButton icon={MoveLeft} href="/" />}
         middle={preset
           ? <PresetTitleEditor preset={preset} onChange={setPreset} />
           : <TitleBarText value="Invalid Share" />}
-        right={<NavButton icon={Save} onClick={savePreset} />}
+        right={<IconButton icon={Save} onClick={savePreset} />}
       />
       <VFrame
         alignItems="stretch"

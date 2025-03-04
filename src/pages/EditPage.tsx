@@ -7,7 +7,7 @@ import { useNavigateTransition } from "../utils/transition.ts";
 import { TimerPreset } from "../app/types.ts";
 import { useAppPreset } from "../state/context.tsx";
 import { BaseLayout } from "./BaseLayout.tsx";
-import { NavButton } from "../components/NavButton.tsx";
+import { IconButton } from "../components/IconButton.tsx";
 import { PresetEditor } from "../components/PresetEditor.tsx";
 import { PresetTitleEditor } from "../components/PresetTitleEditor.tsx";
 import { TitleBar, TitleBarText } from "../components/TitleBar.tsx";
@@ -38,7 +38,7 @@ export function EditPage() {
   return (
     <BaseLayout>
       <TitleBar
-        left={<NavButton icon={MoveLeft} href="/" />}
+        left={<IconButton icon={MoveLeft} href="/" />}
         middle={editedPreset
           ? (
             <PresetTitleEditor
@@ -47,7 +47,7 @@ export function EditPage() {
             />
           )
           : <TitleBarText value="Not Found" />}
-        right={<NavButton icon={Save} onClick={savePreset} />}
+        right={<IconButton icon={Save} onClick={savePreset} />}
       />
       <VFrame
         alignItems="stretch"

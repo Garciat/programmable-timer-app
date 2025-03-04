@@ -9,7 +9,7 @@ import {
 import { VFrame } from "../lib/box/VFrame.tsx";
 import { useAppPreset } from "../state/context.tsx";
 import { BaseLayout } from "./BaseLayout.tsx";
-import { NavButton } from "../components/NavButton.tsx";
+import { IconButton } from "../components/IconButton.tsx";
 import { TimerPlayer } from "../components/TimerPlayer.tsx";
 import { TitleBar, TitleBarText } from "../components/TitleBar.tsx";
 
@@ -31,16 +31,16 @@ export function PlayPage() {
   }
 
   const audioButton = switching(audioContextState, {
-    running: () => <NavButton icon={Volume2} onClick={suspendAudio} />,
-    suspended: () => <NavButton icon={VolumeOff} onClick={resumeAudio} />,
-    closed: () => <NavButton icon={VolumeX} disabled />,
+    running: () => <IconButton icon={Volume2} onClick={suspendAudio} />,
+    suspended: () => <IconButton icon={VolumeOff} onClick={resumeAudio} />,
+    closed: () => <IconButton icon={VolumeX} disabled />,
   });
 
   return (
     <BaseLayout>
       <TitleBar
         left={
-          <NavButton
+          <IconButton
             icon={MoveLeft}
             href="/"
             transitions={["from-bottom-backwards"]}

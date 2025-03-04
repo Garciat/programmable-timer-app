@@ -3,7 +3,7 @@ import { Calculator, Menu, Plus, Timer } from "lucide-react";
 import { VFrame } from "../lib/box/VFrame.tsx";
 import { useAppPresets } from "../state/context.tsx";
 import { BaseLayout } from "./BaseLayout.tsx";
-import { NavButton } from "../components/NavButton.tsx";
+import { IconButton } from "../components/IconButton.tsx";
 import { PresetList } from "../components/PresetList.tsx";
 import { TitleBar } from "../components/TitleBar.tsx";
 
@@ -16,7 +16,7 @@ export function HomePage() {
     <BaseLayout>
       <TitleBar
         left={
-          <NavButton
+          <IconButton
             icon={Menu}
             href="/settings"
             transitions={["from-left"]}
@@ -29,7 +29,7 @@ export function HomePage() {
           </>
         }
         right={
-          <NavButton
+          <IconButton
             icon={Plus}
             href="/new"
             transitions={["from-right"]}
