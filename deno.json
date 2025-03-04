@@ -12,6 +12,10 @@
       "dependencies": ["build"]
     }
   },
+  "imports": {
+    "src/": "./src/",
+    "lib/": "./lib/"
+  },
   "compilerOptions": {
     "jsx": "react-jsx",
     "jsxImportSource": "react",

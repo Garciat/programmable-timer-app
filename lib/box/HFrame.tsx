@@ -1,4 +1,4 @@
-import { HStack, HStackProps } from "./HStack.tsx";
+import { HStack, HStackProps } from "lib/box/HStack.tsx";
 
 import classes from "./all.module.css";
 

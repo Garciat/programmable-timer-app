@@ -5,7 +5,7 @@ import {
   TimerElement,
   TimerLoop,
   TimerSequence,
-} from "./types.ts";
+} from "src/app/types.ts";
 
 // recursive implementation assumes that user timers are relatively small
 export function flatten(root: TimerControlElement): FlatTimerPeriod[] {

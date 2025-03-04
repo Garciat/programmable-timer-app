@@ -3,9 +3,9 @@ import {
   streamToBase64,
   streamToString,
   stringToStream,
-} from "../utils/binary.ts";
-import { TimerPresetSchema } from "./schema.ts";
-import { TimerPreset } from "./types.ts";
+} from "src/utils/binary.ts";
+import { TimerPresetSchema } from "src/app/schema.ts";
+import { TimerPreset } from "src/app/types.ts";
 
 const ENCODING_PLAIN_PREFIX = "p1_";
 const ENCODING_COMPRESSED_PREFIX = "c1_";

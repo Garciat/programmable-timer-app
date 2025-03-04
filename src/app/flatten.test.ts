@@ -2,7 +2,7 @@
 
 import { assertEquals } from "jsr:@std/assert";
 
-import { flatten } from "./flatten.ts";
+import { flatten } from "src/app/flatten.ts";
 
 Deno.test("flatten", async (t) => {
   await t.step("should flatten a simple timer", () => {

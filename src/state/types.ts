@@ -1,4 +1,4 @@
-import { TimerPreset } from "../app/types.ts";
+import { TimerPreset } from "src/app/types.ts";
 
 export interface AppState {
   version: number;

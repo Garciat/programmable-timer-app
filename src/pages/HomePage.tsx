@@ -1,11 +1,11 @@
 import { Calculator, Menu, Plus, Timer } from "lucide-react";
 
-import { VFrame } from "../lib/box/mod.ts";
-import { useAppPresets } from "../state/context.tsx";
-import { BaseLayout } from "./BaseLayout.tsx";
-import { IconButton } from "../components/IconButton.tsx";
-import { PresetList } from "../components/PresetList.tsx";
-import { TitleBar } from "../components/TitleBar.tsx";
+import { VFrame } from "lib/box/mod.ts";
+import { useAppPresets } from "src/state/context.tsx";
+import { BaseLayout } from "src/pages/BaseLayout.tsx";
+import { IconButton } from "src/components/IconButton.tsx";
+import { PresetList } from "src/components/PresetList.tsx";
+import { TitleBar } from "src/components/TitleBar.tsx";
 
 import stylesAll from "./all.module.css";
 

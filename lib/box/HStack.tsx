@@ -1,12 +1,12 @@
-import { FlexBox, FlexBoxProps } from "./FlexBox.tsx";
+import { FlexBox, FlexBoxProps } from "lib/box/FlexBox.tsx";
 
-export type VStackProps = Omit<FlexBoxProps, "direction">;
+export type HStackProps = Omit<FlexBoxProps, "direction">;
 
-export function VStack(props: VStackProps) {
+export function HStack(props: HStackProps) {
   const { children, alignItems, justify, ...rest } = props;
   return (
     <FlexBox
-      direction="column"
+      direction="row"
       alignItems={alignItems ?? "center"}
       justify={justify ?? "center"}
       {...rest}

@@ -1,5 +1,6 @@
-import { HStack } from "../lib/box/mod.ts";
-import { ifClass } from "../utils/style.ts";
+import { HStack } from "lib/box/mod.ts";
+import { ifClass } from "src/utils/style.ts";
+
 import classes from "./TitleBar.module.css";
 
 export interface TitleBarProps {

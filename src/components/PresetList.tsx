@@ -1,14 +1,14 @@
 import { Pencil, Play, Share, Trash2 } from "lucide-react";
 
-import { useAudioContext } from "../lib/audio/context.tsx";
-import { HStack, VStack } from "../lib/box/mod.ts";
-import { formatSeconds } from "../utils/time.ts";
-import { duration } from "../app/flatten.ts";
-import { encodeShare } from "../app/share.ts";
-import { TimerPreset } from "../app/types.ts";
-import { useAppPresetDelete } from "../state/context.tsx";
-import { IconButton } from "./IconButton.tsx";
-import { PresetDisplay } from "./PresetDisplay.tsx";
+import { useAudioContext } from "lib/audio/context.tsx";
+import { HStack, VStack } from "lib/box/mod.ts";
+import { formatSeconds } from "src/utils/time.ts";
+import { duration } from "src/app/flatten.ts";
+import { encodeShare } from "src/app/share.ts";
+import { TimerPreset } from "src/app/types.ts";
+import { useAppPresetDelete } from "src/state/context.tsx";
+import { IconButton } from "src/components/IconButton.tsx";
+import { PresetDisplay } from "src/components/PresetDisplay.tsx";
 
 export interface PresetListProps {
   presets: TimerPreset[];

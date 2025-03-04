@@ -1,7 +1,7 @@
 import { createContext, useContext, useMemo, useReducer } from "react";
 import { Action, AppState } from "./types.ts";
 import { DEFAULT_APP_STATE } from "./default.ts";
-import { TimerPreset } from "../app/types.ts";
+import { TimerPreset } from "src/app/types.ts";
 
 interface AppStateContextType {
   state: AppState;

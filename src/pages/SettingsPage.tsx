@@ -1,9 +1,9 @@
 import { MoveLeft } from "lucide-react";
 
-import { VFrame } from "../lib/box/mod.ts";
-import { BaseLayout } from "./BaseLayout.tsx";
-import { IconButton } from "../components/IconButton.tsx";
-import { TitleBar, TitleBarText } from "../components/TitleBar.tsx";
+import { VFrame } from "lib/box/mod.ts";
+import { BaseLayout } from "src/pages/BaseLayout.tsx";
+import { IconButton } from "src/components/IconButton.tsx";
+import { TitleBar, TitleBarText } from "src/components/TitleBar.tsx";
 
 import stylesAll from "./all.module.css";
 

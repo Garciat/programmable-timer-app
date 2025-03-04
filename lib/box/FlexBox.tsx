@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { JSX } from "react/jsx-runtime";
 
-import { FlexProps } from "./types.ts";
+import { FlexProps } from "lib/box/types.ts";
 
 import styles from "./all.module.css";
 

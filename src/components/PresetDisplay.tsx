@@ -1,13 +1,13 @@
-import { HFrame, HStack, VStack } from "../lib/box/mod.ts";
-import { contrastForegroundColor } from "../utils/color.ts";
-import { formatSeconds } from "../utils/time.ts";
+import { HFrame, HStack, VStack } from "lib/box/mod.ts";
+import { contrastForegroundColor } from "src/utils/color.ts";
+import { formatSeconds } from "src/utils/time.ts";
 import {
   TimerElement,
   TimerLoop,
   TimerPeriod,
   TimerPreset,
   TimerSequence,
-} from "../app/types.ts";
+} from "src/app/types.ts";
 
 import classes from "./PresetDisplay.module.css";
 

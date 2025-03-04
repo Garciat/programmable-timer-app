@@ -1,18 +1,15 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Pause, Play, RotateCcw, SkipBack, SkipForward } from "lucide-react";
 
-import {
-  useAudioContext,
-  useAudioContextState,
-} from "../lib/audio/context.tsx";
-import { HStack, VStack } from "../lib/box/mod.ts";
-import { formatSeconds } from "../utils/time.ts";
-import { PlayerAction, PlayerDisplay, TimerPreset } from "../app/types.ts";
-import { actionsAtTime, timeForRelativePeriod } from "../app/actions.ts";
-import { duration, flatten } from "../app/flatten.ts";
+import { useAudioContext, useAudioContextState } from "lib/audio/context.tsx";
+import { HStack, VStack } from "lib/box/mod.ts";
+import { formatSeconds } from "src/utils/time.ts";
+import { PlayerAction, PlayerDisplay, TimerPreset } from "src/app/types.ts";
+import { actionsAtTime, timeForRelativePeriod } from "src/app/actions.ts";
+import { duration, flatten } from "src/app/flatten.ts";
+import { IconButton } from "src/components/IconButton.tsx";
 
 import classes from "./TimerPlayer.module.css";
-import { IconButton } from "./IconButton.tsx";
 
 export interface TimerPlayerProps {
   preset: TimerPreset;

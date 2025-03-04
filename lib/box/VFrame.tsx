@@ -1,4 +1,4 @@
-import { VStack, VStackProps } from "./VStack.tsx";
+import { VStack, VStackProps } from "lib/box/VStack.tsx";
 
 import classes from "./all.module.css";
 

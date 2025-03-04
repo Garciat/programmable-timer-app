@@ -9,19 +9,19 @@ import {
   Trash2,
 } from "lucide-react";
 
-import { HStack } from "../lib/box/mod.ts";
-import { contrastForegroundColor } from "../utils/color.ts";
-import { formatSeconds } from "../utils/time.ts";
-import { clamp } from "../utils/number.ts";
-import { PERIOD_TIME_MAX, PERIOD_TIME_MIN } from "../app/constants.ts";
+import { HStack } from "lib/box/mod.ts";
+import { contrastForegroundColor } from "src/utils/color.ts";
+import { formatSeconds } from "src/utils/time.ts";
+import { clamp } from "src/utils/number.ts";
+import { PERIOD_TIME_MAX, PERIOD_TIME_MIN } from "src/app/constants.ts";
 import {
   TimerElement,
   TimerLoop,
   TimerPeriod,
   TimerPreset,
   TimerSequence,
-} from "../app/types.ts";
-import { duration } from "../app/flatten.ts";
+} from "src/app/types.ts";
+import { duration } from "src/app/flatten.ts";
 
 import classes from "./PresetEditor.module.css";
 

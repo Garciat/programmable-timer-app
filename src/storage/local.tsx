@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 
-import { useAppState } from "../state/context.tsx";
-import { AppState } from "../state/types.ts";
-import { AppStateSchema } from "../state/schema.ts";
+import { useAppState } from "src/state/context.tsx";
+import { AppState } from "src/state/types.ts";
+import { AppStateSchema } from "src/state/schema.ts";
 
 const STORAGE_KEY = "programmable-timer-app-state";
 

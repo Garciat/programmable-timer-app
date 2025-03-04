@@ -2,21 +2,18 @@ import { useState } from "react";
 import { useParams } from "react-router";
 import { MoveLeft, Volume2, VolumeOff, VolumeX } from "lucide-react";
 
-import { switching } from "../utils/switch.ts";
-import {
-  useAudioContext,
-  useAudioContextState,
-} from "../lib/audio/context.tsx";
-import { VFrame } from "../lib/box/mod.ts";
-import { useAppPreset } from "../state/context.tsx";
-import { BaseLayout } from "./BaseLayout.tsx";
-import { IconButton } from "../components/IconButton.tsx";
-import { TimerPlayer } from "../components/TimerPlayer.tsx";
-import { TitleBar, TitleBarText } from "../components/TitleBar.tsx";
+import { contrastForegroundColor } from "src/utils/color.ts";
+import { switching } from "src/utils/switch.ts";
+import { useAudioContext, useAudioContextState } from "lib/audio/context.tsx";
+import { VStack } from "lib/box/VStack.tsx";
+import { VFrame } from "lib/box/mod.ts";
+import { useAppPreset } from "src/state/context.tsx";
+import { BaseLayout } from "src/pages/BaseLayout.tsx";
+import { IconButton } from "src/components/IconButton.tsx";
+import { TimerPlayer } from "src/components/TimerPlayer.tsx";
+import { TitleBar, TitleBarText } from "src/components/TitleBar.tsx";
 
 import stylesAll from "./all.module.css";
-import { VStack } from "../lib/box/VStack.tsx";
-import { contrastForegroundColor } from "../utils/color.ts";
 
 export function PlayPage() {
   const { presetId } = useParams();

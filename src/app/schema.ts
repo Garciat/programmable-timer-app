@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { TimerElement, TimerPreset } from "./types.ts";
+import { TimerElement, TimerPreset } from "src/app/types.ts";
 import {
   LOOP_COUNT_MAX,
   LOOP_COUNT_MIN,
@@ -10,7 +10,7 @@ import {
   PERIOD_TIME_MIN,
   SEQUENCE_MAX,
   SEQUENCE_MIN,
-} from "./constants.ts";
+} from "src/app/constants.ts";
 
 export const TimerElementSchema: z.ZodType<TimerElement> = z.lazy(() =>
   z.discriminatedUnion("kind", [

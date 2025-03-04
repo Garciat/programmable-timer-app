@@ -1,4 +1,4 @@
-import { VStack } from "../lib/box/mod.ts";
+import { VStack } from "lib/box/mod.ts";
 
 import classes from "./BaseLayout.module.css";
 

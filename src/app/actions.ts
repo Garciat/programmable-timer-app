@@ -1,5 +1,4 @@
-import { contrastForegroundColor } from "../utils/color.ts";
-import { FlatTimerPeriod, PlayerAction } from "./types.ts";
+import { FlatTimerPeriod, PlayerAction } from "src/app/types.ts";
 
 export function actionsAtTime(
   periods: readonly FlatTimerPeriod[],
@@ -74,8 +73,6 @@ function actionsForPeriodAtRelativeTime(
       text: period.source.name,
       seconds: remainingTime,
       backgroundColor: period.source.color,
-      textColor: period.source.color &&
-        contrastForegroundColor(period.source.color),
     },
   ];
 

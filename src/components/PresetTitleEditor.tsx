@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 
-import { TimerPreset } from "../app/types.ts";
+import { TimerPreset } from "src/app/types.ts";
 
 import classes from "./PresetTitleEditor.module.css";
 

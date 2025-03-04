@@ -2,16 +2,16 @@ import { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { MoveLeft, Save } from "lucide-react";
 
-import { VFrame } from "../lib/box/mod.ts";
-import { useNavigateTransition } from "../utils/transition.ts";
-import { decodeShare } from "../app/share.ts";
-import { TimerPreset } from "../app/types.ts";
-import { useAppPresetAdd } from "../state/context.tsx";
-import { BaseLayout } from "./BaseLayout.tsx";
-import { IconButton } from "../components/IconButton.tsx";
-import { PresetEditor } from "../components/PresetEditor.tsx";
-import { PresetTitleEditor } from "../components/PresetTitleEditor.tsx";
-import { TitleBar, TitleBarText } from "../components/TitleBar.tsx";
+import { VFrame } from "lib/box/mod.ts";
+import { useNavigateTransition } from "src/utils/transition.ts";
+import { decodeShare } from "src/app/share.ts";
+import { TimerPreset } from "src/app/types.ts";
+import { useAppPresetAdd } from "src/state/context.tsx";
+import { BaseLayout } from "src/pages/BaseLayout.tsx";
+import { IconButton } from "src/components/IconButton.tsx";
+import { PresetEditor } from "src/components/PresetEditor.tsx";
+import { PresetTitleEditor } from "src/components/PresetTitleEditor.tsx";
+import { TitleBar, TitleBarText } from "src/components/TitleBar.tsx";
 
 import stylesAll from "./all.module.css";
 

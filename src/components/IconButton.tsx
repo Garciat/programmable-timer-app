@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import type { FileQuestion } from "lucide-react";
 
-import { useNavigateTransition } from "../utils/transition.ts";
+import { useNavigateTransition } from "src/utils/transition.ts";
 
 export interface IconButtonProps {
   icon: typeof FileQuestion;
