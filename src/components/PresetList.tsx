@@ -1,6 +1,8 @@
 import { Pencil, Play, Share, Trash2 } from "lucide-react";
 
 import { useAudioContext } from "../lib/audio/context.tsx";
+import { HStack } from "../lib/box/HStack.tsx";
+import { VStack } from "../lib/box/VStack.tsx";
 import { formatSeconds } from "../utils/time.ts";
 import { useNavigateTransition } from "../utils/transition.ts";
 import { duration } from "../app/flatten.ts";
@@ -8,8 +10,6 @@ import { encodeShare } from "../app/share.ts";
 import { TimerPreset } from "../app/types.ts";
 import { useAppPresetDelete } from "../state/context.tsx";
 import { PresetDisplay } from "./PresetDisplay.tsx";
-
-import classes from "./PresetList.module.css";
 
 export interface PresetListProps {
   presets: TimerPreset[];
@@ -69,20 +69,20 @@ export function PresetList({ presets }: PresetListProps) {
   const buttonSize = 24;
 
   return (
-    <div className={classes["preset-list"]}>
+    <VStack gap="2rem">
       {presets.map((preset) => (
-        <div key={preset.id} className={classes["preset-list-item"]}>
-          <header>
-            <span className={classes["preset-list-item-name"]}>
+        <VStack key={preset.id} kind="article" gap="0.5rem">
+          <HStack kind="header" alignItems="center" justify="space-between">
+            <h2>
               {preset.name}
-            </span>
-            <span className={classes["preset-list-item-duration"]}>
+            </h2>
+            <span>
               {formatSeconds(duration(preset.root))}
             </span>
-          </header>
+          </HStack>
           <PresetDisplay preset={preset} />
-          <footer>
-            <div className={classes["preset-list-item-actions"]}>
+          <HStack kind="footer" justify="space-between">
+            <HStack alignItems="center" justify="flex-start" gap="0.5rem">
               <button
                 type="button"
                 onClick={() =>
@@ -99,19 +99,20 @@ export function PresetList({ presets }: PresetListProps) {
               </button>
               <button
                 type="button"
-                onClick={() => deletePreset(preset)}
+                onClick={() =>
+                  deletePreset(preset)}
               >
                 <Trash2 size={buttonSize} />
               </button>
-            </div>
-            <div className={classes["preset-list-item-actions"]}>
+            </HStack>
+            <HStack alignItems="center" justify="flex-end" gap="0.5rem">
               <button type="button" onClick={() => playPreset(preset)}>
                 <Play size={buttonSize} />
               </button>
-            </div>
-          </footer>
-        </div>
+            </HStack>
+          </HStack>
+        </VStack>
       ))}
-    </div>
+    </VStack>
   );
 }
