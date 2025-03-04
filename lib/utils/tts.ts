@@ -41,7 +41,6 @@ function dedupeVoicesByURI(voices: SpeechSynthesisVoice[]) {
   return Array.from(map.values());
 }
 
-// Eddy|Flo|Grandma|Grandpa|Reed|Rocko|Sandy|Shelley
 const BAD_VOICES = [
   "Albert",
   "Bad News",
