@@ -3,7 +3,6 @@
   "specifiers": {
     "jsr:@std/assert@*": "1.0.11",
     "jsr:@std/internal@^1.0.5": "1.0.5",
-    "npm:@deno/vite-plugin@^1.0.4": "1.0.4_vite@6.2.0",
     "npm:@eslint/js@^9.21.0": "9.21.0",
     "npm:@types/node@*": "22.12.0",
     "npm:@types/react-dom@^19.0.4": "19.0.4_@types+react@19.0.10",
@@ -272,12 +271,6 @@
         "colorspace",
         "enabled",
         "kuler"
-      ]
-    },
-    "@deno/vite-plugin@1.0.4_vite@6.2.0": {
-      "integrity": "sha512-xg8YT8Wn2sGXSnJgiGTpBGX1Dov0c6fd1rAp8VsfrCUtyBRRWzwVMAnd3fQ4yq8h7LSVvJUxEFN4U421k/DQLA==",
-      "dependencies": [
-        "vite@6.2.0"
       ]
     },
     "@dependents/detective-less@4.1.0": {
@@ -6677,7 +6670,6 @@
   "workspace": {
     "packageJson": {
       "dependencies": [
-        "npm:@deno/vite-plugin@^1.0.4",
         "npm:@eslint/js@^9.21.0",
         "npm:@types/react-dom@^19.0.4",
         "npm:@types/react@^19.0.10",
