@@ -17,5 +17,5 @@ export interface FlexProps {
     | "space-around"
     | "stretch";
   wrap?: "wrap" | "nowrap" | "wrap-reverse";
-  gap?: string | { row: string; column: string };
+  gap?: "0.5rem" | "1rem" | "2rem";
 }

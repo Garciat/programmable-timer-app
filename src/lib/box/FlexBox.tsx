@@ -1,5 +1,9 @@
-import { JSX } from "npm:react@19/jsx-runtime";
+import { useMemo } from "react";
+import { JSX } from "react/jsx-runtime";
+
 import { FlexProps } from "./types.ts";
+
+import styles from "./all.module.css";
 
 export type BoxKind =
   | "div"
@@ -29,29 +33,53 @@ export function FlexBox(props: FlexBoxProps) {
     wrap,
     gap,
     children,
-    style,
+    className,
     ...rest
   } = props;
 
   const Kind = kind ?? "div";
 
+  const flexClasses = useMemo(() => [
+    `display-flex`,
+    ...(grow ? [`flex-grow-${grow}`] : []),
+    ...(basis ? [`flex-basis-${basis}`] : []),
+    ...(direction ? [`flex-direction-${direction}`] : []),
+    ...(justify ? [`justify-content-${justify}`] : []),
+    ...(alignItems ? [`align-items-${alignItems}`] : []),
+    ...(gap ? [`gap-${gap.replace(".", "_")}`] : []),
+    ...(alignContent ? [`align-content-${alignContent}`] : []),
+    ...(wrap ? [`flex-wrap-${wrap}`] : []),
+  ], [
+    grow,
+    basis,
+    direction,
+    justify,
+    alignItems,
+    alignContent,
+    wrap,
+    gap,
+  ]);
+
+  const flexClassName = useMemo(
+    () => flexClasses.map(getFlexClassName).join(" "),
+    [flexClasses],
+  );
+
+  const finalClassName = useMemo(() => `${flexClassName} ${className}`, [
+    flexClassName,
+    className,
+  ]);
+
   return (
-    <Kind
-      style={{
-        display: "flex",
-        flexGrow: grow,
-        flexBasis: basis,
-        flexDirection: direction,
-        justifyContent: justify,
-        alignItems: alignItems,
-        alignContent: alignContent,
-        flexWrap: wrap,
-        gap: typeof gap === "string" ? gap : gap && `${gap.row} ${gap.column}`,
-        ...style,
-      }}
-      {...rest}
-    >
+    <Kind className={finalClassName} {...rest}>
       {children}
     </Kind>
   );
+}
+
+function getFlexClassName(key: string) {
+  if (!styles[key]) {
+    throw new Error(`[FlexBox] Missing className: ${key}`);
+  }
+  return styles[key];
 }
