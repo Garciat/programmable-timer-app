@@ -3,12 +3,12 @@ import { FlexBox, FlexBoxProps } from "./FlexBox.tsx";
 export type VStackProps = Omit<FlexBoxProps, "direction">;
 
 export function VStack(props: VStackProps) {
-  const { children, ...rest } = props;
+  const { children, alignItems, justify, ...rest } = props;
   return (
     <FlexBox
       direction="column"
-      alignItems="stretch"
-      justify="flex-start"
+      alignItems={alignItems ?? "stretch"}
+      justify={justify ?? "flex-start"}
       {...rest}
     >
       {children}

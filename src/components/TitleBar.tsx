@@ -1,4 +1,4 @@
-import { FlexBox } from "../lib/box/FlexBox.tsx";
+import { HStack } from "../lib/box/HStack.tsx";
 import classes from "./TitleBar.module.css";
 
 export interface TitleBarProps {
@@ -9,35 +9,32 @@ export interface TitleBarProps {
 
 export function TitleBar({ left, middle, right }: TitleBarProps) {
   return (
-    <FlexBox kind="header" gap="1rem" className={classes["title-bar"]}>
-      <FlexBox
-        direction="row"
+    <HStack kind="header" gap="1rem" className={classes["title-bar"]}>
+      <HStack
         alignItems="center"
         justify="flex-start"
         grow={1}
         basis={0}
       >
         {left}
-      </FlexBox>
-      <FlexBox
-        direction="row"
+      </HStack>
+      <HStack
         alignItems="center"
         justify="center"
         // https://stackoverflow.com/a/26535469/612169
         style={{ minWidth: 0 }}
       >
         {middle}
-      </FlexBox>
-      <FlexBox
-        direction="row"
+      </HStack>
+      <HStack
         alignItems="center"
         justify="flex-end"
         grow={1}
         basis={0}
       >
         {right}
-      </FlexBox>
-    </FlexBox>
+      </HStack>
+    </HStack>
   );
 }
 
