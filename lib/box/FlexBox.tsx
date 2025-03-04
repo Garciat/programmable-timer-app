@@ -41,14 +41,14 @@ export function FlexBox(props: FlexBoxProps) {
 
   const flexClasses = useMemo(() => [
     `display-flex`,
-    ...(grow ? [`flex-grow-${grow}`] : []),
-    ...(basis ? [`flex-basis-${basis}`] : []),
-    ...(direction ? [`flex-direction-${direction}`] : []),
-    ...(justify ? [`justify-content-${justify}`] : []),
-    ...(alignItems ? [`align-items-${alignItems}`] : []),
-    ...(gap ? [`gap-${gap.replace(".", "_")}`] : []),
-    ...(alignContent ? [`align-content-${alignContent}`] : []),
-    ...(wrap ? [`flex-wrap-${wrap}`] : []),
+    prefix("flex-grow-", grow),
+    prefix("flex-basis-", basis),
+    prefix("flex-direction-", direction),
+    prefix("justify-content-", justify),
+    prefix("align-items-", alignItems),
+    prefix("align-content-", alignContent),
+    prefix("flex-wrap-", wrap),
+    prefix("gap-", gap?.replace(".", "_")),
   ], [
     grow,
     basis,
@@ -65,7 +65,7 @@ export function FlexBox(props: FlexBoxProps) {
     [flexClasses],
   );
 
-  const finalClassName = useMemo(() => `${flexClassName} ${className}`, [
+  const finalClassName = useMemo(() => `${flexClassName} ${className ?? ""}`, [
     flexClassName,
     className,
   ]);
@@ -77,7 +77,17 @@ export function FlexBox(props: FlexBoxProps) {
   );
 }
 
-function getFlexClassName(key: string) {
+function prefix(
+  prefix: string,
+  value: string | number | undefined,
+): string | undefined {
+  return value === undefined ? undefined : `${prefix}${value}`;
+}
+
+function getFlexClassName(key: string | undefined): string {
+  if (key === undefined) {
+    return "";
+  }
   if (!styles[key]) {
     throw new Error(`[FlexBox] Missing className: ${key}`);
   }

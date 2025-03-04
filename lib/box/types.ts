@@ -1,6 +1,6 @@
 export interface FlexProps {
-  grow?: number;
-  basis?: number | "auto";
+  grow?: 1;
+  basis?: 0;
   direction?: "row" | "column";
   justify?:
     | "center"
