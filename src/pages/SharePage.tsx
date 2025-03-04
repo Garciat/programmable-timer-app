@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { MoveLeft, Save } from "lucide-react";
 
@@ -10,10 +10,10 @@ import { useAppPresetAdd } from "../state/context.tsx";
 import { BaseLayout } from "./BaseLayout.tsx";
 import { NavButton } from "../components/NavButton.tsx";
 import { PresetEditor } from "../components/PresetEditor.tsx";
+import { PresetTitleEditor } from "../components/PresetTitleEditor.tsx";
 import { TitleBar, TitleBarText } from "../components/TitleBar.tsx";
 
 import stylesAll from "./all.module.css";
-import classes from "./Editor.module.css";
 
 export function SharePage() {
   const navigate = useNavigateTransition();
@@ -28,27 +28,20 @@ export function SharePage() {
     }
   }, [content]);
 
-  function savePreset() {
+  const savePreset = useCallback(() => {
     if (preset) {
       doPresetAdd(preset);
     }
     navigate("/");
-  }
-
-  const titleEditor = preset && (
-    <input
-      type="text"
-      value={preset.name}
-      onChange={(e) => setPreset({ ...preset, name: e.target.value })}
-      className={classes["title-editor"]}
-    />
-  );
+  }, [navigate, doPresetAdd, preset]);
 
   return (
     <BaseLayout>
       <TitleBar
         left={<NavButton icon={MoveLeft} href="/" />}
-        middle={titleEditor ?? <TitleBarText value="Invalid Share" />}
+        middle={preset
+          ? <PresetTitleEditor preset={preset} onChange={setPreset} />
+          : <TitleBarText value="Invalid Share" />}
         right={<NavButton icon={Save} onClick={savePreset} />}
       />
       <VFrame className={stylesAll["content-frame"]}>

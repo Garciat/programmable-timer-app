@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { MoveLeft, Save } from "lucide-react";
 
 import { VFrame } from "../lib/box/VFrame.tsx";
@@ -8,10 +8,10 @@ import { useAppPresetAdd } from "../state/context.tsx";
 import { BaseLayout } from "./BaseLayout.tsx";
 import { NavButton } from "../components/NavButton.tsx";
 import { PresetEditor } from "../components/PresetEditor.tsx";
+import { PresetTitleEditor } from "../components/PresetTitleEditor.tsx";
 import { TitleBar } from "../components/TitleBar.tsx";
 
 import stylesAll from "./all.module.css";
-import classes from "./Editor.module.css";
 
 export function CreatePage() {
   const navigate = useNavigateTransition();
@@ -38,24 +38,10 @@ export function CreatePage() {
     },
   });
 
-  function updateName(name: string) {
-    setPreset((prev) => prev && { ...prev, name });
-  }
-
-  function savePreset() {
+  const savePreset = useCallback(() => {
     doPresetAdd(preset);
     navigate("/");
-  }
-
-  const titleEditor = (
-    <input
-      type="text"
-      autoFocus
-      value={preset.name}
-      onChange={(e) => updateName(e.target.value)}
-      className={classes["title-input"]}
-    />
-  );
+  }, [navigate, doPresetAdd, preset]);
 
   return (
     <BaseLayout>
@@ -67,7 +53,7 @@ export function CreatePage() {
             transitions={["from-right-backwards"]}
           />
         }
-        middle={titleEditor}
+        middle={<PresetTitleEditor preset={preset} onChange={setPreset} />}
         right={<NavButton icon={Save} onClick={savePreset} />}
       />
       <VFrame className={stylesAll["content-frame"]}>
