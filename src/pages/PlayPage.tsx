@@ -6,7 +6,7 @@ import {
   useAudioContext,
   useAudioContextState,
 } from "../lib/audio/context.tsx";
-import { VFrame } from "../lib/box/VFrame.tsx";
+import { VFrame } from "../lib/box/mod.ts";
 import { useAppPreset } from "../state/context.tsx";
 import { BaseLayout } from "./BaseLayout.tsx";
 import { IconButton } from "../components/IconButton.tsx";

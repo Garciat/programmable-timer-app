@@ -1,8 +1,7 @@
 import { Pencil, Play, Share, Trash2 } from "lucide-react";
 
 import { useAudioContext } from "../lib/audio/context.tsx";
-import { HStack } from "../lib/box/HStack.tsx";
-import { VStack } from "../lib/box/VStack.tsx";
+import { HStack, VStack } from "../lib/box/mod.ts";
 import { formatSeconds } from "../utils/time.ts";
 import { duration } from "../app/flatten.ts";
 import { encodeShare } from "../app/share.ts";

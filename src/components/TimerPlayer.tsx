@@ -5,8 +5,7 @@ import {
   useAudioContext,
   useAudioContextState,
 } from "../lib/audio/context.tsx";
-import { HStack } from "../lib/box/HStack.tsx";
-import { VStack } from "../lib/box/VStack.tsx";
+import { HStack, VStack } from "../lib/box/mod.ts";
 import { formatSeconds } from "../utils/time.ts";
 import { PlayerAction, PlayerDisplay, TimerPreset } from "../app/types.ts";
 import { actionsAtTime, timeForRelativePeriod } from "../app/actions.ts";

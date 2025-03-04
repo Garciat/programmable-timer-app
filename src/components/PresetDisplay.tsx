@@ -1,6 +1,4 @@
-import { HFrame } from "../lib/box/HFrame.tsx";
-import { HStack } from "../lib/box/HStack.tsx";
-import { VStack } from "../lib/box/VStack.tsx";
+import { HFrame, HStack, VStack } from "../lib/box/mod.ts";
 import { formatSeconds } from "../utils/time.ts";
 import {
   TimerElement,
