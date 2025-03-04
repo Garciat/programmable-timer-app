@@ -1,15 +1,23 @@
 import { HStack } from "../lib/box/mod.ts";
+import { ifClass } from "../utils/style.ts";
 import classes from "./TitleBar.module.css";
 
 export interface TitleBarProps {
   left?: React.ReactNode;
   middle: React.ReactNode;
   right?: React.ReactNode;
+  hideShadow?: boolean;
 }
 
-export function TitleBar({ left, middle, right }: TitleBarProps) {
+export function TitleBar({ left, middle, right, hideShadow }: TitleBarProps) {
   return (
-    <HStack kind="header" gap="1rem" className={classes["title-bar"]}>
+    <HStack
+      kind="header"
+      gap="1rem"
+      className={`${classes["title-bar"]} ${
+        ifClass(hideShadow, classes["hide-shadow"])
+      }`}
+    >
       <HStack justify="flex-start" grow={1} basis={0}>
         {left}
       </HStack>

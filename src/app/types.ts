@@ -16,6 +16,7 @@ export interface TimerPeriod {
   kind: "period";
   name: string;
   seconds: number;
+  color?: string;
 }
 
 export interface TimerSequence {
@@ -72,6 +73,7 @@ export interface PlayerDisplay {
   round?: string;
   seconds: number;
   text: string;
+  backgroundColor?: string;
 }
 
 export interface PlayerFinished {

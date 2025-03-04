@@ -15,8 +15,6 @@
   border-radius: var(--radius);
   border: 2px solid var(--background-color-alt);
   padding: 1rem 2rem;
-  background-color: #b88a1d;
-  color: black;
 }
 
 .loop-display .period-display {

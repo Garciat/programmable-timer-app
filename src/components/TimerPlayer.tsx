@@ -16,9 +16,10 @@ import { IconButton } from "./IconButton.tsx";
 
 export interface TimerPlayerProps {
   preset: TimerPreset;
+  onColorChange: (color: string) => void;
 }
 
-export function TimerPlayer({ preset }: TimerPlayerProps) {
+export function TimerPlayer({ preset, onColorChange }: TimerPlayerProps) {
   const [time, setTime] = useState(0);
   const [paused, setPaused] = useState(false);
 
@@ -75,7 +76,11 @@ export function TimerPlayer({ preset }: TimerPlayerProps) {
         <IconButton icon={SkipBack} onClick={skipBack} />
         <IconButton icon={SkipForward} onClick={skipForward} />
       </HStack>
-      <ActionsRenderer actions={actions} active={!paused} />
+      <ActionsRenderer
+        actions={actions}
+        active={!paused}
+        onColorChange={onColorChange}
+      />
       <VStack kind="footer">
         <progress
           value={time}
@@ -86,7 +91,13 @@ export function TimerPlayer({ preset }: TimerPlayerProps) {
   );
 }
 
-function ActionsRenderer(props: { actions: PlayerAction[]; active: boolean }) {
+function ActionsRenderer(
+  props: {
+    actions: PlayerAction[];
+    active: boolean;
+    onColorChange: (color: string) => void;
+  },
+) {
   const { actions, active } = props;
 
   // using `active` as an indirect user action signal to trigger sounds
@@ -99,6 +110,7 @@ function ActionsRenderer(props: { actions: PlayerAction[]; active: boolean }) {
           <DisplayActionRenderer
             key={index}
             action={action}
+            onColorChange={props.onColorChange}
           />
         );
       case "speak":
@@ -175,8 +187,21 @@ function BeepActionRenderer() {
   return null;
 }
 
-function DisplayActionRenderer(props: { action: PlayerDisplay }) {
+function DisplayActionRenderer(
+  props: {
+    action: PlayerDisplay;
+    onColorChange: (color: string) => void;
+  },
+) {
   const { round, seconds, text } = props.action;
+
+  useEffect(() => {
+    if (props.action.backgroundColor === undefined) {
+      return;
+    }
+    props.onColorChange(props.action.backgroundColor);
+  }, [props.action.backgroundColor]);
+
   return (
     <VStack grow={1} className={classes["timer-player-display"]}>
       <VStack kind="header" grow={1} justify="flex-end">

@@ -24,6 +24,7 @@ export const TimerPeriodSchema = z.object({
   kind: z.literal("period"),
   name: z.string().min(NAME_MIN).max(NAME_MAX),
   seconds: z.number().min(PERIOD_TIME_MIN).max(PERIOD_TIME_MAX),
+  color: z.string().regex(/^[#][0-9a-f]{6}$/i).optional().default("#b88a1d"),
 });
 
 export const TimerSequenceSchema = z.object({

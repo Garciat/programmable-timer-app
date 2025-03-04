@@ -1,4 +1,5 @@
 import { HFrame, HStack, VStack } from "../lib/box/mod.ts";
+import { contrastForegroundColor } from "../utils/color.ts";
 import { formatSeconds } from "../utils/time.ts";
 import {
   TimerElement,
@@ -62,7 +63,13 @@ function PeriodDisplay(props: { period: TimerPeriod }) {
   const { period } = props;
 
   return (
-    <VStack className={classes["period-display"]}>
+    <VStack
+      className={classes["period-display"]}
+      style={{
+        backgroundColor: period.color,
+        color: period.color && contrastForegroundColor(period.color),
+      }}
+    >
       <header>{period.name}</header>
       <footer>{formatSeconds(period.seconds)}</footer>
     </VStack>
