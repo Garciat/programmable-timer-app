@@ -3,11 +3,14 @@ import {
   ChevronDown,
   ChevronUp,
   Minus,
+  Palette,
   Plus,
   Repeat,
   Trash2,
 } from "lucide-react";
 
+import { HStack } from "../lib/box/mod.ts";
+import { contrastForegroundColor } from "../utils/color.ts";
 import { formatSeconds } from "../utils/time.ts";
 import { clamp } from "../utils/number.ts";
 import { PERIOD_TIME_MAX, PERIOD_TIME_MIN } from "../app/constants.ts";
@@ -109,23 +112,34 @@ function SequenceEditor(
 
   const buttonSize = 16;
 
+  const getItemColor = useCallback((timer: TimerElement) => {
+    if (timer.kind === "period" && timer.color) {
+      return {
+        backgroundColor: timer.color,
+        color: contrastForegroundColor(timer.color),
+      };
+    }
+  }, []);
+
   return (
     <div className={classes["sequence-editor"]}>
       <div className={classes["sequence-editor-items"]}>
         {timer.elements.map((element, index) => (
-          <div key={index} className={classes["sequence-editor-item"]}>
+          <div
+            key={index}
+            className={classes["sequence-editor-item"]}
+            style={{ ...getItemColor(element) }}
+          >
             <div className={classes["sequence-editor-item-value"]}>
               <TimerEditor
                 timer={element}
-                onChange={(newElement) =>
-                  updateElement(index, newElement)}
+                onChange={(newElement) => updateElement(index, newElement)}
               />
             </div>
             <footer>
               <button
                 type="button"
-                onClick={() =>
-                  loopElement(index)}
+                onClick={() => loopElement(index)}
               >
                 <Repeat size={buttonSize} />
               </button>
@@ -209,13 +223,32 @@ function PeriodEditor(
     });
   }, [onChange, timer]);
 
+  const updateColor = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      onChange({ ...timer, color: event.target.value });
+    },
+    [onChange, timer],
+  );
+
   return (
     <div className={classes["period-editor"]}>
-      <input
-        type="text"
-        value={timer.name}
-        onChange={(event) => updateName(event.target.value)}
-      />
+      <HStack gap="0.5rem">
+        <input
+          type="text"
+          value={timer.name}
+          onChange={(event) => updateName(event.target.value)}
+        />
+        <label className={classes["color-picker"]}>
+          <Palette size={16} />
+          <input
+            type="color"
+            value={timer.color}
+            onChange={updateColor}
+            className={classes["color-input"]}
+          />
+        </label>
+      </HStack>
+
       <SecondsEditor value={timer.seconds} onChange={updateSeconds} />
     </div>
   );

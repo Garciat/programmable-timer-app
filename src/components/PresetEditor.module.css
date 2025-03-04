@@ -11,7 +11,6 @@
   flex-direction: column;
   align-items: stretch;
   justify-content: flex-start;
-  gap: 0.5rem;
 
   border: 2px solid var(--background-color-off1);
   border-radius: var(--radius);
@@ -21,7 +20,6 @@
   flex-direction: column;
   align-items: stretch;
   justify-content: flex-start;
-  gap: 0.5rem;
 }
 .sequence-editor-item {
   display: flex;
@@ -30,7 +28,7 @@
   justify-content: flex-start;
   gap: 0.5rem;
 
-  padding: 0.5rem;
+  padding: 1rem;
 }
 .sequence-editor-item-value {
   flex-grow: 1;
@@ -177,4 +175,54 @@
   align-items: center;
 
   padding: 0.25rem;
+}
+
+.color-picker {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: var(--radius);
+  background: rgba(100, 100, 100, 0.5);
+}
+
+.color-input {
+  overflow: hidden;
+  appearance: none;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  padding: 0;
+  width: 1rem;
+  height: 1rem;
+  border-radius: var(--radius);
+}
+
+.color-input:focus {
+  border-radius: var(--radius);
+  outline: none;
+}
+
+.color-input::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+.color-input::-webkit-color-swatch {
+  border: 0;
+  border-radius: 0;
+}
+
+.color-input::-moz-color-swatch,
+.color-input::-moz-focus-inner {
+  border: 0;
+}
+
+.color-input::-moz-focus-inner {
+  padding: 0;
 }
