@@ -5,12 +5,15 @@ import {
   useAudioContext,
   useAudioContextState,
 } from "../lib/audio/context.tsx";
+import { HStack } from "../lib/box/HStack.tsx";
+import { VStack } from "../lib/box/VStack.tsx";
 import { formatSeconds } from "../utils/time.ts";
 import { PlayerAction, PlayerDisplay, TimerPreset } from "../app/types.ts";
 import { actionsAtTime, timeForRelativePeriod } from "../app/actions.ts";
 import { duration, flatten } from "../app/flatten.ts";
 
 import classes from "./TimerPlayer.module.css";
+import { IconButton } from "./IconButton.tsx";
 
 export interface TimerPlayerProps {
   preset: TimerPreset;
@@ -64,43 +67,23 @@ export function TimerPlayer({ preset }: TimerPlayerProps) {
   const running = !paused && !done;
 
   return (
-    <div className={classes["timer-player"]}>
+    <VStack grow={1} className={classes["timer-player"]}>
       {running && <IntervalManager onTick={tick} />}
-      <header>
-        <button type="button" disabled={running} onClick={resumePlayer}>
-          <Play size={24} />
-        </button>
-        <button type="button" disabled={!running} onClick={pausePlayer}>
-          <Pause size={24} />
-        </button>
-        <button
-          type="button"
-          disabled={time === 0}
-          onClick={resetPlayer}
-        >
-          <RotateCcw size={24} />
-        </button>
-        <button
-          type="button"
-          onClick={skipBack}
-        >
-          <SkipBack size={24} />
-        </button>
-        <button
-          type="button"
-          onClick={skipForward}
-        >
-          <SkipForward size={24} />
-        </button>
-      </header>
+      <HStack kind="header" gap="1rem" alignContent="center" justify="center">
+        <IconButton icon={Play} disabled={running} onClick={resumePlayer} />
+        <IconButton icon={Pause} disabled={!running} onClick={pausePlayer} />
+        <IconButton icon={RotateCcw} onClick={resetPlayer} />
+        <IconButton icon={SkipBack} onClick={skipBack} />
+        <IconButton icon={SkipForward} onClick={skipForward} />
+      </HStack>
       <ActionsRenderer actions={actions} active={!paused} />
-      <footer>
+      <VStack kind="footer">
         <progress
           value={time}
           max={presetDuration}
         />
-      </footer>
-    </div>
+      </VStack>
+    </VStack>
   );
 }
 
@@ -196,16 +179,36 @@ function BeepActionRenderer() {
 function DisplayActionRenderer(props: { action: PlayerDisplay }) {
   const { round, seconds, text } = props.action;
   return (
-    <div className={classes["timer-player-display"]}>
-      <div className={classes["round"]}>{round ?? <>&nbsp;</>}</div>
-      <div className={classes["time"]}>{formatSeconds(seconds)}</div>
-      <div className={classes["text"]}>{text}</div>
-    </div>
+    <VStack
+      grow={1}
+      alignItems="center"
+      justify="center"
+      className={classes["timer-player-display"]}
+    >
+      <VStack kind="header" grow={1} alignItems="center" justify="flex-end">
+        {round ?? <>&nbsp;</>}
+      </VStack>
+      <VStack kind="article">
+        <span>{formatSeconds(seconds)}</span>
+      </VStack>
+      <VStack kind="footer" grow={1} alignItems="center" justify="flex-end">
+        {text}
+      </VStack>
+    </VStack>
   );
 }
 
 function FinishedActionRenderer() {
-  return <div className={classes["timer-finished-display"]}>Finished</div>;
+  return (
+    <VStack
+      grow={1}
+      alignItems="center"
+      justify="center"
+      className={classes["timer-finished-display"]}
+    >
+      Finished
+    </VStack>
+  );
 }
 
 function IntervalManager(props: { onTick: () => void }) {

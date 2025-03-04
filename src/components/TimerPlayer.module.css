@@ -1,71 +1,24 @@
-.timer-player {
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  justify-content: flex-start;
-}
-.timer-player > header {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 1rem;
-}
 .timer-player > header > button {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
   padding: 0.5rem;
-}
-.timer-player > footer {
-  display: flex;
-  align-items: stretch;
-  justify-content: center;
 }
 .timer-player > footer > progress {
   flex-grow: 1;
+  width: 100%;
 }
 
-.timer-player-display {
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-.timer-player-display > .round {
-  flex-grow: 1;
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  align-items: center;
-
+.timer-player-display > header {
   padding-bottom: 2rem;
   font-size: 2rem;
 }
-.timer-player-display > .time {
+.timer-player-display > article {
   font-size: 8rem;
   font-variant-numeric: tabular-nums;
 }
-.timer-player-display > .text {
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  align-items: center;
-
+.timer-player-display > footer {
   padding-bottom: 2rem;
   font-size: 4rem;
 }
 
 .timer-finished-display {
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
   font-size: 6rem;
 }
