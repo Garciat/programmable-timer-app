@@ -7,4 +7,5 @@ body {
 
 .layout {
   width: min(100%, 42rem);
+  height: 100%;
 }

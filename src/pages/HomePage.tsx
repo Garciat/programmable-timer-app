@@ -36,7 +36,11 @@ export function HomePage() {
           />
         }
       />
-      <VFrame className={stylesAll["content-frame"]}>
+      <VFrame
+        alignItems="stretch"
+        justify="flex-start"
+        className={stylesAll["content-frame"]}
+      >
         <PresetList presets={presets} />
         {presets.length === 0 && (
           <p style={{ textAlign: "center" }}>

@@ -16,7 +16,7 @@ export function PresetDisplay(props: { preset: TimerPreset }) {
   const { preset } = props;
 
   return (
-    <HFrame gap="0.5rem">
+    <HFrame justify="flex-start" gap="0.5rem">
       <TimerDisplay timer={preset.root} />
     </HFrame>
   );
@@ -51,8 +51,8 @@ function LoopDisplay(props: { loop: TimerLoop }) {
   const { loop } = props;
 
   return (
-    <HStack className={classes["loop-display"]}>
-      <VStack kind="header" justify="center">
+    <HStack alignItems="stretch" className={classes["loop-display"]}>
+      <VStack kind="header">
         <span>{`${loop.count}x`}</span>
       </VStack>
       <TimerDisplay timer={loop.element} />
@@ -64,11 +64,7 @@ function PeriodDisplay(props: { period: TimerPeriod }) {
   const { period } = props;
 
   return (
-    <VStack
-      alignItems="center"
-      justify="center"
-      className={classes["period-display"]}
-    >
+    <VStack className={classes["period-display"]}>
       <header>{period.name}</header>
       <footer>{formatSeconds(period.seconds)}</footer>
     </VStack>

@@ -49,7 +49,11 @@ export function PlayPage() {
         middle={<TitleBarText value={preset?.name ?? "Not Found"} />}
         right={audioButton}
       />
-      <VFrame className={stylesAll["content-frame"]}>
+      <VFrame
+        alignItems="stretch"
+        justify="flex-start"
+        className={stylesAll["content-frame"]}
+      >
         {preset
           ? <TimerPlayer preset={preset} />
           : <p style={{ textAlign: "center" }}>This preset does not exist.</p>}

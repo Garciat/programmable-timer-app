@@ -20,7 +20,11 @@ export function SettingsPage() {
         }
         middle={<TitleBarText value="Settings" />}
       />
-      <VFrame className={stylesAll["content-frame"]}>
+      <VFrame
+        alignItems="stretch"
+        justify="flex-start"
+        className={stylesAll["content-frame"]}
+      >
         <p style={{ textAlign: "center" }}>No settings yet.</p>
       </VFrame>
     </BaseLayout>

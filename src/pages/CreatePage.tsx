@@ -58,7 +58,11 @@ export function CreatePage() {
         }
         right={<NavButton icon={Save} onClick={savePreset} />}
       />
-      <VFrame className={stylesAll["content-frame"]}>
+      <VFrame
+        alignItems="stretch"
+        justify="flex-start"
+        className={stylesAll["content-frame"]}
+      >
         <PresetEditor preset={preset} onChange={setPreset} />
       </VFrame>
     </BaseLayout>

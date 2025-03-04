@@ -49,7 +49,11 @@ export function EditPage() {
           : <TitleBarText value="Not Found" />}
         right={<NavButton icon={Save} onClick={savePreset} />}
       />
-      <VFrame className={stylesAll["content-frame"]}>
+      <VFrame
+        alignItems="stretch"
+        justify="flex-start"
+        className={stylesAll["content-frame"]}
+      >
         {editedPreset
           ? <PresetEditor preset={editedPreset} onChange={setEditedPreset} />
           : (

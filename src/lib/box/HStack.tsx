@@ -7,8 +7,8 @@ export function HStack(props: HStackProps) {
   return (
     <FlexBox
       direction="row"
-      alignItems={alignItems ?? "stretch"}
-      justify={justify ?? "flex-start"}
+      alignItems={alignItems ?? "center"}
+      justify={justify ?? "center"}
       {...rest}
     >
       {children}

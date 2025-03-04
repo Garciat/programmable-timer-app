@@ -44,7 +44,11 @@ export function SharePage() {
           : <TitleBarText value="Invalid Share" />}
         right={<NavButton icon={Save} onClick={savePreset} />}
       />
-      <VFrame className={stylesAll["content-frame"]}>
+      <VFrame
+        alignItems="stretch"
+        justify="flex-start"
+        className={stylesAll["content-frame"]}
+      >
         {preset
           ? <PresetEditor preset={preset} onChange={setPreset} />
           : <p style={{ textAlign: "center" }}>This share link is invalid.</p>}

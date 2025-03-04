@@ -7,8 +7,8 @@ export function VStack(props: VStackProps) {
   return (
     <FlexBox
       direction="column"
-      alignItems={alignItems ?? "stretch"}
-      justify={justify ?? "flex-start"}
+      alignItems={alignItems ?? "center"}
+      justify={justify ?? "center"}
       {...rest}
     >
       {children}

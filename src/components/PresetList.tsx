@@ -61,10 +61,15 @@ export function PresetList({ presets }: PresetListProps) {
   }
 
   return (
-    <VStack gap="2rem">
+    <VStack alignItems="stretch" gap="2rem">
       {presets.map((preset) => (
-        <VStack key={preset.id} kind="article" gap="0.5rem">
-          <HStack kind="header" alignItems="center" justify="space-between">
+        <VStack
+          key={preset.id}
+          kind="article"
+          alignItems="stretch"
+          gap="0.5rem"
+        >
+          <HStack kind="header" justify="space-between">
             <h2>
               {preset.name}
             </h2>
@@ -74,20 +79,18 @@ export function PresetList({ presets }: PresetListProps) {
           </HStack>
           <PresetDisplay preset={preset} />
           <HStack kind="footer" justify="space-between">
-            <HStack alignItems="center" justify="flex-start" gap="0.5rem">
+            <HStack justify="flex-start" gap="0.5rem">
               <IconButton icon={Pencil} href={`/edit/${preset.id}`} />
               <IconButton
                 icon={Share}
-                onClick={() =>
-                  sharePreset(preset)}
+                onClick={() => sharePreset(preset)}
               />
               <IconButton
                 icon={Trash2}
-                onClick={() =>
-                  deletePreset(preset)}
+                onClick={() => deletePreset(preset)}
               />
             </HStack>
-            <HStack alignItems="center" justify="flex-end" gap="0.5rem">
+            <HStack justify="flex-end" gap="0.5rem">
               <IconButton
                 icon={Play}
                 href={`/play/${preset.id}`}

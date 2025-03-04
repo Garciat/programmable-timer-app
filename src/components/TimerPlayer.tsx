@@ -69,7 +69,7 @@ export function TimerPlayer({ preset }: TimerPlayerProps) {
   return (
     <VStack grow={1} className={classes["timer-player"]}>
       {running && <IntervalManager onTick={tick} />}
-      <HStack kind="header" gap="1rem" alignContent="center" justify="center">
+      <HStack kind="header" gap="1rem">
         <IconButton icon={Play} disabled={running} onClick={resumePlayer} />
         <IconButton icon={Pause} disabled={!running} onClick={pausePlayer} />
         <IconButton icon={RotateCcw} onClick={resetPlayer} />
@@ -179,19 +179,14 @@ function BeepActionRenderer() {
 function DisplayActionRenderer(props: { action: PlayerDisplay }) {
   const { round, seconds, text } = props.action;
   return (
-    <VStack
-      grow={1}
-      alignItems="center"
-      justify="center"
-      className={classes["timer-player-display"]}
-    >
-      <VStack kind="header" grow={1} alignItems="center" justify="flex-end">
+    <VStack grow={1} className={classes["timer-player-display"]}>
+      <VStack kind="header" grow={1} justify="flex-end">
         {round ?? <>&nbsp;</>}
       </VStack>
       <VStack kind="article">
         <span>{formatSeconds(seconds)}</span>
       </VStack>
-      <VStack kind="footer" grow={1} alignItems="center" justify="flex-end">
+      <VStack kind="footer" grow={1} justify="flex-end">
         {text}
       </VStack>
     </VStack>
@@ -200,12 +195,7 @@ function DisplayActionRenderer(props: { action: PlayerDisplay }) {
 
 function FinishedActionRenderer() {
   return (
-    <VStack
-      grow={1}
-      alignItems="center"
-      justify="center"
-      className={classes["timer-finished-display"]}
-    >
+    <VStack grow={1} className={classes["timer-finished-display"]}>
       Finished
     </VStack>
   );
