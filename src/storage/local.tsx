@@ -57,6 +57,9 @@ function loadState() {
 }
 
 function readStateValue(value: string | null): AppState | undefined {
+  if (!value) {
+    return undefined;
+  }
   try {
     return AppStateSchema.parse(JSON.parse(value ?? ""));
   } catch (e) {
