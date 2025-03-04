@@ -94,6 +94,7 @@ export function PresetList({ presets }: PresetListProps) {
               <IconButton
                 icon={Play}
                 href={`/play/${preset.id}`}
+                transitions={["from-bottom"]}
                 onClick={resumeAudioContext}
               />
             </HStack>
