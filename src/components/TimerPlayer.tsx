@@ -133,12 +133,12 @@ function SpeakActionRenderer(props: { text: string }) {
     if (audioContextState !== "running") {
       return;
     }
-    if (speechSynthesis.speaking || speechSynthesis.pending) {
-      speechSynthesis.cancel();
-    }
 
-    const utterance = new SpeechSynthesisUtterance(props.text);
+    const utterance = new SpeechSynthesisUtterance();
+    utterance.text = props.text;
     utterance.voice = voice;
+
+    speechSynthesis.cancel();
     speechSynthesis.speak(utterance);
   }, [audioContextState, voice, props.text]);
 

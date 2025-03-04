@@ -1,11 +1,17 @@
 import { useEffect, useState } from "react";
 
 export function useSpeechSynthesisVoices() {
-  const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([]);
+  const [voices, setVoices] = useState<SpeechSynthesisVoice[]>(
+    () => cleanVoices(globalThis.speechSynthesis.getVoices()),
+  );
 
-  // Get voices on first render, otherwise the list will be empty
+  // Chrome doesn't populate the voices immediately
   useEffect(() => {
-    setVoices(cleanVoices(globalThis.speechSynthesis.getVoices()));
+    // If voices are already populated, don't do anything
+    // Otherwise voices will cause a re-render, which may cause double-speak
+    if (voices.length === 0) {
+      setVoices(cleanVoices(globalThis.speechSynthesis.getVoices()));
+    }
   }, []);
 
   useEffect(() => {
