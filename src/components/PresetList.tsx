@@ -4,11 +4,11 @@ import { useAudioContext } from "../lib/audio/context.tsx";
 import { HStack } from "../lib/box/HStack.tsx";
 import { VStack } from "../lib/box/VStack.tsx";
 import { formatSeconds } from "../utils/time.ts";
-import { useNavigateTransition } from "../utils/transition.ts";
 import { duration } from "../app/flatten.ts";
 import { encodeShare } from "../app/share.ts";
 import { TimerPreset } from "../app/types.ts";
 import { useAppPresetDelete } from "../state/context.tsx";
+import { IconButton } from "./IconButton.tsx";
 import { PresetDisplay } from "./PresetDisplay.tsx";
 
 export interface PresetListProps {
@@ -16,14 +16,9 @@ export interface PresetListProps {
 }
 
 export function PresetList({ presets }: PresetListProps) {
-  const navigate = useNavigateTransition();
   const doDelete = useAppPresetDelete();
 
   const audioContext = useAudioContext();
-
-  function editPreset(preset: TimerPreset) {
-    navigate(`/edit/${preset.id}`);
-  }
 
   function deletePreset(preset: TimerPreset) {
     if (globalThis.confirm(`Delete preset "${preset.name}"?`)) {
@@ -31,10 +26,9 @@ export function PresetList({ presets }: PresetListProps) {
     }
   }
 
-  async function playPreset(preset: TimerPreset) {
+  async function resumeAudioContext() {
     // We just got a user interaction, so we can resume the audio context.
     await audioContext.resume();
-    navigate(`/play/${preset.id}`, ["from-bottom"]);
   }
 
   async function sharePreset(preset: TimerPreset) {
@@ -66,8 +60,6 @@ export function PresetList({ presets }: PresetListProps) {
     }
   }
 
-  const buttonSize = 24;
-
   return (
     <VStack gap="2rem">
       {presets.map((preset) => (
@@ -83,32 +75,24 @@ export function PresetList({ presets }: PresetListProps) {
           <PresetDisplay preset={preset} />
           <HStack kind="footer" justify="space-between">
             <HStack alignItems="center" justify="flex-start" gap="0.5rem">
-              <button
-                type="button"
-                onClick={() =>
-                  editPreset(preset)}
-              >
-                <Pencil size={buttonSize} />
-              </button>
-              <button
-                type="button"
+              <IconButton icon={Pencil} href={`/edit/${preset.id}`} />
+              <IconButton
+                icon={Share}
                 onClick={() =>
                   sharePreset(preset)}
-              >
-                <Share size={buttonSize} />
-              </button>
-              <button
-                type="button"
+              />
+              <IconButton
+                icon={Trash2}
                 onClick={() =>
                   deletePreset(preset)}
-              >
-                <Trash2 size={buttonSize} />
-              </button>
+              />
             </HStack>
             <HStack alignItems="center" justify="flex-end" gap="0.5rem">
-              <button type="button" onClick={() => playPreset(preset)}>
-                <Play size={buttonSize} />
-              </button>
+              <IconButton
+                icon={Play}
+                href={`/play/${preset.id}`}
+                onClick={resumeAudioContext}
+              />
             </HStack>
           </HStack>
         </VStack>

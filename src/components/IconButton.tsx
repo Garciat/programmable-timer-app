@@ -3,16 +3,17 @@ import type { FileQuestion } from "lucide-react";
 
 import { useNavigateTransition } from "../utils/transition.ts";
 
-export interface NavButtonProps {
+export interface IconButtonProps {
   icon: typeof FileQuestion;
+  size?: number;
   href?: string;
   transitions?: string[];
   disabled?: boolean;
   onClick?: () => unknown | Promise<unknown>;
 }
 
-export function NavButton(
-  { icon, href, transitions, disabled, onClick }: NavButtonProps,
+export function IconButton(
+  { icon, size, href, transitions, disabled, onClick }: IconButtonProps,
 ) {
   const navigate = useNavigateTransition();
 
@@ -30,9 +31,8 @@ export function NavButton(
       type="button"
       disabled={disabled}
       onClick={handleClick}
-      className="plain"
     >
-      <Icon size={24} />
+      <Icon size={size ?? 24} />
     </button>
   );
 }
