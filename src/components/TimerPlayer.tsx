@@ -130,16 +130,15 @@ function SpeakActionRenderer(props: { text: string }) {
   const voice = useAppSettingsVoice();
 
   useEffect(() => {
-    if (!voice) {
-      return;
-    }
     if (audioContextState !== "running") {
       return;
     }
+    if (speechSynthesis.speaking || speechSynthesis.pending) {
+      speechSynthesis.cancel();
+    }
 
     const utterance = new SpeechSynthesisUtterance(props.text);
-    console.log(voice);
-    utterance.voice = voice ?? null;
+    utterance.voice = voice;
     speechSynthesis.speak(utterance);
   }, [audioContextState, voice, props.text]);
 
