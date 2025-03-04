@@ -7,6 +7,7 @@ import { formatSeconds } from "lib/utils/time.ts";
 import { PlayerAction, PlayerDisplay, TimerPreset } from "src/app/types.ts";
 import { actionsAtTime, timeForRelativePeriod } from "src/app/actions.ts";
 import { duration, flatten } from "src/app/flatten.ts";
+import { useAppSettingsVoice } from "src/state/utils.ts";
 import { IconButton } from "src/components/IconButton.tsx";
 
 import classes from "./TimerPlayer.module.css";
@@ -126,16 +127,21 @@ function ActionsRenderer(
 
 function SpeakActionRenderer(props: { text: string }) {
   const audioContextState = useAudioContextState();
+  const voice = useAppSettingsVoice();
 
   useEffect(() => {
+    if (!voice) {
+      return;
+    }
     if (audioContextState !== "running") {
       return;
     }
-    if (!speechSynthesis.speaking) {
-      const utterance = new SpeechSynthesisUtterance(props.text);
-      speechSynthesis.speak(utterance);
-    }
-  }, [audioContextState, props.text]);
+
+    const utterance = new SpeechSynthesisUtterance(props.text);
+    console.log(voice);
+    utterance.voice = voice ?? null;
+    speechSynthesis.speak(utterance);
+  }, [audioContextState, voice, props.text]);
 
   return null;
 }

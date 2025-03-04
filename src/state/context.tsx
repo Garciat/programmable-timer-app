@@ -1,6 +1,6 @@
 import { createContext, useContext, useMemo, useReducer } from "react";
 
-import { Action, AppState } from "src/state/types.ts";
+import { Action, AppState, UserSettings } from "src/state/types.ts";
 import { DEFAULT_APP_STATE } from "src/state/default.ts";
 import { TimerPreset } from "src/app/types.ts";
 
@@ -91,6 +91,21 @@ export function useAppPresetDelete(): (id: string) => void {
   return deleter;
 }
 
+export function useAppSettings(): [
+  UserSettings,
+  (updater: (settings: UserSettings) => UserSettings) => void,
+] {
+  const [state, dispatch] = useAppStateCore();
+
+  const setter = useMemo(() => {
+    return (updater: (settings: UserSettings) => UserSettings) => {
+      dispatch({ type: "updateSettings", updater });
+    };
+  }, [dispatch]);
+
+  return [state.settings, setter];
+}
+
 function useAppStateReducer(): [AppState, (action: Action) => void] {
   const [state, dispatch] = useReducer(appStateReducer, DEFAULT_APP_STATE);
   return [state, dispatch];
@@ -121,6 +136,12 @@ function appStateReducer(state: AppState, action: Action): AppState {
       return {
         ...state,
         presets: state.presets.filter((preset) => preset.id !== action.id),
+        version: state.version + 1,
+      };
+    case "updateSettings":
+      return {
+        ...state,
+        settings: action.updater(state.settings),
         version: state.version + 1,
       };
     default:
