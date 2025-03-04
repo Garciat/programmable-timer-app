@@ -2,7 +2,7 @@ import { Pencil, Play, Share, Trash2 } from "lucide-react";
 
 import { useAudioContext } from "lib/audio/context.tsx";
 import { HStack, VStack } from "lib/box/mod.ts";
-import { formatSeconds } from "src/utils/time.ts";
+import { formatSeconds } from "lib/utils/time.ts";
 import { duration } from "src/app/flatten.ts";
 import { encodeShare } from "src/app/share.ts";
 import { TimerPreset } from "src/app/types.ts";

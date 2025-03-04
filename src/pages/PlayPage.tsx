@@ -2,8 +2,8 @@ import { useState } from "react";
 import { useParams } from "react-router";
 import { MoveLeft, Volume2, VolumeOff, VolumeX } from "lucide-react";
 
-import { contrastForegroundColor } from "src/utils/color.ts";
-import { switching } from "src/utils/switch.ts";
+import { contrastForegroundColor } from "lib/utils/color.ts";
+import { switching } from "lib/utils/switch.ts";
 import { useAudioContext, useAudioContextState } from "lib/audio/context.tsx";
 import { VStack } from "lib/box/VStack.tsx";
 import { VFrame } from "lib/box/mod.ts";

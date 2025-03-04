@@ -1,5 +1,5 @@
 import { HStack } from "lib/box/mod.ts";
-import { ifClass } from "src/utils/style.ts";
+import { ifClass } from "lib/utils/style.ts";
 
 import classes from "./TitleBar.module.css";
 

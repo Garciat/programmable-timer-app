@@ -2,7 +2,7 @@ import { useCallback, useState } from "react";
 import { MoveLeft, Save } from "lucide-react";
 
 import { VFrame } from "lib/box/mod.ts";
-import { useNavigateTransition } from "src/utils/transition.ts";
+import { useNavigateTransition } from "lib/utils/transition.ts";
 import { TimerPreset } from "src/app/types.ts";
 import { useAppPresetAdd } from "src/state/context.tsx";
 import { BaseLayout } from "src/pages/BaseLayout.tsx";

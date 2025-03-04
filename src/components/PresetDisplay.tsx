@@ -1,6 +1,6 @@
 import { HFrame, HStack, VStack } from "lib/box/mod.ts";
-import { contrastForegroundColor } from "src/utils/color.ts";
-import { formatSeconds } from "src/utils/time.ts";
+import { contrastForegroundColor } from "lib/utils/color.ts";
+import { formatSeconds } from "lib/utils/time.ts";
 import {
   TimerElement,
   TimerLoop,

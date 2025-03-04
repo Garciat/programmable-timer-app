@@ -3,7 +3,7 @@ import {
   streamToBase64,
   streamToString,
   stringToStream,
-} from "src/utils/binary.ts";
+} from "lib/utils/binary.ts";
 import { TimerPresetSchema } from "src/app/schema.ts";
 import { TimerPreset } from "src/app/types.ts";
 

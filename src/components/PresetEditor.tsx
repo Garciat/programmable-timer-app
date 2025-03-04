@@ -10,9 +10,9 @@ import {
 } from "lucide-react";
 
 import { HStack } from "lib/box/mod.ts";
-import { contrastForegroundColor } from "src/utils/color.ts";
-import { formatSeconds } from "src/utils/time.ts";
-import { clamp } from "src/utils/number.ts";
+import { contrastForegroundColor } from "lib/utils/color.ts";
+import { formatSeconds } from "lib/utils/time.ts";
+import { clamp } from "lib/utils/number.ts";
 import { PERIOD_TIME_MAX, PERIOD_TIME_MIN } from "src/app/constants.ts";
 import {
   TimerElement,

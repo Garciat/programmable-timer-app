@@ -3,7 +3,7 @@ import { Pause, Play, RotateCcw, SkipBack, SkipForward } from "lucide-react";
 
 import { useAudioContext, useAudioContextState } from "lib/audio/context.tsx";
 import { HStack, VStack } from "lib/box/mod.ts";
-import { formatSeconds } from "src/utils/time.ts";
+import { formatSeconds } from "lib/utils/time.ts";
 import { PlayerAction, PlayerDisplay, TimerPreset } from "src/app/types.ts";
 import { actionsAtTime, timeForRelativePeriod } from "src/app/actions.ts";
 import { duration, flatten } from "src/app/flatten.ts";
