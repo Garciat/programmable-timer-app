@@ -7,6 +7,7 @@ export const DEFAULT_APP_STATE: AppState = {
     sound: {
       beepFrequency: 440,
       beepDuration: 0.2,
+      beepWaveform: "sine",
     },
   },
 };

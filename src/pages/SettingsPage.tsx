@@ -11,6 +11,7 @@ import { useAudioContext } from "lib/audio/context.tsx";
 import { HStack, VFrame, VStack } from "lib/box/mod.ts";
 import { unique } from "lib/utils/array.ts";
 import { switching } from "lib/utils/switch.ts";
+import { trying } from "lib/utils/exceptions.ts";
 import { useSpeechSynthesisVoices } from "lib/utils/tts.ts";
 import { useInstallPrompt } from "src/transient/install.tsx";
 import { useAppSettings } from "src/state/context.tsx";
@@ -22,7 +23,6 @@ import { TitleBar, TitleBarText } from "src/components/TitleBar.tsx";
 
 import stylesAll from "src/pages/all.module.css";
 import styles from "src/pages/SettingsPage.module.css";
-import { trying } from "lib/utils/exceptions.ts";
 
 export function SettingsPage() {
   const [savedSettings, setSavedSettings] = useAppSettings();
@@ -184,13 +184,36 @@ function SoundSettings(
 
     const oscillator = audioContext.createOscillator();
     oscillator.frequency.value = settings.beepFrequency;
+    oscillator.type = settings.beepWaveform;
     oscillator.connect(gain);
     oscillator.start();
 
     const now = audioContext.currentTime;
     gain.gain.setValueAtTime(1, now);
     gain.gain.setValueAtTime(0, now + settings.beepDuration);
-  }, [audioContext, settings.beepFrequency, settings.beepDuration]);
+  }, [
+    audioContext,
+    settings.beepFrequency,
+    settings.beepDuration,
+    settings.beepWaveform,
+  ]);
+
+  const WaveformOption = (
+    props: {
+      name: string;
+      value: typeof settings.beepWaveform;
+    },
+  ) => (
+    <label className={styles["radio-option"]}>
+      <span>{props.name}</span>
+      <input
+        type="radio"
+        name="beepWaveform"
+        checked={settings.beepWaveform === props.value}
+        onChange={() => onChange({ ...settings, beepWaveform: props.value })}
+      />
+    </label>
+  );
 
   return (
     <VStack kind="section" alignItems="stretch" justify="flex-start">
@@ -226,6 +249,13 @@ function SoundSettings(
           onChange={(e) => handleDurationChange(e.target.valueAsNumber)}
           style={{ flexGrow: 1 }}
         />
+      </HStack>
+      <p>Beep Waveform</p>
+      <HStack gap="1rem" justify="flex-start">
+        <WaveformOption name="Sine" value="sine" />
+        <WaveformOption name="Square" value="square" />
+        <WaveformOption name="Sawtooth" value="sawtooth" />
+        <WaveformOption name="Triangle" value="triangle" />
       </HStack>
     </VStack>
   );

@@ -14,6 +14,7 @@ export interface UserSettings {
 export interface UserSoundSettings {
   beepFrequency: number;
   beepDuration: number;
+  beepWaveform: "sawtooth" | "sine" | "square" | "triangle";
 }
 
 export type Action =

@@ -170,11 +170,17 @@ function BeepActionRenderer() {
 
     const osc = audioContext.createOscillator();
     osc.frequency.value = soundSettings.beepFrequency;
+    osc.type = soundSettings.beepWaveform;
     osc.connect(gain);
     osc.start();
 
     return { gain, osc };
-  }, [soundSettings.beepFrequency, audioContext, audioContextState]);
+  }, [
+    soundSettings.beepFrequency,
+    soundSettings.beepWaveform,
+    audioContext,
+    audioContextState,
+  ]);
 
   useEffect(() => {
     if (!gain) {
