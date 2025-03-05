@@ -1,10 +1,14 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import {
+  BellRing,
   MonitorCheck,
+  MonitorCog,
   MonitorDown,
   MonitorX,
   MoveLeft,
   Save,
+  Speech,
+  Wrench,
 } from "lucide-react";
 
 import { useAudioContext } from "lib/audio/context.tsx";
@@ -94,6 +98,7 @@ export function SettingsPage() {
       >
         <VStack kind="section">
           <HStack kind="header">
+            <MonitorCog />
             <h2>General</h2>
           </HStack>
           <InstallAppSubsection />
@@ -221,6 +226,7 @@ function SoundSettings(
   return (
     <VStack kind="section">
       <HStack kind="header">
+        <BellRing />
         <h2>Sound</h2>
       </HStack>
       <VStack kind="article">
@@ -366,6 +372,7 @@ function VoiceSettings(
   return (
     <VStack kind="section">
       <HStack kind="header">
+        <Speech />
         <h2>Speech Synthesis</h2>
       </HStack>
       <VStack kind="article">
@@ -551,6 +558,7 @@ function AdvancedSection() {
   return (
     <VStack kind="section">
       <HStack kind="header">
+        <Wrench />
         <h2>Advanced</h2>
       </HStack>
       <VStack kind="article">
