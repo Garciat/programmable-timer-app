@@ -294,7 +294,12 @@ function VoiceSettings(
     if (voice) {
       const utterance = new SpeechSynthesisUtterance(testSpeechText);
       utterance.voice = voice;
+      globalThis.speechSynthesis.cancel();
       globalThis.speechSynthesis.speak(utterance);
+
+      return () => {
+        globalThis.speechSynthesis.cancel();
+      };
     }
   }, [voice, testSpeechText]);
 
