@@ -9,7 +9,7 @@ import {
   TimerSequence,
 } from "src/app/types.ts";
 
-import classes from "./PresetDisplay.module.css";
+import classes from "src/components/PresetDisplay.module.css";
 
 export function PresetDisplay(props: { preset: TimerPreset }) {
   const { preset } = props;

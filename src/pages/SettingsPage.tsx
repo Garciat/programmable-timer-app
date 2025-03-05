@@ -9,7 +9,7 @@ import { BaseLayout } from "src/pages/BaseLayout.tsx";
 import { IconButton } from "src/components/IconButton.tsx";
 import { TitleBar, TitleBarText } from "src/components/TitleBar.tsx";
 
-import stylesAll from "./all.module.css";
+import stylesAll from "src/pages/all.module.css";
 import { unique } from "lib/utils/array.ts";
 
 export function SettingsPage() {

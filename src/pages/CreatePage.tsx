@@ -11,7 +11,7 @@ import { PresetEditor } from "src/components/PresetEditor.tsx";
 import { PresetTitleEditor } from "src/components/PresetTitleEditor.tsx";
 import { TitleBar } from "src/components/TitleBar.tsx";
 
-import stylesAll from "./all.module.css";
+import stylesAll from "src/pages/all.module.css";
 
 export function CreatePage() {
   const navigate = useNavigateTransition();

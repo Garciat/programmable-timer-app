@@ -1,6 +1,6 @@
 import { HStack, HStackProps } from "lib/box/HStack.tsx";
 
-import classes from "./all.module.css";
+import classes from "lib/box/all.module.css";
 
 export type HFrameProps = HStackProps;
 

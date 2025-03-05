@@ -1,6 +1,6 @@
 import { VStack, VStackProps } from "lib/box/VStack.tsx";
 
-import classes from "./all.module.css";
+import classes from "lib/box/all.module.css";
 
 export type VFrameProps = VStackProps;
 

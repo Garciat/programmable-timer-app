@@ -23,7 +23,7 @@ import {
 } from "src/app/types.ts";
 import { duration } from "src/app/flatten.ts";
 
-import classes from "./PresetEditor.module.css";
+import classes from "src/components/PresetEditor.module.css";
 
 export interface PresetEditorProps {
   preset: TimerPreset;

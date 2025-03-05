@@ -7,7 +7,7 @@ import { IconButton } from "src/components/IconButton.tsx";
 import { PresetList } from "src/components/PresetList.tsx";
 import { TitleBar } from "src/components/TitleBar.tsx";
 
-import stylesAll from "./all.module.css";
+import stylesAll from "src/pages/all.module.css";
 
 export function HomePage() {
   const presets = useAppPresets();

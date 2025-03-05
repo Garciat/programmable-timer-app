@@ -10,7 +10,7 @@ import { duration, flatten } from "src/app/flatten.ts";
 import { useAppSettingsVoice } from "src/state/utils.ts";
 import { IconButton } from "src/components/IconButton.tsx";
 
-import classes from "./TimerPlayer.module.css";
+import classes from "src/components/TimerPlayer.module.css";
 
 export interface TimerPlayerProps {
   preset: TimerPreset;

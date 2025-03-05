@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { VStack } from "lib/box/mod.ts";
 
-import classes from "./BaseLayout.module.css";
+import classes from "src/pages/BaseLayout.module.css";
 
 export interface BaseLayoutProps {
   title: string;

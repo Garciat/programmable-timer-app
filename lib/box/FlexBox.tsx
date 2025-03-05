@@ -3,7 +3,7 @@ import { JSX } from "react/jsx-runtime";
 
 import { FlexProps } from "lib/box/types.ts";
 
-import styles from "./all.module.css";
+import styles from "lib/box/all.module.css";
 
 export type BoxKind =
   | "div"

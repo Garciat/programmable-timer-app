@@ -1,7 +1,7 @@
 import { HStack } from "lib/box/mod.ts";
 import { ifClass } from "lib/utils/style.ts";
 
-import classes from "./TitleBar.module.css";
+import classes from "src/components/TitleBar.module.css";
 
 export interface TitleBarProps {
   left?: React.ReactNode;

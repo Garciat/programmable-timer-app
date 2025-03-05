@@ -13,7 +13,7 @@ import { IconButton } from "src/components/IconButton.tsx";
 import { TimerPlayer } from "src/components/TimerPlayer.tsx";
 import { TitleBar, TitleBarText } from "src/components/TitleBar.tsx";
 
-import stylesAll from "./all.module.css";
+import stylesAll from "src/pages/all.module.css";
 
 export function PlayPage() {
   const { presetId } = useParams();
