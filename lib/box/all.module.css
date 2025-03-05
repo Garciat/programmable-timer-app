@@ -1,11 +1,13 @@
 .vframe {
   height: 100%;
   overflow-y: scroll;
+  touch-action: pan-y;
 }
 
 .hframe {
   width: 100%;
   overflow-x: scroll;
+  touch-action: pan-x;
 }
 
 .display-flex {
