@@ -44,7 +44,7 @@ export function CreatePage() {
   }, [navigate, doPresetAdd, preset]);
 
   return (
-    <BaseLayout>
+    <BaseLayout title="New Preset">
       <TitleBar
         left={
           <IconButton

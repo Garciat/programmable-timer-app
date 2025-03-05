@@ -13,7 +13,7 @@ export function HomePage() {
   const presets = useAppPresets();
 
   return (
-    <BaseLayout>
+    <BaseLayout title="Programmable Timer">
       <TitleBar
         left={
           <IconButton

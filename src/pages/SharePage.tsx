@@ -36,7 +36,7 @@ export function SharePage() {
   }, [navigate, doPresetAdd, preset]);
 
   return (
-    <BaseLayout>
+    <BaseLayout title="Shared Timer">
       <TitleBar
         left={<IconButton icon={MoveLeft} href="/" />}
         middle={preset

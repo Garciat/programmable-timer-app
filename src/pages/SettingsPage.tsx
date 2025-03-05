@@ -35,7 +35,7 @@ export function SettingsPage() {
   );
 
   return (
-    <BaseLayout>
+    <BaseLayout title="Settings">
       <TitleBar
         left={
           <IconButton

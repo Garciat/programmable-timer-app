@@ -48,7 +48,7 @@ export function PlayPage() {
   });
 
   return (
-    <BaseLayout>
+    <BaseLayout title={preset?.name ?? "Not Found"}>
       <VStack grow={1} alignItems="stretch" style={{ ...color }}>
         <TitleBar
           hideShadow

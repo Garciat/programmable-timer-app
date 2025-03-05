@@ -36,7 +36,9 @@ export function EditPage() {
   }, [navigate, setPreset, editedPreset]);
 
   return (
-    <BaseLayout>
+    <BaseLayout
+      title={editedPreset ? `Edit: ${editedPreset.name}` : "Not Found"}
+    >
       <TitleBar
         left={<IconButton icon={MoveLeft} href="/" />}
         middle={editedPreset
