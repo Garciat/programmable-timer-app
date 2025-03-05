@@ -1,10 +1,18 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { MoveLeft, Save } from "lucide-react";
+import {
+  MonitorCheck,
+  MonitorDown,
+  MonitorX,
+  MoveLeft,
+  Save,
+} from "lucide-react";
 
 import { useAudioContext } from "lib/audio/context.tsx";
 import { HStack, VFrame, VStack } from "lib/box/mod.ts";
 import { unique } from "lib/utils/array.ts";
+import { switching } from "lib/utils/switch.ts";
 import { useSpeechSynthesisVoices } from "lib/utils/tts.ts";
+import { useInstallPrompt } from "src/transient/install.tsx";
 import { useAppSettings } from "src/state/context.tsx";
 import { DEFAULT_APP_STATE } from "src/state/default.ts";
 import { UserSettings, UserSoundSettings } from "src/state/types.ts";
@@ -13,6 +21,8 @@ import { IconButton } from "src/components/IconButton.tsx";
 import { TitleBar, TitleBarText } from "src/components/TitleBar.tsx";
 
 import stylesAll from "src/pages/all.module.css";
+import styles from "src/pages/SettingsPage.module.css";
+import { trying } from "lib/utils/exceptions.ts";
 
 export function SettingsPage() {
   const [savedSettings, setSavedSettings] = useAppSettings();
@@ -87,6 +97,7 @@ export function SettingsPage() {
       >
         <VStack kind="section" alignItems="stretch" justify="flex-start">
           <h2>General</h2>
+          <InstallAppSubsection />
           <p>Browser Language</p>
           <input
             type="text"
@@ -103,6 +114,7 @@ export function SettingsPage() {
           voiceURI={settings?.ttsVoiceURI}
           onChange={updateVoiceURI}
         />
+        <AdvancedSection />
       </VFrame>
     </BaseLayout>
   );
@@ -243,7 +255,8 @@ function VoiceSettings(
   const voicesInfo = useMemo(
     () =>
       voices.map((voice) => {
-        const [lang, region] = voice.lang.split("-");
+        // Android Chrome uses underscores, but Intl.DisplayNames uses hyphens
+        const [lang, region] = voice.lang.replace("_", "-").split("-");
         return { voice, lang, region };
       }),
     [voices],
@@ -314,7 +327,9 @@ function VoiceSettings(
         <option value="">Select a language</option>
         {Array.from(voiceLangs).toSorted().map((lang) => (
           <option key={lang} value={lang}>
-            {`${lang} (${languageNames.of(lang)})`}
+            {`${lang}${
+              trying(() => ` (${languageNames.of(lang)})`) ?? ""
+            }`}
           </option>
         ))}
       </select>
@@ -330,7 +345,9 @@ function VoiceSettings(
             ([region, voices]) => (
               <optgroup
                 key={region}
-                label={`${region} (${regionNames.of(region)})`}
+                label={`${region}${
+                  trying(() => ` (${regionNames.of(region)})`) ?? ""
+                }`}
               >
                 {voices
                   .toSorted((a, b) => a.name.localeCompare(b.name))
@@ -357,6 +374,125 @@ function VoiceSettings(
           onClick={testSpeechSynthesis}
         >
           Speak
+        </button>
+      </HStack>
+    </VStack>
+  );
+}
+
+function InstallAppSubsection() {
+  const [isInstalled, setIsInstalled] = useState<boolean>(false);
+  const installPromptEvent = useInstallPrompt();
+
+  useEffect(() => {
+    setIsInstalled(
+      globalThis.matchMedia("(display-mode: standalone)").matches ||
+        (globalThis.navigator.standalone ?? false),
+    );
+
+    // Can't get this to work yet
+
+    // if (globalThis.navigator.getInstalledRelatedApps) {
+    //   globalThis.navigator.getInstalledRelatedApps().then((apps) => {
+    //     setIsInstalled(apps.length > 0);
+    //   });
+    // }
+  }, []);
+
+  const handleInstallRequest = useCallback(async () => {
+    if (installPromptEvent) {
+      const result = await installPromptEvent.prompt();
+      if (result.outcome === "accepted") {
+        setIsInstalled(true);
+      }
+    }
+  }, [installPromptEvent]);
+
+  const installationState = useMemo(() => {
+    if (isInstalled) {
+      return "installed";
+    } else if (installPromptEvent) {
+      return "canInstall";
+    } else {
+      return "unavailable";
+    }
+  }, [isInstalled, installPromptEvent]);
+
+  const installButton = switching(installationState, {
+    installed: () => (
+      <button
+        type="button"
+        className={`${styles["install-button"]} ${styles["disabled"]}`}
+      >
+        <MonitorCheck />
+        <span>Installed!</span>
+      </button>
+    ),
+    canInstall: () => (
+      <button
+        type="button"
+        onClick={handleInstallRequest}
+        className={`${styles["install-button"]}`}
+      >
+        <MonitorDown />
+        <span>Install</span>
+      </button>
+    ),
+    unavailable: () => (
+      <button
+        type="button"
+        className={`${styles["install-button"]} ${styles["disabled"]}`}
+      >
+        <MonitorX />
+        <span>Cannot prompt app installation</span>
+      </button>
+    ),
+  });
+
+  return (
+    <>
+      <p>Install App</p>
+      <HStack justify="flex-start">
+        {installButton}
+      </HStack>
+    </>
+  );
+}
+
+function AdvancedSection() {
+  // Note that these go stale and cannot be relied upon for actions
+  const [serviceWorkerRegistrations, setServiceWorkerRegistrations] = useState<
+    readonly ServiceWorkerRegistration[]
+  >([]);
+
+  useEffect(() => {
+    globalThis.navigator.serviceWorker.getRegistrations().then(
+      (registrations) => {
+        setServiceWorkerRegistrations(registrations);
+      },
+    );
+  }, []);
+
+  const unregisterServiceWorkers = useCallback(async () => {
+    const registrations = await globalThis.navigator.serviceWorker
+      .getRegistrations();
+    for (const registration of registrations) {
+      await registration.unregister();
+    }
+    alert("Service Workers unregistered. Reloading the page.");
+    globalThis.location.reload();
+  }, []);
+
+  return (
+    <VStack kind="section" alignItems="stretch" justify="flex-start">
+      <h2>Advanced</h2>
+      <p>Service Workers</p>
+      <pre>
+        {serviceWorkerRegistrations.map((registration) => registration.active?.scriptURL).join("\n")}
+      </pre>
+      <HStack gap="1rem" justify="flex-start">
+        <button type="button" onClick={unregisterServiceWorkers}>
+          Unregister All
         </button>
       </HStack>
     </VStack>
