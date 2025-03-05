@@ -106,14 +106,14 @@
   align-content: stretch;
 }
 
-.wrap-wrap {
+.flex-wrap-wrap {
   flex-wrap: wrap;
 }
 
-.wrap-nowrap {
+.flex-wrap-nowrap {
   flex-wrap: nowrap;
 }
 
-.wrap-wrap-reverse {
+.flex-wrap-wrap-reverse {
   flex-wrap: wrap-reverse;
 }

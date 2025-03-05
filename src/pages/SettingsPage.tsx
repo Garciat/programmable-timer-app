@@ -273,7 +273,7 @@ function SoundSettings(
         <HStack kind="header">
           <h3>Beep Waveform</h3>
         </HStack>
-        <HStack gap="1rem" justify="flex-start">
+        <HStack gap="0.5rem" justify="flex-start" wrap="wrap">
           <WaveformOption name="Sine" value="sine" />
           <WaveformOption name="Square" value="square" />
           <WaveformOption name="Sawtooth" value="sawtooth" />
