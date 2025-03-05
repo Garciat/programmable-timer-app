@@ -21,6 +21,7 @@ import { useInstallPrompt } from "src/transient/install.tsx";
 import { useAppSettings } from "src/state/context.tsx";
 import { DEFAULT_APP_STATE } from "src/state/default.ts";
 import { UserSettings, UserSoundSettings } from "src/state/types.ts";
+import { useAppSettingsReset } from "src/state/utils.ts";
 import { BaseLayout } from "src/pages/BaseLayout.tsx";
 import { IconButton } from "src/components/IconButton.tsx";
 import { TitleBar, TitleBarText } from "src/components/TitleBar.tsx";
@@ -532,6 +533,43 @@ function InstallAppSubsection() {
 }
 
 function AdvancedSection() {
+  return (
+    <VStack kind="section">
+      <HStack kind="header">
+        <Wrench />
+        <h2>Advanced</h2>
+      </HStack>
+      <DeleteDataSubsection />
+      <ServiceWorkersSubsection />
+    </VStack>
+  );
+}
+
+function DeleteDataSubsection() {
+  const reset = useAppSettingsReset();
+
+  const handleResetRequest = useCallback(() => {
+    if (globalThis.confirm("Are you sure you want to delete all data?")) {
+      reset();
+      globalThis.alert("All data has been deleted.");
+    }
+  }, [reset]);
+
+  return (
+    <VStack kind="article">
+      <HStack kind="header">
+        <h3>Delete Data</h3>
+      </HStack>
+      <HStack gap="1rem" justify="flex-start">
+        <button type="button" onClick={handleResetRequest}>
+          Delete All Data
+        </button>
+      </HStack>
+    </VStack>
+  );
+}
+
+function ServiceWorkersSubsection() {
   // Note that these go stale and cannot be relied upon for actions
   const [serviceWorkerRegistrations, setServiceWorkerRegistrations] = useState<
     readonly ServiceWorkerRegistration[]
@@ -556,24 +594,18 @@ function AdvancedSection() {
   }, []);
 
   return (
-    <VStack kind="section">
+    <VStack kind="article">
       <HStack kind="header">
-        <Wrench />
-        <h2>Advanced</h2>
+        <h3>Service Workers</h3>
       </HStack>
-      <VStack kind="article">
-        <HStack kind="header">
-          <h3>Service Workers</h3>
-        </HStack>
-        <pre>
+      <pre>
         {serviceWorkerRegistrations.map((registration) => registration.active?.scriptURL).join("\n") || "No Service Workers"}
-        </pre>
-        <HStack gap="1rem" justify="flex-start">
-          <button type="button" onClick={unregisterServiceWorkers}>
-            Unregister All
-          </button>
-        </HStack>
-      </VStack>
+      </pre>
+      <HStack gap="1rem" justify="flex-start">
+        <button type="button" onClick={unregisterServiceWorkers}>
+          Unregister All
+        </button>
+      </HStack>
     </VStack>
   );
 }

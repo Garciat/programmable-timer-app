@@ -1,8 +1,20 @@
 import { useMemo } from "react";
 
 import { useSpeechSynthesisVoices } from "lib/utils/tts.ts";
-import { useAppSettings } from "src/state/context.tsx";
+import { useAppSettings, useAppState } from "src/state/context.tsx";
+import { DEFAULT_APP_STATE } from "src/state/default.ts";
 import { UserSoundSettings } from "src/state/types.ts";
+
+export function useAppSettingsReset(): () => void {
+  const [, setState] = useAppState();
+
+  const reset = useMemo(
+    () => () => setState(DEFAULT_APP_STATE),
+    [setState],
+  );
+
+  return reset;
+}
 
 export function useAppSettingsVoice(): SpeechSynthesisVoice | null {
   const voices = useSpeechSynthesisVoices();
