@@ -50,7 +50,17 @@ export function SharePage() {
         className={stylesAll["content-frame"]}
       >
         {preset
-          ? <PresetEditor preset={preset} onChange={setPreset} />
+          ? (
+            <>
+              <p>
+                This timer preset has been shared with you. You may save it into
+                your personal presets with the <Save size={12} />{" "}
+                button above. You may also edit the preset below before saving
+                it.
+              </p>
+              <PresetEditor preset={preset} onChange={setPreset} />
+            </>
+          )
           : <p style={{ textAlign: "center" }}>This share link is invalid.</p>}
       </VFrame>
     </BaseLayout>
