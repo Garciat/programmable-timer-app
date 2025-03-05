@@ -19,7 +19,9 @@ export function SettingsPage() {
   const [selectedVoice, setSelectedVoice] = useState<SpeechSynthesisVoice>();
 
   useEffect(() => {
-    setSelectedVoice(settingsVoice ?? undefined);
+    if (!selectedVoice && settingsVoice) {
+      setSelectedVoice(settingsVoice);
+    }
   }, [settingsVoice]);
 
   const saveSettings = useCallback(() => {
