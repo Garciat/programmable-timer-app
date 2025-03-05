@@ -65,7 +65,7 @@ export function TimerPlayer({ preset, onColorChange }: TimerPlayerProps) {
   const running = !paused && !done;
 
   return (
-    <VStack grow={1} className={classes["timer-player"]}>
+    <VStack grow={1} alignItems="stretch" className={classes["timer-player"]}>
       {running && <IntervalManager onTick={tick} />}
       <HStack kind="header" gap="1rem">
         <IconButton icon={Play} disabled={running} onClick={resumePlayer} />
@@ -205,7 +205,11 @@ function DisplayActionRenderer(
   }, [props.action.backgroundColor]);
 
   return (
-    <VStack grow={1} className={classes["timer-player-display"]}>
+    <VStack
+      grow={1}
+      alignItems="stretch"
+      className={classes["timer-player-display"]}
+    >
       <VStack kind="header" grow={1} justify="flex-end">
         {round ?? <>&nbsp;</>}
       </VStack>
