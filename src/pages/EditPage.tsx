@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router";
 import { MoveLeft, Save } from "lucide-react";
 
@@ -35,6 +35,14 @@ export function EditPage() {
     navigate("/");
   }, [navigate, setPreset, editedPreset]);
 
+  // maybe use deep-equal?
+  const isModified = useMemo(() => {
+    if (!editedPreset) {
+      return false;
+    }
+    return JSON.stringify(editedPreset) !== JSON.stringify(preset);
+  }, [editedPreset, preset]);
+
   return (
     <BaseLayout
       title={editedPreset ? `Edit: ${editedPreset.name}` : "Not Found"}
@@ -49,7 +57,9 @@ export function EditPage() {
             />
           )
           : <TitleBarText value="Not Found" />}
-        right={<IconButton icon={Save} onClick={savePreset} />}
+        right={
+          <IconButton icon={Save} disabled={!isModified} onClick={savePreset} />
+        }
       />
       <VFrame
         alignItems="stretch"
