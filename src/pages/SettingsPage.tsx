@@ -90,21 +90,24 @@ export function SettingsPage() {
         }
       />
       <VFrame
-        alignItems="stretch"
-        justify="flex-start"
-        gap="1rem"
-        className={stylesAll["content-frame"]}
+        className={`${stylesAll["content-frame"]} ${styles["settings-page"]}`}
       >
-        <VStack kind="section" alignItems="stretch" justify="flex-start">
-          <h2>General</h2>
+        <VStack kind="section">
+          <HStack kind="header">
+            <h2>General</h2>
+          </HStack>
           <InstallAppSubsection />
-          <p>Browser Language</p>
-          <input
-            type="text"
-            value={navigator.language}
-            readOnly
-            disabled
-          />
+          <VStack kind="article">
+            <HStack kind="header">
+              <h3>Browser Language</h3>
+            </HStack>
+            <input
+              type="text"
+              value={navigator.language}
+              readOnly
+              disabled
+            />
+          </VStack>
         </VStack>
         <SoundSettings
           settings={settings.sound}
@@ -216,47 +219,61 @@ function SoundSettings(
   );
 
   return (
-    <VStack kind="section" alignItems="stretch" justify="flex-start">
-      <h2>Sound</h2>
-      <p>Beep Frequency</p>
-      <HStack gap="1rem">
-        <span style={{ minWidth: "4ch" }}>{noteName}</span>
-        <input
-          type="range"
-          value={note}
-          min={-24}
-          max={+24}
-          step={1}
-          onChange={(e) => handleNoteChange(e.target.valueAsNumber)}
-          style={{ flexGrow: 1 }}
-        />
-        <button
-          type="button"
-          onClick={playBeep}
-        >
-          Play
-        </button>
+    <VStack kind="section">
+      <HStack kind="header">
+        <h2>Sound</h2>
       </HStack>
-      <p>Beep Duration</p>
-      <HStack gap="1rem">
-        <span style={{ minWidth: "4ch" }}>{settings.beepDuration}s</span>
-        <input
-          type="range"
-          value={settings.beepDuration}
-          min={0.1}
-          max={0.9}
-          step={0.1}
-          onChange={(e) => handleDurationChange(e.target.valueAsNumber)}
-          style={{ flexGrow: 1 }}
-        />
-      </HStack>
-      <p>Beep Waveform</p>
-      <HStack gap="1rem" justify="flex-start">
-        <WaveformOption name="Sine" value="sine" />
-        <WaveformOption name="Square" value="square" />
-        <WaveformOption name="Sawtooth" value="sawtooth" />
-        <WaveformOption name="Triangle" value="triangle" />
-      </HStack>
+      <VStack kind="article">
+        <HStack kind="header">
+          <h3>Beep Frequency</h3>
+        </HStack>
+        <HStack gap="1rem">
+          <span style={{ minWidth: "4ch" }}>{noteName}</span>
+          <input
+            type="range"
+            value={note}
+            min={-24}
+            max={+24}
+            step={1}
+            onChange={(e) => handleNoteChange(e.target.valueAsNumber)}
+            style={{ flexGrow: 1 }}
+          />
+          <button
+            type="button"
+            onClick={playBeep}
+          >
+            Play
+          </button>
+        </HStack>
+      </VStack>
+      <VStack kind="article">
+        <HStack kind="header">
+          <h3>Beep Duration</h3>
+        </HStack>
+        <HStack gap="1rem">
+          <span style={{ minWidth: "4ch" }}>{settings.beepDuration}s</span>
+          <input
+            type="range"
+            value={settings.beepDuration}
+            min={0.1}
+            max={0.9}
+            step={0.1}
+            onChange={(e) => handleDurationChange(e.target.valueAsNumber)}
+            style={{ flexGrow: 1 }}
+          />
+        </HStack>
+      </VStack>
+      <VStack kind="article">
+        <HStack kind="header">
+          <h3>Beep Waveform</h3>
+        </HStack>
+        <HStack gap="1rem" justify="flex-start">
+          <WaveformOption name="Sine" value="sine" />
+          <WaveformOption name="Square" value="square" />
+          <WaveformOption name="Sawtooth" value="sawtooth" />
+          <WaveformOption name="Triangle" value="triangle" />
+        </HStack>
+      </VStack>
     </VStack>
   );
 }
@@ -347,65 +364,79 @@ function VoiceSettings(
   }, [voice, testSpeechText]);
 
   return (
-    <VStack kind="section" alignItems="stretch" justify="flex-start">
-      <h2>Speech Synthesis</h2>
-      <p>Language</p>
-      <select
-        value={selectedVoiceLang}
-        onChange={(e) => handleLangChange(e.target.value)}
-      >
-        <option value="">Select a language</option>
-        {Array.from(voiceLangs).toSorted().map((lang) => (
-          <option key={lang} value={lang}>
-            {`${lang}${
-              trying(() => ` (${languageNames.of(lang)})`) ?? ""
-            }`}
-          </option>
-        ))}
-      </select>
-      <p>Voice</p>
-      <select
-        value={voice?.voiceURI}
-        onChange={(e) => handleVoiceChange(e.target.value)}
-      >
-        <option value="">Select a voice</option>
-        {Array.from(selectedLangVoicesByRegion.entries())
-          .toSorted(([a], [b]) => a.localeCompare(b))
-          .map(
-            ([region, voices]) => (
-              <optgroup
-                key={region}
-                label={`${region}${
-                  trying(() => ` (${regionNames.of(region)})`) ?? ""
-                }`}
-              >
-                {voices
-                  .toSorted((a, b) => a.name.localeCompare(b.name))
-                  .map((voice) => (
-                    <option key={voice.voiceURI} value={voice.voiceURI}>
-                      {voice.name}
-                    </option>
-                  ))}
-              </optgroup>
-            ),
-          )}
-      </select>
-      <p>Test</p>
-      <HStack gap="1rem">
-        <input
-          type="text"
-          value={testSpeechText}
-          onChange={(e) => setTestSpeechText(e.target.value)}
-          style={{ flexGrow: 1 }}
-        />
-        <button
-          type="button"
-          disabled={voice === undefined}
-          onClick={testSpeechSynthesis}
-        >
-          Speak
-        </button>
+    <VStack kind="section">
+      <HStack kind="header">
+        <h2>Speech Synthesis</h2>
       </HStack>
+      <VStack kind="article">
+        <HStack kind="header">
+          <h3>Language</h3>
+        </HStack>
+        <select
+          value={selectedVoiceLang}
+          onChange={(e) => handleLangChange(e.target.value)}
+        >
+          <option value="">Select a language</option>
+          {Array.from(voiceLangs).toSorted().map((lang) => (
+            <option key={lang} value={lang}>
+              {`${lang}${
+                trying(() => ` (${languageNames.of(lang)})`) ?? ""
+              }`}
+            </option>
+          ))}
+        </select>
+      </VStack>
+      <VStack kind="article">
+        <HStack kind="header">
+          <h3>Voice</h3>
+        </HStack>
+        <select
+          value={voice?.voiceURI}
+          onChange={(e) => handleVoiceChange(e.target.value)}
+        >
+          <option value="">Select a voice</option>
+          {Array.from(selectedLangVoicesByRegion.entries())
+            .toSorted(([a], [b]) => a.localeCompare(b))
+            .map(
+              ([region, voices]) => (
+                <optgroup
+                  key={region}
+                  label={`${region}${
+                    trying(() => ` (${regionNames.of(region)})`) ?? ""
+                  }`}
+                >
+                  {voices
+                    .toSorted((a, b) => a.name.localeCompare(b.name))
+                    .map((voice) => (
+                      <option key={voice.voiceURI} value={voice.voiceURI}>
+                        {voice.name}
+                      </option>
+                    ))}
+                </optgroup>
+              ),
+            )}
+        </select>
+      </VStack>
+      <VStack kind="article">
+        <HStack kind="header">
+          <h3>Test</h3>
+        </HStack>
+        <HStack gap="1rem">
+          <input
+            type="text"
+            value={testSpeechText}
+            onChange={(e) => setTestSpeechText(e.target.value)}
+            style={{ flexGrow: 1 }}
+          />
+          <button
+            type="button"
+            disabled={voice === undefined}
+            onClick={testSpeechSynthesis}
+          >
+            Speak
+          </button>
+        </HStack>
+      </VStack>
     </VStack>
   );
 }
@@ -481,10 +512,14 @@ function InstallAppSubsection() {
 
   return (
     <>
-      <p>Install App</p>
-      <HStack justify="flex-start">
-        {installButton}
-      </HStack>
+      <VStack kind="article">
+        <HStack kind="header">
+          <h3>Install App</h3>
+        </HStack>
+        <HStack justify="flex-start">
+          {installButton}
+        </HStack>
+      </VStack>
     </>
   );
 }
@@ -514,17 +549,23 @@ function AdvancedSection() {
   }, []);
 
   return (
-    <VStack kind="section" alignItems="stretch" justify="flex-start">
-      <h2>Advanced</h2>
-      <p>Service Workers</p>
-      <pre>
-        {serviceWorkerRegistrations.map((registration) => registration.active?.scriptURL).join("\n")}
-      </pre>
-      <HStack gap="1rem" justify="flex-start">
-        <button type="button" onClick={unregisterServiceWorkers}>
-          Unregister All
-        </button>
+    <VStack kind="section">
+      <HStack kind="header">
+        <h2>Advanced</h2>
       </HStack>
+      <VStack kind="article">
+        <HStack kind="header">
+          <h3>Service Workers</h3>
+        </HStack>
+        <pre>
+        {serviceWorkerRegistrations.map((registration) => registration.active?.scriptURL).join("\n") || "No Service Workers"}
+        </pre>
+        <HStack gap="1rem" justify="flex-start">
+          <button type="button" onClick={unregisterServiceWorkers}>
+            Unregister All
+          </button>
+        </HStack>
+      </VStack>
     </VStack>
   );
 }
