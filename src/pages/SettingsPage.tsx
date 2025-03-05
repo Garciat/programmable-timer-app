@@ -2,38 +2,48 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { MoveLeft, Save } from "lucide-react";
 
 import { HStack, VFrame, VStack } from "lib/box/mod.ts";
+import { unique } from "lib/utils/array.ts";
 import { useSpeechSynthesisVoices } from "lib/utils/tts.ts";
 import { useAppSettings } from "src/state/context.tsx";
-import { useAppSettingsVoice } from "src/state/utils.ts";
+import { UserSettings } from "src/state/types.ts";
 import { BaseLayout } from "src/pages/BaseLayout.tsx";
 import { IconButton } from "src/components/IconButton.tsx";
 import { TitleBar, TitleBarText } from "src/components/TitleBar.tsx";
 
 import stylesAll from "src/pages/all.module.css";
-import { unique } from "lib/utils/array.ts";
 
 export function SettingsPage() {
-  const [, setSettings] = useAppSettings();
-  const settingsVoice = useAppSettingsVoice();
+  const [savedSettings, setSavedSettings] = useAppSettings();
 
-  const [selectedVoice, setSelectedVoice] = useState<SpeechSynthesisVoice>();
+  const [settings, setSettings] = useState<UserSettings>();
 
   useEffect(() => {
-    if (!selectedVoice && settingsVoice) {
-      setSelectedVoice(settingsVoice);
+    setSettings(savedSettings);
+  }, [savedSettings]);
+
+  const commit = useCallback(() => {
+    if (settings) {
+      setSavedSettings(() => settings);
     }
-  }, [settingsVoice]);
+  }, [setSavedSettings, settings]);
 
-  const saveSettings = useCallback(() => {
-    setSettings((prev) => ({
-      ...prev,
-      ttsVoiceURI: selectedVoice?.voiceURI,
-    }));
-  }, [setSettings, selectedVoice]);
+  const updateVoiceURI = useCallback(
+    (voiceURI: string | undefined) => {
+      setSettings((settings) => ({
+        ...settings,
+        ttsVoiceURI: voiceURI,
+      }));
+    },
+    [setSettings],
+  );
 
+  // maybe use deep-equal?
   const isModified = useMemo(
-    () => selectedVoice?.voiceURI !== settingsVoice?.voiceURI,
-    [selectedVoice, settingsVoice],
+    () =>
+      settings &&
+      savedSettings &&
+      JSON.stringify(settings) !== JSON.stringify(savedSettings),
+    [settings, savedSettings],
   );
 
   return (
@@ -51,7 +61,7 @@ export function SettingsPage() {
           <IconButton
             icon={Save}
             disabled={!isModified}
-            onClick={saveSettings}
+            onClick={commit}
           />
         }
       />
@@ -72,8 +82,8 @@ export function SettingsPage() {
           />
         </VStack>
         <VoiceSettings
-          voice={selectedVoice}
-          onChange={setSelectedVoice}
+          voiceURI={settings?.ttsVoiceURI}
+          onChange={updateVoiceURI}
         />
       </VFrame>
     </BaseLayout>
@@ -81,19 +91,25 @@ export function SettingsPage() {
 }
 
 interface VoiceSettingsProps {
-  voice: SpeechSynthesisVoice | undefined;
-  onChange: (voice: SpeechSynthesisVoice | undefined) => void;
+  voiceURI: string | undefined;
+  onChange: (voice: string | undefined) => void;
 }
 
 function VoiceSettings(
-  { voice, onChange }: VoiceSettingsProps,
+  { voiceURI, onChange }: VoiceSettingsProps,
 ) {
-  const [userLang] = navigator.language.split("-");
+  const userLocale = navigator.language;
+  const [userLang] = userLocale.split("-");
 
   const [selectedVoiceLang, setSelectedVoiceLang] = useState<string>(userLang);
   const [testSpeechText, setTestSpeechText] = useState<string>("Hello, world!");
 
   const voices = useSpeechSynthesisVoices();
+
+  const voice = useMemo(
+    () => voices.find((voice) => voice.voiceURI === voiceURI),
+    [voices, voiceURI],
+  );
 
   const voicesInfo = useMemo(
     () =>
@@ -105,13 +121,13 @@ function VoiceSettings(
   );
 
   const languageNames = useMemo(
-    () => new Intl.DisplayNames([userLang], { type: "language" }),
-    [userLang],
+    () => new Intl.DisplayNames([userLocale], { type: "language" }),
+    [userLocale],
   );
 
   const regionNames = useMemo(
-    () => new Intl.DisplayNames([userLang], { type: "region" }),
-    [userLang],
+    () => new Intl.DisplayNames([userLocale], { type: "region" }),
+    [userLocale],
   );
 
   const voiceLangs = useMemo(
@@ -142,8 +158,8 @@ function VoiceSettings(
   }, [onChange]);
 
   const handleVoiceChange = useCallback((value: string) => {
-    onChange(voices.find((voice) => voice.voiceURI === value));
-  }, [onChange, voices]);
+    onChange(value);
+  }, [onChange]);
 
   const testSpeechSynthesis = useCallback(() => {
     if (voice) {
