@@ -7,7 +7,7 @@ import { formatSeconds } from "lib/utils/time.ts";
 import { PlayerAction, PlayerDisplay, TimerPreset } from "src/app/types.ts";
 import { actionsAtTime, timeForRelativePeriod } from "src/app/actions.ts";
 import { duration, flatten } from "src/app/flatten.ts";
-import { useAppSettingsVoice } from "src/state/utils.ts";
+import { useAppSettingsVoice, useAppSoundSettings } from "src/state/utils.ts";
 import { IconButton } from "src/components/IconButton.tsx";
 
 import classes from "src/components/TimerPlayer.module.css";
@@ -140,13 +140,17 @@ function SpeakActionRenderer(props: { text: string }) {
 
     speechSynthesis.cancel();
     speechSynthesis.speak(utterance);
+
+    return () => {
+      speechSynthesis.cancel();
+    };
   }, [audioContextState, voice, props.text]);
 
   return null;
 }
 
 function BeepActionRenderer() {
-  const duration = 0.2;
+  const soundSettings = useAppSoundSettings();
 
   const audioContext = useAudioContext();
   const audioContextState = useAudioContextState();
@@ -165,12 +169,12 @@ function BeepActionRenderer() {
     gain.connect(audioContext.destination);
 
     const osc = audioContext.createOscillator();
-    osc.frequency.value = 440;
+    osc.frequency.value = soundSettings.beepFrequency;
     osc.connect(gain);
     osc.start();
 
     return { gain, osc };
-  }, [audioContext, audioContextState]);
+  }, [soundSettings.beepFrequency, audioContext, audioContextState]);
 
   useEffect(() => {
     if (!gain) {
@@ -178,13 +182,13 @@ function BeepActionRenderer() {
     }
 
     gain.gain.setValueAtTime(1, now);
-    gain.gain.setValueAtTime(0, now + duration);
+    gain.gain.setValueAtTime(0, now + soundSettings.beepDuration);
 
     return () => {
       gain.gain.cancelScheduledValues(now);
       gain.gain.setValueAtTime(0, now);
     };
-  }, [gain, now]);
+  }, [soundSettings.beepDuration, gain, now]);
 
   return null;
 }

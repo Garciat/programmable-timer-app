@@ -8,6 +8,12 @@ export interface AppState {
 
 export interface UserSettings {
   ttsVoiceURI?: string;
+  sound: UserSoundSettings;
+}
+
+export interface UserSoundSettings {
+  beepFrequency: number;
+  beepDuration: number;
 }
 
 export type Action =

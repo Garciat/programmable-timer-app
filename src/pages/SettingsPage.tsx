@@ -1,11 +1,13 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { MoveLeft, Save } from "lucide-react";
 
+import { useAudioContext } from "lib/audio/context.tsx";
 import { HStack, VFrame, VStack } from "lib/box/mod.ts";
 import { unique } from "lib/utils/array.ts";
 import { useSpeechSynthesisVoices } from "lib/utils/tts.ts";
 import { useAppSettings } from "src/state/context.tsx";
-import { UserSettings } from "src/state/types.ts";
+import { DEFAULT_APP_STATE } from "src/state/default.ts";
+import { UserSettings, UserSoundSettings } from "src/state/types.ts";
 import { BaseLayout } from "src/pages/BaseLayout.tsx";
 import { IconButton } from "src/components/IconButton.tsx";
 import { TitleBar, TitleBarText } from "src/components/TitleBar.tsx";
@@ -15,7 +17,9 @@ import stylesAll from "src/pages/all.module.css";
 export function SettingsPage() {
   const [savedSettings, setSavedSettings] = useAppSettings();
 
-  const [settings, setSettings] = useState<UserSettings>();
+  const [settings, setSettings] = useState<UserSettings>(
+    DEFAULT_APP_STATE.settings,
+  );
 
   useEffect(() => {
     setSettings(savedSettings);
@@ -29,9 +33,19 @@ export function SettingsPage() {
 
   const updateVoiceURI = useCallback(
     (voiceURI: string | undefined) => {
-      setSettings((settings) => ({
-        ...settings,
+      setSettings((prev) => ({
+        ...prev,
         ttsVoiceURI: voiceURI,
+      }));
+    },
+    [setSettings],
+  );
+
+  const updateSoundSettings = useCallback(
+    (soundSettings: UserSoundSettings) => {
+      setSettings((prev) => ({
+        ...prev,
+        sound: soundSettings,
       }));
     },
     [setSettings],
@@ -81,12 +95,127 @@ export function SettingsPage() {
             disabled
           />
         </VStack>
+        <SoundSettings
+          settings={settings.sound}
+          onChange={updateSoundSettings}
+        />
         <VoiceSettings
           voiceURI={settings?.ttsVoiceURI}
           onChange={updateVoiceURI}
         />
       </VFrame>
     </BaseLayout>
+  );
+}
+
+interface SoundSettingsProps {
+  settings: UserSoundSettings;
+  onChange: (settings: UserSoundSettings) => void;
+}
+
+function SoundSettings(
+  { settings, onChange }: SoundSettingsProps,
+) {
+  const audioContext = useAudioContext();
+
+  // relative to A4
+  const note = Math.round(
+    12 * Math.log2(settings.beepFrequency / 440),
+  );
+
+  // note name with octave number, note=0 is A4, note=-12 is A3, etc.
+  const noteName = useMemo(() => {
+    const notes = [
+      "A",
+      "A♯",
+      "B",
+      "C",
+      "C♯",
+      "D",
+      "D♯",
+      "E",
+      "F",
+      "F♯",
+      "G",
+      "G♯",
+    ];
+    const octave = Math.floor(note / 12) + 4;
+    const noteName = notes[(120 + note) % 12];
+    return `${noteName}${octave}`;
+  }, [note]);
+
+  const handleNoteChange = useCallback((note: number) => {
+    const frequency = 440 * Math.pow(2, note / 12);
+    onChange({
+      ...settings,
+      beepFrequency: frequency,
+    });
+  }, [settings, onChange]);
+
+  const handleDurationChange = useCallback((duration: number) => {
+    onChange({
+      ...settings,
+      beepDuration: duration,
+    });
+  }, [settings, onChange]);
+
+  const playBeep = useCallback(() => {
+    if (!audioContext) {
+      return;
+    }
+
+    audioContext.resume();
+
+    const gain = audioContext.createGain();
+    gain.gain.value = 0;
+    gain.connect(audioContext.destination);
+
+    const oscillator = audioContext.createOscillator();
+    oscillator.frequency.value = settings.beepFrequency;
+    oscillator.connect(gain);
+    oscillator.start();
+
+    const now = audioContext.currentTime;
+    gain.gain.setValueAtTime(1, now);
+    gain.gain.setValueAtTime(0, now + settings.beepDuration);
+  }, [audioContext, settings.beepFrequency, settings.beepDuration]);
+
+  return (
+    <VStack kind="section" alignItems="stretch" justify="flex-start">
+      <h2>Sound</h2>
+      <p>Beep Frequency</p>
+      <HStack gap="1rem">
+        <span style={{ minWidth: "4ch" }}>{noteName}</span>
+        <input
+          type="range"
+          value={note}
+          min={-24}
+          max={+24}
+          step={1}
+          onChange={(e) => handleNoteChange(e.target.valueAsNumber)}
+          style={{ flexGrow: 1 }}
+        />
+        <button
+          type="button"
+          onClick={playBeep}
+        >
+          Play
+        </button>
+      </HStack>
+      <p>Beep Duration</p>
+      <HStack gap="1rem">
+        <span style={{ minWidth: "4ch" }}>{settings.beepDuration}s</span>
+        <input
+          type="range"
+          value={settings.beepDuration}
+          min={0.1}
+          max={0.9}
+          step={0.1}
+          onChange={(e) => handleDurationChange(e.target.valueAsNumber)}
+          style={{ flexGrow: 1 }}
+        />
+      </HStack>
+    </VStack>
   );
 }
 

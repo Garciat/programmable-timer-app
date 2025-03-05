@@ -2,6 +2,7 @@ import { useMemo } from "react";
 
 import { useSpeechSynthesisVoices } from "lib/utils/tts.ts";
 import { useAppSettings } from "src/state/context.tsx";
+import { UserSoundSettings } from "src/state/types.ts";
 
 export function useAppSettingsVoice(): SpeechSynthesisVoice | null {
   const voices = useSpeechSynthesisVoices();
@@ -26,4 +27,9 @@ export function useAppSettingsVoice(): SpeechSynthesisVoice | null {
   );
 
   return settingsVoice ?? defaultVoice;
+}
+
+export function useAppSoundSettings(): UserSoundSettings {
+  const [settings] = useAppSettings();
+  return settings.sound;
 }
