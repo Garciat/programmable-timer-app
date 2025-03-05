@@ -25,7 +25,9 @@ export function PresetList({ presets }: PresetListProps) {
     }
   }
 
-  async function resumeAudioContext() {
+  async function beforePlay() {
+    // "Unlock" the speech synthesis API by speaking an empty utterance.
+    globalThis.speechSynthesis.speak(new SpeechSynthesisUtterance(""));
     // We just got a user interaction, so we can resume the audio context.
     await audioContext.resume();
   }
@@ -94,7 +96,7 @@ export function PresetList({ presets }: PresetListProps) {
                 icon={Play}
                 href={`/play/${preset.id}`}
                 transitions={["from-bottom"]}
-                onClick={resumeAudioContext}
+                onClick={beforePlay}
               />
             </HStack>
           </HStack>
