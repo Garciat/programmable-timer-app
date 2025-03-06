@@ -10,8 +10,9 @@ import { EditPage } from "src/pages/EditPage.tsx";
 import { HistoryPage } from "src/pages/HistoryPage.tsx";
 import { HomePage } from "src/pages/HomePage.tsx";
 import { PlayPage } from "src/pages/PlayPage.tsx";
+import { QrPage } from "./pages/QrPage.tsx";
 import { SettingsPage } from "src/pages/SettingsPage.tsx";
-import { SharePage } from "src/pages/SharePage.tsx";
+import { ImportPage } from "./pages/ImportPage.tsx";
 
 import "src/App.css";
 import "src/transitions.css";
@@ -28,7 +29,8 @@ export function App() {
             <Route path="/new" element={<CreatePage />} />
             <Route path="/edit/:presetId" element={<EditPage />} />
             <Route path="/play/:presetId" element={<PlayPage />} />
-            <Route path="/share/:content" element={<SharePage />} />
+            <Route path="/qr/:presetId" element={<QrPage />} />
+            <Route path="/import/:content" element={<ImportPage />} />
             <Route path="/history" element={<HistoryPage />} />
             <Route path="/settings" element={<SettingsPage />} />
           </Routes>

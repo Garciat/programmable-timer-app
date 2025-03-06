@@ -1,10 +1,10 @@
-import { Pencil, Play, Share, Trash2 } from "lucide-react";
+import { Pencil, Play, QrCode, Share, Trash2 } from "lucide-react";
 
 import { useAudioContext } from "lib/audio/context.tsx";
 import { HStack, VStack } from "lib/box/mod.ts";
 import { formatSeconds } from "lib/utils/time.ts";
 import { duration } from "src/app/flatten.ts";
-import { encodeShare } from "src/app/share.ts";
+import { generateShareURL } from "src/app/share.ts";
 import { TimerPreset } from "src/app/types.ts";
 import { useAppPresetDelete } from "src/state/context.tsx";
 import { IconButton } from "src/components/IconButton.tsx";
@@ -33,13 +33,10 @@ export function PresetList({ presets }: PresetListProps) {
   }
 
   async function sharePreset(preset: TimerPreset) {
-    const content = await encodeShare(preset);
-
-    const url = new URL(globalThis.location.href);
-    url.pathname = `/share/${encodeURIComponent(content)}`;
+    const url = await generateShareURL(preset);
 
     try {
-      await navigator.clipboard.writeText(url.toString());
+      await navigator.clipboard.writeText(url);
       globalThis.alert("Copied share link to clipboard.");
       return;
     } catch (error) {
@@ -49,7 +46,7 @@ export function PresetList({ presets }: PresetListProps) {
     const shareData = {
       title: `Timer Preset: ${preset.name}`,
       text: `Check out my timer preset: ${preset.name}`,
-      url: url.toString(),
+      url: url,
     };
 
     if (navigator.canShare(shareData)) {
@@ -85,6 +82,10 @@ export function PresetList({ presets }: PresetListProps) {
               <IconButton
                 icon={Share}
                 onClick={() => sharePreset(preset)}
+              />
+              <IconButton
+                icon={QrCode}
+                href={`/qr/${preset.id}`}
               />
               <IconButton
                 icon={Trash2}

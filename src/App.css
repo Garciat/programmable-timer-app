@@ -55,6 +55,11 @@ button, label:has(> input[type="radio"]), a.button {
 
   transition: opacity 0.2s;
 
+  &.large {
+    --form-element-height: 3rem;
+    font-size: 1.2em;
+  }
+
   &:disabled, &.disabled {
     cursor: default;
     opacity: 0.3;

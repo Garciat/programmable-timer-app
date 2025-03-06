@@ -15,7 +15,7 @@ import { TitleBar, TitleBarText } from "src/components/TitleBar.tsx";
 
 import stylesAll from "src/pages/all.module.css";
 
-export function SharePage() {
+export function ImportPage() {
   const navigate = useNavigateTransition();
   const { content } = useParams();
   const doPresetAdd = useAppPresetAdd();

@@ -10,6 +10,15 @@ import { TimerPreset } from "src/app/types.ts";
 const ENCODING_PLAIN_PREFIX = "p1_";
 const ENCODING_COMPRESSED_PREFIX = "c1_";
 
+export async function generateShareURL(preset: TimerPreset) {
+  const content = await encodeShare(preset);
+
+  const url = new URL(globalThis.location.href);
+  url.pathname = `/import/${encodeURIComponent(content)}`;
+
+  return url.toString();
+}
+
 export async function encodeShare(preset: TimerPreset) {
   try {
     return ENCODING_COMPRESSED_PREFIX + await encodeShareCompressedV1(preset);

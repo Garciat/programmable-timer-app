@@ -14,6 +14,7 @@
     "npm:globals@^15.15.0": "15.15.0",
     "npm:lucide-react@0.477": "0.477.0_react@19.0.0",
     "npm:netlify-cli@*": "19.0.0_@opentelemetry+api@1.8.0_inquirer@8.0.0_@types+node@22.12.0_@netlify+blobs@8.1.1",
+    "npm:qrcode.react@^4.2.0": "4.2.0_react@19.0.0",
     "npm:react-dom@19": "19.0.0_react@19.0.0",
     "npm:react-router@^7.2.0": "7.2.0_react@19.0.0_react-dom@19.0.0__react@19.0.0",
     "npm:react@19": "19.0.0",
@@ -6579,6 +6580,12 @@
         "escape-goat"
       ]
     },
+    "qrcode.react@4.2.0_react@19.0.0": {
+      "integrity": "sha512-QpgqWi8rD9DsS9EP3z7BT+5lY5SFhsqGjpgW5DY/i3mK4M9DTBNz3ErMi8BWYEfI3L0d8GIbGmcdFAS1uIRGjA==",
+      "dependencies": [
+        "react"
+      ]
+    },
     "qs@6.13.0": {
       "integrity": "sha512-+38qI9SOr8tfZ4QmJNplMUxqjbe7LKvvZgWdExBOmd+egZTtjLB67Gu0HRX3u/XOq7UU2Nx6nsjvS16Z9uwfpg==",
       "dependencies": [
@@ -8429,6 +8436,7 @@
         "npm:eslint@^9.21.0",
         "npm:globals@^15.15.0",
         "npm:lucide-react@0.477",
+        "npm:qrcode.react@^4.2.0",
         "npm:react-dom@19",
         "npm:react-router@^7.2.0",
         "npm:react@19",
