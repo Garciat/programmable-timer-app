@@ -1,6 +1,8 @@
 :root {
   color-scheme: light dark;
 
+  --accent-color: #007bff;
+
   --window-color: light-dark(#fff, #000);
 
   --background-color: light-dark(#fff, #333);
@@ -12,7 +14,8 @@
   --background-color-off1: light-dark(#ccc, #222);
   --text-color-off1: light-dark(#000, #fff);
 
-  --accent-color: #007bff;
+  --background-color-accent: var(--accent-color);
+  --text-color-accent: #fff;
 
   --radius: 5px;
   --form-element-height: 2rem;
@@ -55,11 +58,6 @@ button, label:has(> input[type="radio"]), a.button {
   &:disabled, &.disabled {
     cursor: default;
     opacity: 0.3;
-  }
-
-  &.active {
-    background-color: var(--background-color-alt);
-    color: var(--text-color-alt);
   }
 
   > .lucide {

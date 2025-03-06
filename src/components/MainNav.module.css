@@ -1,0 +1,33 @@
+.main-nav {
+  padding: 0.25rem 1rem;
+  padding-bottom: max(0.25rem, env(safe-area-inset-bottom));
+  box-shadow: 0 0 0.5rem 0 rgba(0, 0, 0, 0.1);
+
+  --form-element-height: 2.5em;
+
+  > .link {
+    height: auto;
+    padding: 0.25em 0.5em;
+    background-color: transparent;
+    font-size: 0.8em;
+
+    color: var(--accent-color);
+
+    transition: all 0.2s;
+
+    svg {
+      margin-bottom: 0.25em;
+    }
+
+    &:not(.active) {
+      opacity: 0.5;
+      color: inherit;
+    }
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .main-nav {
+    font-size: 1.25rem;
+  }
+}

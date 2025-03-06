@@ -43,7 +43,6 @@ export function HomePage() {
         gap="2rem"
         className={stylesAll["content-frame"]}
       >
-        <MainNav />
         <PresetList presets={presets} />
         {presets.length === 0 && (
           <p style={{ textAlign: "center" }}>
@@ -51,6 +50,7 @@ export function HomePage() {
           </p>
         )}
       </VFrame>
+      <MainNav />
     </BaseLayout>
   );
 }

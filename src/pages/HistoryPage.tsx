@@ -32,11 +32,11 @@ export function HistoryPage() {
         gap="2rem"
         className={stylesAll["content-frame"]}
       >
-        <MainNav />
         <HStack gap="1rem">
           <Wrench /> <span>Work in progress!</span>
         </HStack>
       </VFrame>
+      <MainNav />
     </BaseLayout>
   );
 }

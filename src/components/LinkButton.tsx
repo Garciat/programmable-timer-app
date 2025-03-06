@@ -7,14 +7,13 @@ export interface LinkButtonProps {
   children: React.ReactNode;
   href: string;
   transitions?: string[];
-  active?: boolean;
   disabled?: boolean;
   className?: string;
   onBefore?: () => void | Promise<void>;
 }
 
 export function LinkButton(
-  { children, href, transitions, active, disabled, className, onBefore }:
+  { children, href, transitions, disabled, className, onBefore }:
     LinkButtonProps,
 ) {
   const navigate = useNavigateTransition();
@@ -34,9 +33,7 @@ export function LinkButton(
       href={href}
       role="button"
       onClick={handleClick}
-      className={`button ${ifClass(disabled, "disabled")} ${
-        ifClass(active, "active")
-      } ${className}`}
+      className={`button ${ifClass(disabled, "disabled")} ${className}`}
     >
       {children}
     </a>
