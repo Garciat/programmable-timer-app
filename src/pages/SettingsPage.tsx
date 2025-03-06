@@ -8,6 +8,7 @@ import {
   MoveLeft,
   Save,
   Speech,
+  Trash2,
   Wrench,
 } from "lucide-react";
 
@@ -549,7 +550,8 @@ function DeleteDataSubsection() {
       </HStack>
       <HStack gap="1rem" justify="flex-start">
         <button type="button" onClick={handleResetRequest}>
-          Delete All Data
+          <Trash2 />
+          <span>Delete All Data</span>
         </button>
       </HStack>
     </VStack>
@@ -592,12 +594,9 @@ function ServiceWorkersSubsection() {
       <HStack kind="header">
         <h3>Service Workers</h3>
       </HStack>
-      <pre>
-        {serviceWorkerRegistrations.map((registration) => registration.active?.scriptURL).join("\n") || "No Service Workers"}
-      </pre>
       <HStack gap="1rem" justify="flex-start">
         <button type="button" onClick={unregisterServiceWorkers}>
-          Unregister All
+          Unregister All ({serviceWorkerRegistrations.length})
         </button>
       </HStack>
     </VStack>

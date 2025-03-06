@@ -47,7 +47,7 @@ button, label:has(> input[type="radio"]), a.button {
   cursor: pointer;
   border: 0;
   border-radius: var(--radius);
-  padding: 0.25rem 1rem;
+  padding: 0.5rem 1rem;
   color: inherit;
   background-color: rgba(100, 100, 100, 0.5);
   font-size: 0.8em;
@@ -83,7 +83,8 @@ select, input {
   color: inherit;
   font-size: 0.8em;
 }
-select:focus, input:focus, button:focus {
+select:focus,
+input:not([type="range"]):not([type="radio"]):focus {
   outline: 0.2em solid var(--accent-color);
   border-color: var(--accent-color);
 }
