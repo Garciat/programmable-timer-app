@@ -8,6 +8,7 @@ import {
 } from "react";
 import {
   BookCheck,
+  Lightbulb,
   NotebookPen,
   Pause,
   Play,
@@ -20,6 +21,7 @@ import { DateTime } from "luxon";
 import { useAudioContext, useAudioContextState } from "lib/audio/context.tsx";
 import { HStack, VStack } from "lib/box/mod.ts";
 import { formatSeconds } from "lib/utils/time.ts";
+import { ReactWakeLock } from "lib/wake/mod.ts";
 import { openHistoryDB, saveHistoryRecord } from "src/app/history/db.ts";
 import { snapshotPreset } from "src/app/history/preset.ts";
 import { PlayerAction, PlayerDisplay, TimerPreset } from "src/app/types.ts";
@@ -48,6 +50,7 @@ export interface TimerPlayerProps {
 export function TimerPlayer({ preset, onColorChange }: TimerPlayerProps) {
   const [time, setTime] = useState(0);
   const [paused, setPaused] = useState(false);
+  const [hasWakeLock, setHasWakeLock] = useState(false);
 
   const resumePlayer = useCallback(() => {
     setPaused(false);
@@ -96,12 +99,22 @@ export function TimerPlayer({ preset, onColorChange }: TimerPlayerProps) {
     <CurrentPresetContext.Provider value={preset}>
       <VStack grow={1} alignItems="stretch" className={classes["timer-player"]}>
         {running && <IntervalManager onTick={tick} />}
+        {running && <ReactWakeLock onChanged={setHasWakeLock} />}
         <HStack kind="header" gap="1rem">
-          <IconButton icon={Play} disabled={running} onClick={resumePlayer} />
-          <IconButton icon={Pause} disabled={!running} onClick={pausePlayer} />
+          {running
+            ? <IconButton icon={Pause} onClick={pausePlayer} />
+            : <IconButton icon={Play} onClick={resumePlayer} />}
           <IconButton icon={RotateCcw} onClick={resetPlayer} />
           <IconButton icon={SkipBack} onClick={skipBack} />
           <IconButton icon={SkipForward} onClick={skipForward} />
+          <IconButton
+            icon={Lightbulb}
+            disabled={!hasWakeLock}
+            onClick={() =>
+              alert(
+                "This lightbulb means your screen will stay on while the preset is playing.",
+              )}
+          />
         </HStack>
         <ActionsRenderer
           actions={actions}
