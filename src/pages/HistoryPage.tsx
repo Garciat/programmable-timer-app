@@ -1,18 +1,14 @@
-import { Calculator, Menu, Plus, Timer } from "lucide-react";
+import { Calculator, Menu, Timer, Wrench } from "lucide-react";
 
-import { VFrame } from "lib/box/mod.ts";
-import { useAppPresets } from "src/state/context.tsx";
+import { HStack, VFrame } from "lib/box/mod.ts";
+import { BaseLayout } from "src/pages/BaseLayout.tsx";
 import { IconButton } from "src/components/IconButton.tsx";
 import { MainNav } from "src/components/MainNav.tsx";
-import { PresetList } from "src/components/PresetList.tsx";
 import { TitleBar } from "src/components/TitleBar.tsx";
-import { BaseLayout } from "src/pages/BaseLayout.tsx";
 
 import stylesAll from "src/pages/all.module.css";
 
-export function HomePage() {
-  const presets = useAppPresets();
-
+export function HistoryPage() {
   return (
     <BaseLayout title="Programmable Timer">
       <TitleBar
@@ -29,13 +25,6 @@ export function HomePage() {
             <Timer size={24} />
           </>
         }
-        right={
-          <IconButton
-            icon={Plus}
-            href="/new"
-            transitions={["from-right"]}
-          />
-        }
       />
       <VFrame
         alignItems="stretch"
@@ -44,12 +33,9 @@ export function HomePage() {
         className={stylesAll["content-frame"]}
       >
         <MainNav />
-        <PresetList presets={presets} />
-        {presets.length === 0 && (
-          <p style={{ textAlign: "center" }}>
-            No presets yet. Click the plus button to create one.
-          </p>
-        )}
+        <HStack gap="1rem">
+          <Wrench /> <span>Work in progress!</span>
+        </HStack>
       </VFrame>
     </BaseLayout>
   );
