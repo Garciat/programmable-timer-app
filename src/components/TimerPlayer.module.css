@@ -23,5 +23,7 @@
 }
 
 .timer-finished-display {
-  font-size: 6rem;
+  > header {
+    font-size: 2rem;
+  }
 }

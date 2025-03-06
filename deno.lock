@@ -4,6 +4,7 @@
     "jsr:@std/assert@*": "1.0.11",
     "jsr:@std/internal@^1.0.5": "1.0.5",
     "npm:@eslint/js@^9.21.0": "9.21.0",
+    "npm:@types/luxon@^3.4.2": "3.4.2",
     "npm:@types/node@*": "22.12.0",
     "npm:@types/react-dom@^19.0.4": "19.0.4_@types+react@19.0.10",
     "npm:@types/react@^19.0.10": "19.0.10",
@@ -12,7 +13,9 @@
     "npm:eslint-plugin-react-refresh@~0.4.19": "0.4.19_eslint@9.21.0",
     "npm:eslint@^9.21.0": "9.21.0",
     "npm:globals@^15.15.0": "15.15.0",
+    "npm:idb@^8.0.2": "8.0.2",
     "npm:lucide-react@0.477": "0.477.0_react@19.0.0",
+    "npm:luxon@^3.5.0": "3.5.0",
     "npm:netlify-cli@*": "19.0.0_@opentelemetry+api@1.8.0_inquirer@8.0.0_@types+node@22.12.0_@netlify+blobs@8.1.1",
     "npm:qrcode.react@^4.2.0": "4.2.0_react@19.0.0",
     "npm:react-dom@19": "19.0.0_react@19.0.0",
@@ -2166,6 +2169,9 @@
     },
     "@types/json-schema@7.0.15": {
       "integrity": "sha512-5+fP8P8MFNC+AyZCDxrB2pkZFPGzqQWUzpSeuuVLvm8VMcorNYavBqoFcxK8bQz4Qsbn4oUEEem4wDLfcysGHA=="
+    },
+    "@types/luxon@3.4.2": {
+      "integrity": "sha512-TifLZlFudklWlMBfhubvgqTXRzLDI5pCbGa4P8a3wPyUQSW+1xQ5eDsreP9DWHX3tjq1ke96uYG/nwundroWcA=="
     },
     "@types/node@22.12.0": {
       "integrity": "sha512-Fll2FZ1riMjNmlmJOdAyY5pUbkftXslB5DgEzlIuNaiWhXd00FhWxVC/r4yV/4wBb9JfImTu+jiSvXTkJ7F/gA==",
@@ -4840,6 +4846,9 @@
     },
     "idb@7.1.1": {
       "integrity": "sha512-gchesWBzyvGHRO9W8tzUWFDycow5gwjvFKfyV9FF32Y7F50yZMp7mP+T2mJIWFx49zicqyC4uefHM17o6xKIVQ=="
+    },
+    "idb@8.0.2": {
+      "integrity": "sha512-CX70rYhx7GDDQzwwQMDwF6kDRQi5vVs6khHUumDrMecBylKkwvZ8HWvKV08AGb7VbpoGCWUQ4aHzNDgoUiOIUg=="
     },
     "ieee754@1.2.1": {
       "integrity": "sha512-dcyqhDvX1C46lXZcVqCpK+FtMRQVdIMN6/Df5js2zouUsqG7I6sFxitIC+7KYK29KdXOLHdu9zL4sFnoVQnqaA=="
@@ -8179,7 +8188,7 @@
     "workbox-background-sync@7.3.0": {
       "integrity": "sha512-PCSk3eK7Mxeuyatb22pcSx9dlgWNv3+M8PqPaYDokks8Y5/FX4soaOqj3yhAZr5k6Q5JWTOMYgaJBpbw11G9Eg==",
       "dependencies": [
-        "idb",
+        "idb@7.1.1",
         "workbox-core"
       ]
     },
@@ -8243,7 +8252,7 @@
     "workbox-expiration@7.3.0": {
       "integrity": "sha512-lpnSSLp2BM+K6bgFCWc5bS1LR5pAwDWbcKt1iL87/eTSJRdLdAwGQznZE+1czLgn/X05YChsrEegTNxjM067vQ==",
       "dependencies": [
-        "idb",
+        "idb@7.1.1",
         "workbox-core"
       ]
     },
@@ -8428,6 +8437,7 @@
     "packageJson": {
       "dependencies": [
         "npm:@eslint/js@^9.21.0",
+        "npm:@types/luxon@^3.4.2",
         "npm:@types/react-dom@^19.0.4",
         "npm:@types/react@^19.0.10",
         "npm:@vitejs/plugin-react@^4.3.4",
@@ -8435,7 +8445,9 @@
         "npm:eslint-plugin-react-refresh@~0.4.19",
         "npm:eslint@^9.21.0",
         "npm:globals@^15.15.0",
+        "npm:idb@^8.0.2",
         "npm:lucide-react@0.477",
+        "npm:luxon@^3.5.0",
         "npm:qrcode.react@^4.2.0",
         "npm:react-dom@19",
         "npm:react-router@^7.2.0",

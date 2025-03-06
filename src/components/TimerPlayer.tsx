@@ -1,9 +1,27 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { Pause, Play, RotateCcw, SkipBack, SkipForward } from "lucide-react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
+import {
+  BookCheck,
+  NotebookPen,
+  Pause,
+  Play,
+  RotateCcw,
+  SkipBack,
+  SkipForward,
+} from "lucide-react";
+import { DateTime } from "luxon";
 
 import { useAudioContext, useAudioContextState } from "lib/audio/context.tsx";
 import { HStack, VStack } from "lib/box/mod.ts";
 import { formatSeconds } from "lib/utils/time.ts";
+import { openHistoryDB, saveHistoryRecord } from "src/app/history/db.ts";
+import { snapshotPreset } from "src/app/history/preset.ts";
 import { PlayerAction, PlayerDisplay, TimerPreset } from "src/app/types.ts";
 import { actionsAtTime, timeForRelativePeriod } from "src/app/actions.ts";
 import { duration, flatten } from "src/app/flatten.ts";
@@ -11,6 +29,16 @@ import { useAppSettingsVoice, useAppSoundSettings } from "src/state/utils.ts";
 import { IconButton } from "src/components/IconButton.tsx";
 
 import classes from "src/components/TimerPlayer.module.css";
+
+const CurrentPresetContext = createContext<TimerPreset | null>(null);
+
+function useCurrentPreset() {
+  const context = useContext(CurrentPresetContext);
+  if (!context) {
+    throw new Error("useCurrentPreset must be used within a TimerPlayer");
+  }
+  return context;
+}
 
 export interface TimerPlayerProps {
   preset: TimerPreset;
@@ -65,27 +93,29 @@ export function TimerPlayer({ preset, onColorChange }: TimerPlayerProps) {
   const running = !paused && !done;
 
   return (
-    <VStack grow={1} alignItems="stretch" className={classes["timer-player"]}>
-      {running && <IntervalManager onTick={tick} />}
-      <HStack kind="header" gap="1rem">
-        <IconButton icon={Play} disabled={running} onClick={resumePlayer} />
-        <IconButton icon={Pause} disabled={!running} onClick={pausePlayer} />
-        <IconButton icon={RotateCcw} onClick={resetPlayer} />
-        <IconButton icon={SkipBack} onClick={skipBack} />
-        <IconButton icon={SkipForward} onClick={skipForward} />
-      </HStack>
-      <ActionsRenderer
-        actions={actions}
-        active={!paused}
-        onColorChange={onColorChange}
-      />
-      <VStack kind="footer">
-        <progress
-          value={time}
-          max={presetDuration}
+    <CurrentPresetContext.Provider value={preset}>
+      <VStack grow={1} alignItems="stretch" className={classes["timer-player"]}>
+        {running && <IntervalManager onTick={tick} />}
+        <HStack kind="header" gap="1rem">
+          <IconButton icon={Play} disabled={running} onClick={resumePlayer} />
+          <IconButton icon={Pause} disabled={!running} onClick={pausePlayer} />
+          <IconButton icon={RotateCcw} onClick={resetPlayer} />
+          <IconButton icon={SkipBack} onClick={skipBack} />
+          <IconButton icon={SkipForward} onClick={skipForward} />
+        </HStack>
+        <ActionsRenderer
+          actions={actions}
+          active={!paused}
+          onColorChange={onColorChange}
         />
+        <VStack kind="footer">
+          <progress
+            value={time}
+            max={presetDuration}
+          />
+        </VStack>
       </VStack>
-    </VStack>
+    </CurrentPresetContext.Provider>
   );
 }
 
@@ -234,9 +264,45 @@ function DisplayActionRenderer(
 }
 
 function FinishedActionRenderer() {
+  const preset = useCurrentPreset();
+  const [saved, setSaved] = useState(false);
+
+  const handleSave = useCallback(async () => {
+    const db = await openHistoryDB();
+    try {
+      await saveHistoryRecord(db, {
+        presetId: preset.id,
+        presetName: preset.name,
+        presetDuration: duration(preset.root),
+        completedAt: DateTime.utc().toJSDate(),
+        tags: [],
+        data: {},
+        presetSnapshot: snapshotPreset(preset),
+      });
+      setSaved(true);
+    } finally {
+      db.close();
+    }
+  }, [preset.id, preset.name, preset.root]);
+
   return (
-    <VStack grow={1} className={classes["timer-finished-display"]}>
-      Finished
+    <VStack grow={1} gap="2rem" className={classes["timer-finished-display"]}>
+      <header>
+        <h1>Finished</h1>
+      </header>
+      {saved
+        ? (
+          <button type="button">
+            <BookCheck />
+            <span>Saved!</span>
+          </button>
+        )
+        : (
+          <button type="button" onClick={handleSave}>
+            <NotebookPen />
+            <span>Save</span>
+          </button>
+        )}
     </VStack>
   );
 }
