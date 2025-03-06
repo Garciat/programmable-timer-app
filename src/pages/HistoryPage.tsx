@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   BookCheck,
-  BookX,
   Calculator,
   Clock3,
   Menu,
@@ -105,11 +104,8 @@ export function HistoryPage() {
         className={`${stylesAll["content-frame"]} ${styles["history-frame"]}`}
       >
         {records.length === 0 && (
-          <HStack gap="1rem">
-            <BookX />{" "}
-            <span>
-              You haven't saved any preset completions yet. Get working!
-            </span>
+          <HStack gap="1rem" style={{ textAlign: "center" }}>
+            <p>You haven't saved any preset completions yet. Get working!</p>
           </HStack>
         )}
 

@@ -18,6 +18,7 @@ import { unique } from "lib/utils/array.ts";
 import { switching } from "lib/utils/switch.ts";
 import { trying } from "lib/utils/exceptions.ts";
 import { useSpeechSynthesisVoices, VoiceInfo } from "lib/utils/tts.ts";
+import { deleteHistoryDB } from "src/app/history/db.ts";
 import { useInstallPrompt } from "src/transient/install.tsx";
 import { useAppSettings } from "src/state/context.tsx";
 import { DEFAULT_APP_STATE } from "src/state/default.ts";
@@ -536,9 +537,10 @@ function AdvancedSection() {
 function DeleteDataSubsection() {
   const reset = useAppSettingsReset();
 
-  const handleResetRequest = useCallback(() => {
+  const handleResetRequest = useCallback(async () => {
     if (globalThis.confirm("Are you sure you want to delete all data?")) {
       reset();
+      await deleteHistoryDB();
       globalThis.alert("All data has been deleted.");
     }
   }, [reset]);

@@ -1,4 +1,4 @@
-import { DBSchema, IDBPDatabase, openDB } from "idb";
+import { DBSchema, deleteDB, IDBPDatabase, openDB } from "idb";
 
 import { HistoryRecord } from "src/app/history/types.ts";
 
@@ -71,4 +71,8 @@ export async function getAllRecordsByDateAsc(
 
 export async function deleteRecord(db: Conn, recordId: string): Promise<void> {
   await db.delete("records", recordId);
+}
+
+export async function deleteHistoryDB(): Promise<void> {
+  await deleteDB(DB_NAME);
 }

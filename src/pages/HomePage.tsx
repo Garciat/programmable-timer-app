@@ -43,12 +43,12 @@ export function HomePage() {
         gap="2rem"
         className={stylesAll["content-frame"]}
       >
-        <PresetList presets={presets} />
         {presets.length === 0 && (
           <p style={{ textAlign: "center" }}>
             No presets yet. Click the plus button to create one.
           </p>
         )}
+        <PresetList presets={presets} />
       </VFrame>
       <MainNav />
     </BaseLayout>
