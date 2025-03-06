@@ -25,8 +25,8 @@ export function HomePage() {
         }
         middle={
           <>
-            <Calculator size={24} />
-            <Timer size={24} />
+            <Calculator size="1.5rem" />
+            <Timer size="1.5rem" />
           </>
         }
         right={
