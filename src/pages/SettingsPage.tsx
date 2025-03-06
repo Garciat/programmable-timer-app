@@ -569,6 +569,9 @@ function ServiceWorkersSubsection() {
   >([]);
 
   useEffect(() => {
+    if (!globalThis.navigator.serviceWorker) {
+      return;
+    }
     globalThis.navigator.serviceWorker.getRegistrations().then(
       (registrations) => {
         setServiceWorkerRegistrations(registrations);
@@ -577,6 +580,10 @@ function ServiceWorkersSubsection() {
   }, []);
 
   const unregisterServiceWorkers = useCallback(async () => {
+    if (!globalThis.navigator.serviceWorker) {
+      alert("Service Workers are not supported in this browser.");
+      return;
+    }
     const registrations = await globalThis.navigator.serviceWorker
       .getRegistrations();
     for (const registration of registrations) {
