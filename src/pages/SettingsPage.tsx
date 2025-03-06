@@ -16,7 +16,7 @@ import { HStack, VFrame, VStack } from "lib/box/mod.ts";
 import { unique } from "lib/utils/array.ts";
 import { switching } from "lib/utils/switch.ts";
 import { trying } from "lib/utils/exceptions.ts";
-import { useSpeechSynthesisVoices } from "lib/utils/tts.ts";
+import { useSpeechSynthesisVoices, VoiceInfo } from "lib/utils/tts.ts";
 import { useInstallPrompt } from "src/transient/install.tsx";
 import { useAppSettings } from "src/state/context.tsx";
 import { DEFAULT_APP_STATE } from "src/state/default.ts";
@@ -302,18 +302,8 @@ function VoiceSettings(
   const voices = useSpeechSynthesisVoices();
 
   const voice = useMemo(
-    () => voices.find((voice) => voice.voiceURI === voiceURI),
+    () => voices.find((voice) => voice.ref.voiceURI === voiceURI),
     [voices, voiceURI],
-  );
-
-  const voicesInfo = useMemo(
-    () =>
-      voices.map((voice) => {
-        // Android Chrome uses underscores, but Intl.DisplayNames uses hyphens
-        const [lang, region] = voice.lang.replace("_", "-").split("-");
-        return { voice, lang, region };
-      }),
-    [voices],
   );
 
   const languageNames = useMemo(
@@ -327,26 +317,26 @@ function VoiceSettings(
   );
 
   const voiceLangs = useMemo(
-    () => unique(voicesInfo.map((info) => info.lang)),
-    [voicesInfo],
+    () => unique(voices.map((voice) => voice.localeLanguage)),
+    [voices],
   );
 
   const selectedLangVoicesByRegion = useMemo(
     () => {
-      const map = new Map<string, SpeechSynthesisVoice[]>();
-      for (const { voice, lang, region } of voicesInfo) {
-        if (lang === selectedVoiceLang) {
-          const regionVoices = map.get(region) ?? [];
-          map.set(region, [...regionVoices, voice]);
+      const map = new Map<string, VoiceInfo[]>();
+      for (const voice of voices) {
+        if (voice.localeLanguage === selectedVoiceLang) {
+          const regionVoices = map.get(voice.localeRegion) ?? [];
+          map.set(voice.localeRegion, [...regionVoices, voice]);
         }
       }
       return map;
     },
-    [voicesInfo, selectedVoiceLang],
+    [voices, selectedVoiceLang],
   );
 
   useEffect(() => {
-    setSelectedVoiceLang(voice?.lang.split("-")[0] ?? userLang);
+    setSelectedVoiceLang(voice?.localeLanguage ?? userLang);
   }, [voice]);
 
   const handleLangChange = useCallback((value: string) => {
@@ -360,7 +350,8 @@ function VoiceSettings(
   const testSpeechSynthesis = useCallback(() => {
     if (voice) {
       const utterance = new SpeechSynthesisUtterance(testSpeechText);
-      utterance.voice = voice;
+      utterance.voice = voice.ref;
+      utterance.lang = voice.locale;
       globalThis.speechSynthesis.cancel();
       globalThis.speechSynthesis.speak(utterance);
 
@@ -399,7 +390,7 @@ function VoiceSettings(
           <h3>Voice</h3>
         </HStack>
         <select
-          value={voice?.voiceURI}
+          value={voice?.ref?.voiceURI}
           onChange={(e) => handleVoiceChange(e.target.value)}
         >
           <option value="">Select a voice</option>
@@ -414,10 +405,13 @@ function VoiceSettings(
                   }`}
                 >
                   {voices
-                    .toSorted((a, b) => a.name.localeCompare(b.name))
+                    .toSorted((a, b) => a.ref.name.localeCompare(b.ref.name))
                     .map((voice) => (
-                      <option key={voice.voiceURI} value={voice.voiceURI}>
-                        {voice.name}
+                      <option
+                        key={voice.ref.voiceURI}
+                        value={voice.ref.voiceURI}
+                      >
+                        {voice.ref.name}
                       </option>
                     ))}
                 </optgroup>

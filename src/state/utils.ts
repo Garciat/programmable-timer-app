@@ -22,23 +22,21 @@ export function useAppSettingsVoice(): SpeechSynthesisVoice | null {
 
   const defaultVoice = useMemo(
     () => {
-      const defaultVoice = voices.filter((voice) => voice.default);
+      const defaultVoice = voices.filter((voice) => voice.ref.default);
       if (defaultVoice.length === 1) {
         // OK in Chrome/Firefox, but Safari sets all voices to default
         return defaultVoice[0];
       }
-
-      return null;
     },
     [voices],
   );
 
   const settingsVoice = useMemo(
-    () => voices.find((voice) => voice.voiceURI === settings.ttsVoiceURI),
+    () => voices.find((voice) => voice.ref.voiceURI === settings.ttsVoiceURI),
     [voices, settings.ttsVoiceURI],
   );
 
-  return settingsVoice ?? defaultVoice;
+  return settingsVoice?.ref ?? defaultVoice?.ref ?? null;
 }
 
 export function useAppSoundSettings(): UserSoundSettings {

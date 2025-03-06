@@ -1,7 +1,14 @@
 import { useEffect, useState } from "react";
 
+export interface VoiceInfo {
+  ref: SpeechSynthesisVoice;
+  locale: string;
+  localeLanguage: string;
+  localeRegion: string;
+}
+
 export function useSpeechSynthesisVoices() {
-  const [voices, setVoices] = useState<SpeechSynthesisVoice[]>(
+  const [voices, setVoices] = useState<VoiceInfo[]>(
     () => cleanVoices(globalThis.speechSynthesis.getVoices()),
   );
 
@@ -29,7 +36,23 @@ export function useSpeechSynthesisVoices() {
 }
 
 function cleanVoices(voices: SpeechSynthesisVoice[]) {
-  return dedupeVoicesByURI(filterOutBadVoices(voices));
+  const out: VoiceInfo[] = [];
+
+  for (const voice of dedupeVoicesByURI(filterOutBadVoices(voices))) {
+    // Android Chrome uses underscores for some reason
+    const [localeLanguage, localeRegion] = voice.lang.replace("_", "-").split(
+      "-",
+    );
+
+    out.push({
+      ref: voice,
+      locale: voice.lang,
+      localeLanguage,
+      localeRegion,
+    });
+  }
+
+  return out;
 }
 
 // Safari likes to duplicate voices by URI, so we dedupe them
