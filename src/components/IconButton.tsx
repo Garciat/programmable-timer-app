@@ -3,7 +3,7 @@ import type { FileQuestion } from "lucide-react";
 
 import { useNavigateTransition } from "lib/utils/transition.ts";
 
-import styles from "./IconButton.module.css";
+import styles from "src/components/IconButton.module.css";
 
 export interface IconButtonProps {
   icon: typeof FileQuestion;

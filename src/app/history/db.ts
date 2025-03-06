@@ -68,3 +68,7 @@ export async function getAllRecordsByDateAsc(
 ): Promise<HistoryRecord[]> {
   return await db.getAllFromIndex("records", "by-completedAt");
 }
+
+export async function deleteRecord(db: Conn, recordId: string): Promise<void> {
+  await db.delete("records", recordId);
+}

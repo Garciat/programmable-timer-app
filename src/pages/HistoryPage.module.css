@@ -1,0 +1,32 @@
+.history-frame {
+  align-items: stretch;
+  justify-content: flex-start;
+  gap: 2rem;
+
+  > section {
+    align-items: stretch;
+    justify-content: flex-start;
+    gap: 0.5rem;
+
+    > header {
+      justify-content: flex-start;
+    }
+
+    > article {
+      justify-content: flex-start;
+      gap: 0.5rem;
+
+      > * {
+        gap: 0.25rem;
+      }
+    }
+  }
+}
+
+.record-time {
+  font-variant-numeric: tabular-nums;
+}
+.delete-button {
+  --form-element-height: 1.5rem;
+  padding: 0.25rem;
+}

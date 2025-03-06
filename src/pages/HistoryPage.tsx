@@ -1,16 +1,21 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   BookCheck,
   BookX,
   Calculator,
   Clock3,
-  Hourglass,
   Menu,
   Timer,
+  Trash2,
 } from "lucide-react";
 import { DateTime } from "luxon";
 
 import { HStack, VFrame, VStack } from "lib/box/mod.ts";
+import {
+  deleteRecord,
+  getAllRecordsByDateAsc,
+  openHistoryDB,
+} from "src/app/history/db.ts";
 import { HistoryRecord } from "src/app/history/types.ts";
 import { BaseLayout } from "src/pages/BaseLayout.tsx";
 import { IconButton } from "src/components/IconButton.tsx";
@@ -18,19 +23,18 @@ import { MainNav } from "src/components/MainNav.tsx";
 import { TitleBar } from "src/components/TitleBar.tsx";
 
 import stylesAll from "src/pages/all.module.css";
-import { getAllRecordsByDateAsc, openHistoryDB } from "src/app/history/db.ts";
-import { formatSeconds } from "lib/utils/time.ts";
+import styles from "src/pages/HistoryPage.module.css";
 
 export function HistoryPage() {
   const [records, setRecords] = useState<HistoryRecord[]>([]);
 
-  useEffect(() => {
-    const fetchRecords = async () => {
-      const db = await openHistoryDB();
-      const allRecords = await getAllRecordsByDateAsc(db);
-      setRecords(allRecords);
-    };
+  const fetchRecords = async () => {
+    const db = await openHistoryDB();
+    const allRecords = await getAllRecordsByDateAsc(db);
+    setRecords(allRecords);
+  };
 
+  useEffect(() => {
     fetchRecords();
   }, []);
 
@@ -50,8 +54,6 @@ export function HistoryPage() {
         millisecond: 0,
       }).toISO();
 
-      console.log(date);
-
       if (!map.has(date)) {
         map.set(date, []);
       }
@@ -60,6 +62,15 @@ export function HistoryPage() {
 
     return Array.from(map.entries()).sort(([a], [b]) => b.localeCompare(a));
   }, [records]);
+
+  const handleDeleteRecord = useCallback(async (recordId: string) => {
+    if (!confirm("Are you sure you want to delete this record?")) {
+      return;
+    }
+    const db = await openHistoryDB();
+    await deleteRecord(db, recordId);
+    await fetchRecords();
+  }, []);
 
   const dateFormat = new Intl.DateTimeFormat(navigator.language, {
     year: "numeric",
@@ -91,10 +102,7 @@ export function HistoryPage() {
         }
       />
       <VFrame
-        alignItems="stretch"
-        justify="flex-start"
-        gap="2rem"
-        className={stylesAll["content-frame"]}
+        className={`${stylesAll["content-frame"]} ${styles["history-frame"]}`}
       >
         {records.length === 0 && (
           <HStack gap="1rem">
@@ -106,33 +114,39 @@ export function HistoryPage() {
         )}
 
         {recordsByDateDesc.map(([date, records]) => (
-          <VStack
-            key={date}
-            alignItems="stretch"
-            justify="flex-start"
-            gap="0.5rem"
-          >
-            <HStack justify="flex-start" gap="1rem">
+          <VStack key={date} kind="section">
+            <HStack kind="header">
               <span style={{ opacity: "0.6" }}>
                 {dateFormat.format(Date.parse(date))}
               </span>
             </HStack>
             {records.map((record) => (
-              <HStack justify="flex-start" gap="1rem">
-                <HStack gap="0.5rem">
+              <HStack
+                key={record.recordId}
+                kind="article"
+                justify="flex-start"
+                gap="1rem"
+              >
+                <HStack className={styles["record-time"]}>
                   <Clock3 size="1rem" />
                   <span>{timeFormat.format(record.completedAt)}</span>
                 </HStack>
-                <HStack gap="0.5rem">
-                  <Hourglass size="1rem" />
-                  <span>{formatSeconds(record.presetDuration)}</span>
-                </HStack>
-                <HStack gap="0.5rem">
+                <HStack>
                   <BookCheck
                     size="1rem"
                     style={{ color: "var(--accent-color)" }}
                   />
                   <span>{record.presetName}</span>
+                </HStack>
+                <HStack grow={1} />
+                <HStack>
+                  <button
+                    type="button"
+                    onClick={() => handleDeleteRecord(record.recordId)}
+                    className={styles["delete-button"]}
+                  >
+                    <Trash2 size="0.5rem" />
+                  </button>
                 </HStack>
               </HStack>
             ))}
