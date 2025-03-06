@@ -7,6 +7,7 @@ export default defineConfig({
   plugins: [
     react(),
     VitePWA({
+      includeAssets: ["robots.txt", "pwa/*.png"],
       manifest: {
         name: "Programmable Timer",
         short_name: "Timer",
@@ -25,40 +26,40 @@ export default defineConfig({
         background_color: "#000000",
         icons: [
           {
-            src: "icon-192x192.png",
+            src: "pwa/icon-192x192.png",
             sizes: "192x192",
             type: "image/png",
           },
           {
-            src: "icon-512x512.png",
+            src: "pwa/icon-512x512.png",
             sizes: "512x512",
             type: "image/png",
           },
         ],
         screenshots: [
           {
-            src: "screenshot-wide-1.png",
+            src: "pwa/screenshot-wide-1.png",
             type: "image/png",
             sizes: "1280x720",
             form_factor: "wide",
             label: "Home screen",
           },
           {
-            src: "screenshot-wide-2.png",
+            src: "pwa/screenshot-wide-2.png",
             type: "image/png",
             sizes: "1280x720",
             form_factor: "wide",
             label: "Running timer",
           },
           {
-            src: "screenshot-narrow-1.png",
+            src: "pwa/screenshot-narrow-1.png",
             type: "image/png",
             sizes: "800x1200",
             form_factor: "narrow",
             label: "Home screen",
           },
           {
-            src: "screenshot-narrow-2.png",
+            src: "pwa/screenshot-narrow-2.png",
             type: "image/png",
             sizes: "800x1200",
             form_factor: "narrow",
