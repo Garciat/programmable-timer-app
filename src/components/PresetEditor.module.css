@@ -4,6 +4,8 @@
   align-items: stretch;
   justify-content: flex-start;
   gap: 1rem;
+
+  --form-element-height: 1.5rem;
 }
 
 .sequence-editor {
@@ -73,6 +75,9 @@
   gap: 0.5rem;
 }
 .sequence-editor > footer > button {
+  height: 2rem;
+  width: auto;
+  aspect-ratio: 1;
   border-radius: 50%;
   padding: 0.5rem;
 }
@@ -126,6 +131,10 @@
 
   min-width: 6ch;
   font-size: 2rem;
+
+  > .separator {
+    z-index: 1;
+  }
 }
 .seconds-editor-button {
   display: flex;
@@ -143,6 +152,7 @@
   width: 2ch;
   border: 0;
   padding: 0;
+  border-radius: var(--radius);
   background-color: transparent;
   color: inherit;
   font-size: inherit;
@@ -178,16 +188,24 @@
 }
 
 .color-picker {
+  box-sizing: border-box;
   display: flex;
   flex-direction: row;
-  align-items: center;
+  align-items: stretch;
   justify-content: center;
   gap: 0.25rem;
+  height: var(--form-element-height);
 
   cursor: pointer;
   padding: 0.25rem;
   border-radius: var(--radius);
   background: rgba(100, 100, 100, 0.5);
+
+  > .icon {
+    height: 100%;
+    width: auto;
+    aspect-ratio: 1;
+  }
 }
 
 .color-input {
@@ -199,14 +217,10 @@
   border: 0;
   cursor: pointer;
   padding: 0;
-  width: 1rem;
-  height: 1rem;
+  height: 100%;
+  width: auto;
+  aspect-ratio: 1;
   border-radius: var(--radius);
-}
-
-.color-input:focus {
-  border-radius: var(--radius);
-  outline: none;
 }
 
 .color-input::-webkit-color-swatch-wrapper {

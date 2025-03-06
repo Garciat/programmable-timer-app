@@ -3,9 +3,10 @@ import type { FileQuestion } from "lucide-react";
 
 import { useNavigateTransition } from "lib/utils/transition.ts";
 
+import styles from "./IconButton.module.css";
+
 export interface IconButtonProps {
   icon: typeof FileQuestion;
-  size?: number;
   href?: string;
   transitions?: string[];
   disabled?: boolean;
@@ -13,7 +14,7 @@ export interface IconButtonProps {
 }
 
 export function IconButton(
-  { icon, size, href, transitions, disabled, onClick }: IconButtonProps,
+  { icon, href, transitions, disabled, onClick }: IconButtonProps,
 ) {
   const navigate = useNavigateTransition();
 
@@ -31,8 +32,9 @@ export function IconButton(
       type="button"
       disabled={disabled}
       onClick={handleClick}
+      className={styles["icon-button"]}
     >
-      <Icon size={size ?? 24} />
+      <Icon className={styles["icon"]} />
     </button>
   );
 }

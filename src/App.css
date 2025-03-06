@@ -12,7 +12,10 @@
   --background-color-off1: light-dark(#ccc, #222);
   --text-color-off1: light-dark(#000, #fff);
 
+  --accent-color: #007bff;
+
   --radius: 5px;
+  --form-element-height: 2rem;
 }
 
 body {
@@ -28,4 +31,55 @@ body {
     sans-serif,
     Apple Color Emoji,
     Segoe UI Emoji;
+}
+
+button, label:has(> input[type="radio"]) {
+  height: var(--form-element-height);
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+
+  cursor: pointer;
+  border: 0;
+  border-radius: var(--radius);
+  padding: 0.25rem 1rem;
+  color: inherit;
+  background-color: rgba(100, 100, 100, 0.5);
+  font-size: 0.8em;
+
+  transition: opacity 0.2s;
+
+  &:disabled {
+    cursor: default;
+    opacity: 0.3;
+  }
+
+  > .lucide {
+    height: 100%;
+    width: auto;
+    aspect-ratio: 1;
+  }
+
+  > input[type="radio"] {
+    cursor: pointer;
+    margin: 0;
+  }
+}
+
+select, input {
+  box-sizing: border-box;
+  height: var(--form-element-height);
+
+  padding: 0 0.5rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--text-color);
+  background-color: transparent;
+  color: inherit;
+  font-size: 0.8em;
+}
+select:focus, input:focus, button:focus {
+  outline: 0.2em solid var(--accent-color);
+  border-color: var(--accent-color);
 }

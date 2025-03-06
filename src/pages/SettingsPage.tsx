@@ -213,7 +213,7 @@ function SoundSettings(
       value: typeof settings.beepWaveform;
     },
   ) => (
-    <label className={styles["radio-option"]}>
+    <label>
       <span>{props.name}</span>
       <input
         type="radio"
@@ -489,10 +489,7 @@ function InstallAppSubsection() {
 
   const installButton = switching(installationState, {
     installed: () => (
-      <button
-        type="button"
-        className={`${styles["install-button"]} ${styles["disabled"]}`}
-      >
+      <button type="button">
         <MonitorCheck />
         <span>Installed!</span>
       </button>
@@ -501,17 +498,13 @@ function InstallAppSubsection() {
       <button
         type="button"
         onClick={handleInstallRequest}
-        className={`${styles["install-button"]}`}
       >
         <MonitorDown />
         <span>Install</span>
       </button>
     ),
     unavailable: () => (
-      <button
-        type="button"
-        className={`${styles["install-button"]} ${styles["disabled"]}`}
-      >
+      <button type="button">
         <MonitorX />
         <span>Cannot prompt app installation</span>
       </button>

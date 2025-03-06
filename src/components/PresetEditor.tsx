@@ -24,6 +24,7 @@ import {
 import { duration } from "src/app/flatten.ts";
 
 import classes from "src/components/PresetEditor.module.css";
+import { IconButton } from "src/components/IconButton.tsx";
 
 export interface PresetEditorProps {
   preset: TimerPreset;
@@ -110,8 +111,6 @@ function SequenceEditor(
     onChange({ ...timer, elements });
   }, [onChange, timer]);
 
-  const buttonSize = 16;
-
   const getItemColor = useCallback((timer: TimerElement) => {
     if (timer.kind === "period" && timer.color) {
       return {
@@ -137,30 +136,22 @@ function SequenceEditor(
               />
             </div>
             <footer>
-              <button
-                type="button"
+              <IconButton
+                icon={Repeat}
                 onClick={() => loopElement(index)}
-              >
-                <Repeat size={buttonSize} />
-              </button>
-              <button
-                type="button"
+              />
+              <IconButton
+                icon={Trash2}
                 onClick={() => removeElement(index)}
-              >
-                <Trash2 size={buttonSize} />
-              </button>
-              <button
-                type="button"
+              />
+              <IconButton
+                icon={ChevronUp}
                 onClick={() => moveElement(index, -1)}
-              >
-                <ChevronUp size={buttonSize} />
-              </button>
-              <button
-                type="button"
+              />
+              <IconButton
+                icon={ChevronDown}
                 onClick={() => moveElement(index, 1)}
-              >
-                <ChevronDown size={buttonSize} />
-              </button>
+              />
             </footer>
           </div>
         ))}
@@ -197,7 +188,7 @@ function LoopEditor(
     <div className={classes["loop-editor"]}>
       <header className={classes["loop-editor-header"]}>
         <div className={classes["loop-editor-label"]}>
-          <Repeat size={16} />
+          <Repeat size={24} />
         </div>
         <NumberEditor value={timer.count} min={1} onChange={updateCount} />
       </header>
@@ -239,7 +230,7 @@ function PeriodEditor(
           onChange={(event) => updateName(event.target.value)}
         />
         <label className={classes["color-picker"]}>
-          <Palette size={16} />
+          <Palette className={classes["icon"]} />
           <input
             type="color"
             value={timer.color}
@@ -285,25 +276,13 @@ function SecondsEditor(
 
   return (
     <div className={classes["seconds-editor"]}>
-      <button
-        type="button"
-        onClick={decrement}
-        className={classes["seconds-editor-button"]}
-      >
-        <Minus size={16} />
-      </button>
+      <IconButton icon={Minus} onClick={decrement} />
       <div className={classes["seconds-editor-value"]}>
         <TimePartInput value={minutes} onChange={setMinutes} />
-        <span>:</span>
+        <span className={classes["separator"]}>:</span>
         <TimePartInput value={seconds} onChange={setSeconds} />
       </div>
-      <button
-        type="button"
-        onClick={increment}
-        className={classes["seconds-editor-button"]}
-      >
-        <Plus size={16} />
-      </button>
+      <IconButton icon={Plus} onClick={increment} />
     </div>
   );
 }
@@ -386,23 +365,11 @@ function NumberEditor(
 
   return (
     <div className={classes["number-editor"]}>
-      <button
-        type="button"
-        onClick={decrement}
-        className={classes["number-editor-button"]}
-      >
-        <Minus size={16} />
-      </button>
+      <IconButton icon={Minus} onClick={decrement} />
       <div className={classes["number-editor-value"]}>
         {value}
       </div>
-      <button
-        type="button"
-        onClick={increment}
-        className={classes["number-editor-button"]}
-      >
-        <Plus size={16} />
-      </button>
+      <IconButton icon={Plus} onClick={increment} />
     </div>
   );
 }

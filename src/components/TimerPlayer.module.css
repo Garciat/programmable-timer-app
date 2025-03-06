@@ -1,3 +1,6 @@
+.timer-player {
+  --form-element-height: 2.5rem;
+}
 .timer-player > header > button {
   padding: 0.5rem;
 }
