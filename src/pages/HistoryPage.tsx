@@ -1,12 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import {
-  BookCheck,
-  Calculator,
-  Clock3,
-  Hourglass,
-  Menu,
-  Timer,
-} from "lucide-react";
+import { BookCheck, Calculator, Clock3, Hourglass, Timer } from "lucide-react";
 import { DateTime } from "luxon";
 
 import { HStack, VFrame, VStack } from "lib/box/mod.ts";
@@ -15,7 +8,6 @@ import { useNavigateTransition } from "lib/utils/transition.ts";
 import { getAllRecordsByDateAsc, openHistoryDB } from "src/app/history/db.ts";
 import { HistoryRecord } from "src/app/history/types.ts";
 import { BaseLayout } from "src/pages/BaseLayout.tsx";
-import { IconButton } from "src/components/IconButton.tsx";
 import { MainNav } from "src/components/MainNav.tsx";
 import { TitleBar } from "src/components/TitleBar.tsx";
 
@@ -81,13 +73,6 @@ export function HistoryPage() {
   return (
     <BaseLayout title="History">
       <TitleBar
-        left={
-          <IconButton
-            icon={Menu}
-            href="/settings"
-            transitions={["from-left"]}
-          />
-        }
         middle={
           <>
             <Calculator size={24} />
