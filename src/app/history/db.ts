@@ -48,7 +48,7 @@ export async function openHistoryDB(): Promise<Conn> {
 export async function saveHistoryRecord(
   db: Conn,
   record: Omit<HistoryRecord, "recordId">,
-): Promise<void> {
+): Promise<string> {
   const recordId = crypto.randomUUID();
 
   await db.add("records", {
@@ -61,6 +61,15 @@ export async function saveHistoryRecord(
     data: record.data,
     presetSnapshot: record.presetSnapshot,
   });
+
+  return recordId;
+}
+
+export async function getHistoryRecordById(
+  db: Conn,
+  recordId: string,
+): Promise<HistoryRecord | undefined> {
+  return await db.get("records", recordId);
 }
 
 export async function getAllRecordsByDateAsc(

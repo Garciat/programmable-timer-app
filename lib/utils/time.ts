@@ -6,3 +6,7 @@ export function formatSeconds(seconds: number): string {
 
   return `${f(minutes)}:${f(remainingSeconds)}`;
 }
+
+export function sleep(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}

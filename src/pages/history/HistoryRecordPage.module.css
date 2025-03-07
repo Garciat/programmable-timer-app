@@ -1,0 +1,61 @@
+.history-record-frame {
+  flex-grow: 1;
+  align-items: stretch;
+  justify-content: flex-start;
+  gap: 2rem;
+
+  padding: 0;
+
+  > header {
+    gap: 0.5rem;
+
+    .leading-icon {
+      height: 5rem;
+      box-sizing: border-box;
+      padding: 1.5rem;
+      border-radius: 50%;
+      background-color: rgba(100, 100, 100, 0.5);
+
+      > svg {
+        height: 100%;
+        width: auto;
+        aspect-ratio: 1;
+      }
+    }
+
+    > small {
+      opacity: 0.6;
+    }
+  }
+
+  > .record-details {
+    flex-grow: 1;
+    align-items: stretch;
+    justify-content: flex-start;
+    gap: 2rem;
+
+    padding: 2rem;
+    border-radius: 2rem 2rem 0 0;
+    background: rgba(100, 100, 100, 0.2);
+    font-variant-numeric: tabular-nums;
+
+    > section {
+      align-items: stretch;
+      justify-content: flex-start;
+      gap: 1rem;
+
+      > article {
+        align-items: stretch;
+        justify-content: space-between;
+
+        > header {
+          opacity: 0.6;
+        }
+      }
+    }
+
+    > footer {
+      gap: 0.5rem;
+    }
+  }
+}

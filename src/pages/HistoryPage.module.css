@@ -10,23 +10,63 @@
 
     > header {
       justify-content: flex-start;
+      gap: 1rem;
+
+      opacity: 0.6;
     }
 
     > article {
+      align-items: stretch;
       justify-content: flex-start;
-      gap: 0.5rem;
+      gap: 1rem;
 
-      > * {
-        gap: 0.25rem;
+      cursor: pointer;
+      padding: 0.5rem;
+
+      &:hover, &:active {
+        border-radius: var(--radius);
+        background-color: rgba(100, 100, 100, 0.5);
+      }
+
+      > .record-icon {
+        padding: 0.5rem;
+        border-radius: 50%;
+        background-color: rgba(100, 100, 100, 0.5);
+
+        > svg {
+          height: 100%;
+          width: auto;
+          aspect-ratio: 1;
+        }
+      }
+
+      > .record-body {
+        flex-grow: 1;
+        align-items: stretch;
+        justify-content: space-between;
+
+        > header {
+          justify-content: flex-start;
+
+          > h3 {
+            font-size: 1rem;
+          }
+        }
+
+        > footer {
+          justify-content: flex-start;
+
+          font-size: 0.8rem;
+          opacity: 0.6;
+        }
+      }
+
+      > .record-trailer {
+        > .record-time {
+          gap: 0.25rem;
+          font-variant-numeric: tabular-nums;
+        }
       }
     }
   }
-}
-
-.record-time {
-  font-variant-numeric: tabular-nums;
-}
-.delete-button {
-  --form-element-height: 1.5rem;
-  padding: 0.25rem;
 }

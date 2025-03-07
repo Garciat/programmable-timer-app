@@ -3,18 +3,16 @@ import {
   BookCheck,
   Calculator,
   Clock3,
+  Hourglass,
   Menu,
   Timer,
-  Trash2,
 } from "lucide-react";
 import { DateTime } from "luxon";
 
 import { HStack, VFrame, VStack } from "lib/box/mod.ts";
-import {
-  deleteRecord,
-  getAllRecordsByDateAsc,
-  openHistoryDB,
-} from "src/app/history/db.ts";
+import { formatSeconds } from "lib/utils/time.ts";
+import { useNavigateTransition } from "lib/utils/transition.ts";
+import { getAllRecordsByDateAsc, openHistoryDB } from "src/app/history/db.ts";
 import { HistoryRecord } from "src/app/history/types.ts";
 import { BaseLayout } from "src/pages/BaseLayout.tsx";
 import { IconButton } from "src/components/IconButton.tsx";
@@ -25,11 +23,13 @@ import stylesAll from "src/pages/all.module.css";
 import styles from "src/pages/HistoryPage.module.css";
 
 export function HistoryPage() {
+  const navigate = useNavigateTransition();
   const [records, setRecords] = useState<HistoryRecord[]>([]);
 
   const fetchRecords = async () => {
     const db = await openHistoryDB();
     const allRecords = await getAllRecordsByDateAsc(db);
+    allRecords.reverse(); // Descending order
     setRecords(allRecords);
   };
 
@@ -62,14 +62,9 @@ export function HistoryPage() {
     return Array.from(map.entries()).sort(([a], [b]) => b.localeCompare(a));
   }, [records]);
 
-  const handleDeleteRecord = useCallback(async (recordId: string) => {
-    if (!confirm("Are you sure you want to delete this record?")) {
-      return;
-    }
-    const db = await openHistoryDB();
-    await deleteRecord(db, recordId);
-    await fetchRecords();
-  }, []);
+  const openRecordView = useCallback((record: HistoryRecord) => {
+    navigate(`/history/record/${record.recordId}`, ["from-right"]);
+  }, [navigate]);
 
   const dateFormat = new Intl.DateTimeFormat(navigator.language, {
     year: "numeric",
@@ -112,38 +107,34 @@ export function HistoryPage() {
         {recordsByDateDesc.map(([date, records]) => (
           <VStack key={date} kind="section">
             <HStack kind="header">
-              <span style={{ opacity: "0.6" }}>
-                {dateFormat.format(Date.parse(date))}
-              </span>
+              <h2>{dateFormat.format(Date.parse(date))}</h2>
             </HStack>
             {records.map((record) => (
               <HStack
                 key={record.recordId}
                 kind="article"
-                justify="flex-start"
-                gap="1rem"
+                onClick={() => openRecordView(record)}
               >
-                <HStack className={styles["record-time"]}>
-                  <Clock3 size="1rem" />
-                  <span>{timeFormat.format(record.completedAt)}</span>
+                <HStack kind="aside" className={styles["record-icon"]}>
+                  <BookCheck />
                 </HStack>
-                <HStack>
-                  <BookCheck
-                    size="1rem"
-                    style={{ color: "var(--accent-color)" }}
-                  />
-                  <span>{record.presetName}</span>
-                </HStack>
-                <HStack grow={1} />
-                <HStack>
-                  <button
-                    type="button"
-                    onClick={() => handleDeleteRecord(record.recordId)}
-                    className={styles["delete-button"]}
-                  >
-                    <Trash2 size="0.5rem" />
-                  </button>
-                </HStack>
+                <VStack className={styles["record-body"]}>
+                  <HStack kind="header">
+                    <h3>{record.presetName}</h3>
+                  </HStack>
+                  <HStack kind="footer">
+                    <HStack>
+                      <Hourglass size="0.8rem" />
+                      <span>{formatSeconds(record.presetDuration)}</span>
+                    </HStack>
+                  </HStack>
+                </VStack>
+                <VStack kind="aside" className={styles["record-trailer"]}>
+                  <HStack className={styles["record-time"]}>
+                    <Clock3 size="0.8rem" />
+                    <span>{timeFormat.format(record.completedAt)}</span>
+                  </HStack>
+                </VStack>
               </HStack>
             ))}
           </VStack>

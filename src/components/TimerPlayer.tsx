@@ -20,7 +20,8 @@ import { DateTime } from "luxon";
 
 import { useAudioContext, useAudioContextState } from "lib/audio/context.tsx";
 import { HStack, VStack } from "lib/box/mod.ts";
-import { formatSeconds } from "lib/utils/time.ts";
+import { formatSeconds, sleep } from "lib/utils/time.ts";
+import { useNavigateTransition } from "lib/utils/transition.ts";
 import { ReactWakeLock } from "lib/wake/mod.ts";
 import { openHistoryDB, saveHistoryRecord } from "src/app/history/db.ts";
 import { snapshotPreset } from "src/app/history/preset.ts";
@@ -277,13 +278,14 @@ function DisplayActionRenderer(
 }
 
 function FinishedActionRenderer() {
+  const navigate = useNavigateTransition();
   const preset = useCurrentPreset();
   const [saved, setSaved] = useState(false);
 
   const handleSave = useCallback(async () => {
     const db = await openHistoryDB();
     try {
-      await saveHistoryRecord(db, {
+      const recordId = await saveHistoryRecord(db, {
         presetId: preset.id,
         presetName: preset.name,
         presetDuration: duration(preset.root),
@@ -293,6 +295,8 @@ function FinishedActionRenderer() {
         presetSnapshot: snapshotPreset(preset),
       });
       setSaved(true);
+      await sleep(200);
+      await navigate(`/history/record/${recordId}`, ["from-right"]);
     } finally {
       db.close();
     }

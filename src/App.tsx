@@ -8,6 +8,7 @@ import { AppInstallPromptListener } from "src/transient/install.tsx";
 import { CreatePage } from "src/pages/CreatePage.tsx";
 import { EditPage } from "src/pages/EditPage.tsx";
 import { HistoryPage } from "src/pages/HistoryPage.tsx";
+import { HistoryRecordPage } from "src/pages/history/HistoryRecordPage.tsx";
 import { HomePage } from "src/pages/HomePage.tsx";
 import { PlayPage } from "src/pages/PlayPage.tsx";
 import { QrPage } from "./pages/QrPage.tsx";
@@ -32,6 +33,10 @@ export function App() {
             <Route path="/qr/:presetId" element={<QrPage />} />
             <Route path="/import/:content" element={<ImportPage />} />
             <Route path="/history" element={<HistoryPage />} />
+            <Route
+              path="/history/record/:recordId"
+              element={<HistoryRecordPage />}
+            />
             <Route path="/settings" element={<SettingsPage />} />
           </Routes>
         </TransientStateProvider>
