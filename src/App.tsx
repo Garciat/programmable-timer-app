@@ -37,6 +37,10 @@ export function App() {
               path="/history/record/:recordId"
               element={<HistoryRecordPage />}
             />
+            <Route
+              path="/history/record/:recordId/edit"
+              element={<HistoryRecordPage editing />}
+            />
             <Route path="/settings" element={<SettingsPage />} />
           </Routes>
         </TransientStateProvider>

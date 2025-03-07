@@ -1,11 +1,14 @@
-import { Pencil, Play, QrCode, Share, Trash2 } from "lucide-react";
+import { useCallback } from "react";
+import { BookCheck, Pencil, Play, QrCode, Share, Trash2 } from "lucide-react";
 
 import { useAudioContext } from "lib/audio/context.tsx";
 import { HStack, VStack } from "lib/box/mod.ts";
 import { formatSeconds } from "lib/utils/time.ts";
+import { useNavigateTransition } from "lib/utils/transition.ts";
 import { duration } from "src/app/flatten.ts";
 import { generateShareURL } from "src/app/share.ts";
 import { TimerPreset } from "src/app/types.ts";
+import { createHistoryRecord } from "src/app/history/preset.ts";
 import { useAppPresetDelete } from "src/state/context.tsx";
 import { IconButton } from "src/components/IconButton.tsx";
 import { PresetDisplay } from "src/components/PresetDisplay.tsx";
@@ -15,6 +18,7 @@ export interface PresetListProps {
 }
 
 export function PresetList({ presets }: PresetListProps) {
+  const navigate = useNavigateTransition();
   const doDelete = useAppPresetDelete();
 
   const audioContext = useAudioContext();
@@ -58,6 +62,11 @@ export function PresetList({ presets }: PresetListProps) {
     }
   }
 
+  const handleCreateHistoryRecord = useCallback(async (preset: TimerPreset) => {
+    const recordId = await createHistoryRecord(preset);
+    await navigate(`/history/record/${recordId}/edit`, ["from-right"]);
+  }, []);
+
   return (
     <VStack alignItems="stretch" gap="2rem">
       {presets.map((preset) => (
@@ -78,6 +87,10 @@ export function PresetList({ presets }: PresetListProps) {
           <PresetDisplay preset={preset} />
           <HStack kind="footer" justify="space-between">
             <HStack justify="flex-start" gap="0.5rem">
+              <IconButton
+                icon={BookCheck}
+                onClick={() => handleCreateHistoryRecord(preset)}
+              />
               <IconButton icon={Pencil} href={`/edit/${preset.id}`} />
               <IconButton
                 icon={Share}

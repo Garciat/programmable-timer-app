@@ -14,7 +14,7 @@ interface HistoryDB_V1 extends DBSchema {
       presetDuration: number; // seconds
       completedAt: Date; // UTC
       tags: string[];
-      data: Record<string, unknown>;
+      data: Array<{ key: string; value: string }>;
       presetSnapshot: string;
     };
     key: string;
@@ -70,6 +70,39 @@ export async function getHistoryRecordById(
   recordId: string,
 ): Promise<HistoryRecord | undefined> {
   return await db.get("records", recordId);
+}
+
+export async function getNewestRecordByPresetId(
+  db: Conn,
+  presetId: string,
+  reference: Date,
+): Promise<HistoryRecord | undefined> {
+  const records = await db.getAllFromIndex(
+    "records",
+    "by-presetId",
+    presetId,
+  );
+  // inefficient, but good enough for now
+  const previous = records
+    .toSorted((a, b) => a.completedAt.getTime() - b.completedAt.getTime())
+    .findLast((r) => r.completedAt < reference);
+  return previous;
+}
+
+export async function updateHistoryRecord(
+  db: Conn,
+  record: HistoryRecord,
+): Promise<void> {
+  await db.put("records", {
+    recordId: record.recordId,
+    presetId: record.presetId,
+    presetName: record.presetName,
+    presetDuration: record.presetDuration,
+    completedAt: record.completedAt,
+    tags: record.tags,
+    data: record.data,
+    presetSnapshot: record.presetSnapshot,
+  });
 }
 
 export async function getAllRecordsByDateAsc(

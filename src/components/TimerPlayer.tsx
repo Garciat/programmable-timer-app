@@ -16,15 +16,13 @@ import {
   SkipBack,
   SkipForward,
 } from "lucide-react";
-import { DateTime } from "luxon";
 
 import { useAudioContext, useAudioContextState } from "lib/audio/context.tsx";
 import { HStack, VStack } from "lib/box/mod.ts";
 import { formatSeconds, sleep } from "lib/utils/time.ts";
 import { useNavigateTransition } from "lib/utils/transition.ts";
 import { ReactWakeLock } from "lib/wake/mod.ts";
-import { openHistoryDB, saveHistoryRecord } from "src/app/history/db.ts";
-import { snapshotPreset } from "src/app/history/preset.ts";
+import { createHistoryRecord } from "src/app/history/preset.ts";
 import { PlayerAction, PlayerDisplay, TimerPreset } from "src/app/types.ts";
 import { actionsAtTime, timeForRelativePeriod } from "src/app/actions.ts";
 import { duration, flatten } from "src/app/flatten.ts";
@@ -283,23 +281,10 @@ function FinishedActionRenderer() {
   const [saved, setSaved] = useState(false);
 
   const handleSave = useCallback(async () => {
-    const db = await openHistoryDB();
-    try {
-      const recordId = await saveHistoryRecord(db, {
-        presetId: preset.id,
-        presetName: preset.name,
-        presetDuration: duration(preset.root),
-        completedAt: DateTime.utc().toJSDate(),
-        tags: [],
-        data: {},
-        presetSnapshot: snapshotPreset(preset),
-      });
-      setSaved(true);
-      await sleep(200);
-      await navigate(`/history/record/${recordId}`, ["from-right"]);
-    } finally {
-      db.close();
-    }
+    const recordId = await createHistoryRecord(preset);
+    setSaved(true);
+    await sleep(200);
+    await navigate(`/history/record/${recordId}/edit`, ["from-right"]);
   }, [preset.id, preset.name, preset.root]);
 
   return (

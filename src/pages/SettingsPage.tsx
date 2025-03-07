@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   BellRing,
+  CalendarX,
   MonitorCheck,
   MonitorCog,
   MonitorDown,
@@ -545,6 +546,17 @@ function DeleteDataSubsection() {
     }
   }, [reset]);
 
+  const handleHistoryResetRequest = useCallback(async () => {
+    if (
+      globalThis.confirm(
+        "Are you sure you want to delete all history data?",
+      )
+    ) {
+      await deleteHistoryDB();
+      globalThis.alert("History data has been deleted.");
+    }
+  }, []);
+
   return (
     <VStack kind="article">
       <HStack kind="header">
@@ -554,6 +566,10 @@ function DeleteDataSubsection() {
         <button type="button" onClick={handleResetRequest}>
           <Trash2 />
           <span>Delete All Data</span>
+        </button>
+        <button type="button" onClick={handleHistoryResetRequest}>
+          <CalendarX />
+          <span>Delete History Data</span>
         </button>
       </HStack>
     </VStack>

@@ -13,8 +13,7 @@ export function MainNav() {
   return (
     <HStack
       kind="nav"
-      justify="flex-start"
-      gap="0.5rem"
+      gap="1rem"
       className={styles["main-nav"]}
     >
       <LinkButton

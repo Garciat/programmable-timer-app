@@ -5,6 +5,11 @@ export interface HistoryRecord {
   presetDuration: number;
   completedAt: Date;
   tags: string[];
-  data: Record<string, unknown>;
+  data: HistoryRecordDataItem[];
   presetSnapshot: string;
+}
+
+export interface HistoryRecordDataItem {
+  key: string;
+  value: string;
 }

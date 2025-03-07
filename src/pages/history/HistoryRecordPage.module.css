@@ -34,7 +34,7 @@
     justify-content: flex-start;
     gap: 2rem;
 
-    padding: 2rem;
+    padding: 1.2rem;
     border-radius: 2rem 2rem 0 0;
     background: rgba(100, 100, 100, 0.2);
     font-variant-numeric: tabular-nums;
@@ -44,17 +44,30 @@
       justify-content: flex-start;
       gap: 1rem;
 
-      > article {
+      > header {
         align-items: stretch;
         justify-content: space-between;
 
-        > header {
+        line-height: var(--form-element-height);
+      }
+
+      > article {
+        align-items: stretch;
+        justify-content: space-between;
+        gap: 0.5rem;
+
+        > header:not(.editing) {
           opacity: 0.6;
+        }
+
+        input {
+          width: 100%;
         }
       }
     }
 
     > footer {
+      justify-content: space-between;
       gap: 0.5rem;
     }
   }
