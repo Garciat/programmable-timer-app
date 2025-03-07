@@ -1,7 +1,6 @@
 .title-bar {
   height: 4.5rem;
   padding: 0 1rem;
-  box-shadow: 0 0 0.5rem 0 rgba(0, 0, 0, 0.1);
 }
 .title-bar.hide-shadow {
   box-shadow: none;
