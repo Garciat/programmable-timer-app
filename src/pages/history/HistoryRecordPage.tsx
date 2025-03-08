@@ -3,11 +3,11 @@ import { useParams } from "react-router";
 import {
   BookCheck,
   Calculator,
-  Copy,
   MoveLeft,
   Pencil,
   Plus,
   Save,
+  Settings,
   Timer,
   Trash2,
   X,
@@ -36,6 +36,7 @@ import {
 
 import stylesAll from "src/pages/all.module.css";
 import styles from "src/pages/history/HistoryRecordPage.module.css";
+import { IconMenu } from "src/components/IconMenu.tsx";
 
 export interface HistoryRecordPageProps {
   editing?: boolean;
@@ -227,9 +228,6 @@ function HistoryRecordDataEditor(
     if (!record) {
       return;
     }
-    if (!confirm("Do you want to copy all data from the previous record?")) {
-      return;
-    }
     const db = await openHistoryDB();
     const previous = await getNewestRecordByPresetId(
       db,
@@ -287,7 +285,9 @@ function HistoryRecordDataEditor(
       <HStack kind="header">
         <h2>Data</h2>
         <HStack kind="aside" gap="0.5rem">
-          <IconButton icon={Copy} onClick={copyDataItems} />
+          <IconMenu icon={Settings} title="Data options">
+            {{ label: "Copy from previous record", onSelect: copyDataItems }}
+          </IconMenu>
           <IconButton icon={Plus} onClick={insertDataItem} />
         </HStack>
       </HStack>
