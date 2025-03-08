@@ -8,6 +8,7 @@ import { UserSettings, UserSoundSettings } from "src/state/types.ts";
 import { BaseLayout } from "src/pages/BaseLayout.tsx";
 import { AdvancedSection } from "src/pages/settings/AdvancedSection.tsx";
 import { GeneralSection } from "src/pages/settings/GeneralSection.tsx";
+import { HistorySection } from "src/pages/settings/HistorySection.tsx";
 import { SoundSection } from "src/pages/settings/SoundSection.tsx";
 import { VoiceSection } from "src/pages/settings/VoiceSection.tsx";
 import { IconButton } from "src/components/IconButton.tsx";
@@ -85,6 +86,7 @@ export function SettingsPage() {
         className={`${stylesAll["content-frame"]} ${styles["settings-page"]}`}
       >
         <GeneralSection />
+        <HistorySection />
         <SoundSection
           settings={settings.sound}
           onChange={updateSoundSettings}

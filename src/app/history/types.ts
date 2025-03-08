@@ -13,3 +13,11 @@ export interface HistoryRecordDataItem {
   key: string;
   value: string;
 }
+
+export interface HistoryExportV1 {
+  version: 1;
+  records: HistoryRecordExportV1[];
+  exportedAt: Date;
+}
+
+export type HistoryRecordExportV1 = Omit<HistoryRecord, "recordId">;

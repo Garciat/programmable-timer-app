@@ -1,6 +1,7 @@
 import { DBSchema, deleteDB, IDBPDatabase, openDB } from "idb";
 
-import { HistoryRecord } from "src/app/history/types.ts";
+import { HistoryExportV1, HistoryRecord } from "src/app/history/types.ts";
+import { HistoryExportSchemaV1 } from "src/app/history/schema.ts";
 
 const DB_NAME = "history";
 const DB_VERSION = 1;
@@ -117,4 +118,56 @@ export async function deleteRecord(db: Conn, recordId: string): Promise<void> {
 
 export async function deleteHistoryDB(): Promise<void> {
   await deleteDB(DB_NAME);
+}
+
+export async function isHistoryRecordsEmpty(): Promise<boolean> {
+  const db = await openHistoryDB();
+  try {
+    return (await db.count("records")) === 0;
+  } finally {
+    db.close();
+  }
+}
+
+export async function exportHistoryToJSON(): Promise<string> {
+  const data = await exportAllHistoryData();
+  return JSON.stringify(data);
+}
+
+export async function importHistoryFromJSON(input: string): Promise<void> {
+  const json = JSON.parse(input);
+  const data = HistoryExportSchemaV1.parse(json);
+  await importAllHistoryData(data);
+}
+
+async function exportAllHistoryData(): Promise<HistoryExportV1> {
+  const db = await openHistoryDB();
+  try {
+    const records = await db.getAll("records");
+
+    const exportedRecords = records.map((record) => ({
+      ...record,
+      recordId: undefined,
+    }));
+
+    return {
+      version: DB_VERSION,
+      records: exportedRecords,
+      exportedAt: new Date(),
+    };
+  } finally {
+    db.close();
+  }
+}
+
+// @throws
+async function importAllHistoryData(data: HistoryExportV1): Promise<void> {
+  const db = await openHistoryDB();
+  try {
+    for (const record of data.records) {
+      await saveHistoryRecord(db, record);
+    }
+  } finally {
+    db.close();
+  }
 }

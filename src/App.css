@@ -36,7 +36,7 @@ body {
     Segoe UI Emoji;
 }
 
-button, label:has(> input[type="radio"]), a.button {
+button, label:has(> input), a.button {
   height: var(--form-element-height);
   box-sizing: border-box;
   display: inline-flex;
@@ -74,6 +74,21 @@ button, label:has(> input[type="radio"]), a.button {
   > input[type="radio"] {
     cursor: pointer;
     margin: 0;
+  }
+
+  > input[type="file"] {
+    all: unset;
+
+    font-size: 0;
+
+    &::file-selector-button {
+      margin: 0;
+      font-size: 0.8rem;
+    }
+
+    &:focus {
+      outline: none;
+    }
   }
 }
 
