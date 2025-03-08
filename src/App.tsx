@@ -11,9 +11,9 @@ import { HistoryPage } from "src/pages/HistoryPage.tsx";
 import { HistoryRecordPage } from "src/pages/history/HistoryRecordPage.tsx";
 import { HomePage } from "src/pages/HomePage.tsx";
 import { PlayPage } from "src/pages/PlayPage.tsx";
-import { QrPage } from "./pages/QrPage.tsx";
+import { QrPage } from "src/pages/QrPage.tsx";
 import { SettingsPage } from "src/pages/SettingsPage.tsx";
-import { ImportPage } from "./pages/ImportPage.tsx";
+import { ImportPage } from "src/pages/ImportPage.tsx";
 
 import "src/App.css";
 import "src/transitions.css";
