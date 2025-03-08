@@ -3,17 +3,17 @@
   min-width: fit-content;
 
   border-radius: var(--radius);
-  border: 2px solid var(--background-color-alt);
+  border: 2px solid var(--color-background-alt);
 }
 .loop-display > header {
   padding: 0.25rem;
-  background-color: var(--background-color-alt);
-  color: var(--text-color-alt);
+  background-color: var(--color-background-alt);
+  color: var(--color-text-alt);
 }
 
 .period-display {
   border-radius: var(--radius);
-  border: 2px solid var(--background-color-alt);
+  border: 2px solid var(--color-background-alt);
   padding: 1rem 2rem;
 }
 

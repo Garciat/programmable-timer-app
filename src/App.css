@@ -1,31 +1,28 @@
 :root {
   color-scheme: light dark;
 
-  --accent-color: #007bff;
+  --color-accent: #007bff;
 
-  --window-color: light-dark(#fff, #000);
+  --color-window-background: light-dark(#fff, #000);
 
-  --background-color: light-dark(#fff, #333);
-  --text-color: light-dark(#000, #fff);
+  --color-background: light-dark(#fff, #333);
+  --color-text: light-dark(#000, #fff);
 
-  --background-color-alt: light-dark(#000, #fff);
-  --text-color-alt: light-dark(#fff, #000);
+  --color-background-alt: light-dark(#000, #fff);
+  --color-text-alt: light-dark(#fff, #000);
 
-  --text-color-secondary: light-dark(#666666, #999999);
+  --color-text-secondary: light-dark(#666666, #999999);
 
-  --background-color-off1: light-dark(#ccc, #222);
-  --text-color-off1: light-dark(#000, #fff);
-
-  --background-color-accent: var(--accent-color);
-  --text-color-accent: #fff;
+  --color-background-off1: light-dark(#ccc, #222);
+  --color-text-off1: light-dark(#000, #fff);
 
   --radius: 5px;
   --form-element-height: 2rem;
 }
 
 body {
-  background-color: var(--window-color);
-  color: var(--text-color);
+  background-color: var(--color-window-background);
+  color: var(--color-text);
   font-family:
     system-ui,
     -apple-system,
@@ -123,6 +120,6 @@ select, input {
 }
 select:focus,
 input:not([type="range"]):not([type="radio"]):focus {
-  outline: 0.2em solid var(--accent-color);
-  border-color: var(--accent-color);
+  outline: 0.2em solid var(--color-accent);
+  border-color: var(--color-accent);
 }
