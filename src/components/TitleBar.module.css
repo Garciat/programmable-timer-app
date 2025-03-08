@@ -7,7 +7,7 @@
   box-shadow: none;
 }
 
-.title-bar button {
+.title-bar button, .title-bar label {
   background: none;
   color: inherit;
 }

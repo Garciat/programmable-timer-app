@@ -64,6 +64,11 @@ button, label:has(> input), label:has(> select), a.button {
     opacity: 0.3;
   }
 
+  &.primary {
+    background-color: var(--color-accent);
+    color: white;
+  }
+
   > .lucide {
     height: 100%;
     width: auto;

@@ -3,8 +3,8 @@ import { useParams } from "react-router";
 import {
   BookCheck,
   Calculator,
+  EllipsisVertical,
   MoveLeft,
-  Pencil,
   Plus,
   Save,
   Settings,
@@ -70,6 +70,13 @@ export function HistoryRecordPage({ editing }: HistoryRecordPageProps) {
     await deleteRecord(db, record.recordId);
     await navigate(routeHistory());
   }, [record, navigate]);
+
+  const handleEdit = useCallback(() => {
+    if (!record) {
+      return;
+    }
+    navigate(routeHistoryRecordEdit(record.recordId));
+  }, [record]);
 
   const handleSave = useCallback(async () => {
     if (!record) {
@@ -152,8 +159,13 @@ export function HistoryRecordPage({ editing }: HistoryRecordPageProps) {
           : <HistoryRecordDataView record={record} />}
         <VStack grow={1} />
         <HStack kind="footer">
-          <IconButton icon={Trash2} onClick={handleDeleteRecord} />
-          {editing && <IconButton icon={Save} onClick={handleSave} />}
+          <HStack grow={1} />
+          {editing && (
+            <button type="button" onClick={handleSave} className="primary">
+              <Save />
+              <span>Save</span>
+            </button>
+          )}
         </HStack>
       </VStack>
     </>
@@ -177,11 +189,11 @@ export function HistoryRecordPage({ editing }: HistoryRecordPageProps) {
         }
         right={editing
           ? <IconButton icon={X} onClick={handleCancel} />
-          : record && (
-            <IconButton
-              icon={Pencil}
-              href={routeHistoryRecordEdit(record.recordId)}
-            />
+          : (
+            <IconMenu icon={EllipsisVertical} title="Record options">
+              {{ label: "Edit", onSelect: handleEdit }}
+              {{ label: "Delete", onSelect: handleDeleteRecord }}
+            </IconMenu>
           )}
       />
       <VFrame

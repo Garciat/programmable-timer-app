@@ -10,11 +10,12 @@ export interface IconButtonProps {
   href?: string;
   transitions?: string[];
   disabled?: boolean;
+  className?: string;
   onClick?: () => unknown | Promise<unknown>;
 }
 
 export function IconButton(
-  { icon, href, transitions, disabled, onClick }: IconButtonProps,
+  { icon, href, transitions, disabled, className, onClick }: IconButtonProps,
 ) {
   const navigate = useNavigateTransition();
 
@@ -32,7 +33,7 @@ export function IconButton(
       type="button"
       disabled={disabled}
       onClick={handleClick}
-      className={styles["icon-button"]}
+      className={`${styles["icon-button"]} ${className}`}
     >
       <Icon className={styles["icon"]} />
     </button>
