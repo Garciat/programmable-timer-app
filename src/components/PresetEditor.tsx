@@ -1,13 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import {
-  ChevronDown,
-  ChevronUp,
-  Minus,
-  Palette,
-  Plus,
-  Repeat,
-  Trash2,
-} from "lucide-react";
+import { Minus, Palette, Plus, Repeat, Settings } from "lucide-react";
 
 import { HStack } from "lib/box/mod.ts";
 import { contrastForegroundColor } from "lib/utils/color.ts";
@@ -25,6 +17,7 @@ import { duration } from "src/app/flatten.ts";
 
 import classes from "src/components/PresetEditor.module.css";
 import { IconButton } from "src/components/IconButton.tsx";
+import { IconMenu } from "src/components/IconMenu.tsx";
 
 export interface PresetEditorProps {
   preset: TimerPreset;
@@ -99,9 +92,22 @@ function SequenceEditor(
     const element = elements[index];
     elements[index] = {
       kind: "loop",
-      count: 1,
+      count: 2,
       element: { kind: "sequence", elements: [element] },
     };
+    onChange({ ...timer, elements });
+  }, [onChange, timer]);
+
+  const unloopElement = useCallback((index: number) => {
+    const elements = [...timer.elements];
+    const loop = elements[index];
+    if (loop.kind !== "loop") {
+      return;
+    }
+    if (loop.element.kind !== "sequence") {
+      return;
+    }
+    elements.splice(index, 1, ...loop.element.elements);
     onChange({ ...timer, elements });
   }, [onChange, timer]);
 
@@ -111,49 +117,20 @@ function SequenceEditor(
     onChange({ ...timer, elements });
   }, [onChange, timer]);
 
-  const getItemColor = useCallback((timer: TimerElement) => {
-    if (timer.kind === "period" && timer.color) {
-      return {
-        backgroundColor: timer.color,
-        color: contrastForegroundColor(timer.color),
-      };
-    }
-  }, []);
-
   return (
     <div className={classes["sequence-editor"]}>
       <div className={classes["sequence-editor-items"]}>
         {timer.elements.map((element, index) => (
-          <div
+          <SequenceItemEditor
             key={index}
-            className={classes["sequence-editor-item"]}
-            style={{ ...getItemColor(element) }}
-          >
-            <div className={classes["sequence-editor-item-value"]}>
-              <TimerEditor
-                timer={element}
-                onChange={(newElement) => updateElement(index, newElement)}
-              />
-            </div>
-            <footer>
-              <IconButton
-                icon={Repeat}
-                onClick={() => loopElement(index)}
-              />
-              <IconButton
-                icon={Trash2}
-                onClick={() => removeElement(index)}
-              />
-              <IconButton
-                icon={ChevronUp}
-                onClick={() => moveElement(index, -1)}
-              />
-              <IconButton
-                icon={ChevronDown}
-                onClick={() => moveElement(index, 1)}
-              />
-            </footer>
-          </div>
+            timer={element}
+            onLoop={() => loopElement(index)}
+            onUnloop={() => unloopElement(index)}
+            onRemove={() => removeElement(index)}
+            onMoveUp={() => moveElement(index, -1)}
+            onMoveDown={() => moveElement(index, 1)}
+            onChange={(newElement) => updateElement(index, newElement)}
+          />
         ))}
       </div>
 
@@ -168,6 +145,90 @@ function SequenceEditor(
         <div className={classes["right"]}>
           {formatSeconds(duration(timer))}
         </div>
+      </footer>
+    </div>
+  );
+}
+
+interface SequenceItemEditorProps {
+  timer: TimerElement;
+  onLoop: () => void;
+  onUnloop: () => void;
+  onRemove: () => void;
+  onMoveUp: () => void;
+  onMoveDown: () => void;
+  onChange: (element: TimerElement) => void;
+}
+
+function SequenceItemEditor({
+  timer,
+  onLoop,
+  onUnloop,
+  onRemove,
+  onMoveUp,
+  onMoveDown,
+  onChange,
+}: SequenceItemEditorProps) {
+  const canHaveColor = timer.kind === "period";
+
+  const timerColor = timer.kind === "period" ? timer.color : undefined;
+
+  const timerColorStyle = useMemo(() => {
+    if (timerColor) {
+      return {
+        backgroundColor: timerColor,
+        color: contrastForegroundColor(timerColor),
+      };
+    }
+  }, [timerColor]);
+
+  const unloopOption = useMemo(() => {
+    if (timer.kind === "loop") {
+      return [{ label: "Unloop", onSelect: onUnloop }];
+    }
+    return [];
+  }, [timer.kind, onUnloop]);
+
+  const setItemColor = useCallback((value: string) => {
+    if (timer.kind !== "period") {
+      return;
+    }
+    onChange({ ...timer, color: value });
+  }, [onChange, timer]);
+
+  return (
+    <div
+      className={classes["sequence-editor-item"]}
+      style={{ ...timerColorStyle }}
+    >
+      <div className={classes["sequence-editor-item-value"]}>
+        <TimerEditor timer={timer} onChange={onChange} />
+      </div>
+      <footer>
+        <HStack gap="0.5rem">
+          {/* I tried to move the color option under the IconMenu */}
+          {/* But I couldn't make it work on iOS, unfortunately. */}
+          {canHaveColor && (
+            <label className={classes["color-picker"]}>
+              <Palette className={classes["icon"]} />
+              <input
+                type="color"
+                defaultValue={timer.color}
+                onChange={(event) => setItemColor(event.target.value)}
+                className={classes["color-input"]}
+              />
+            </label>
+          )}
+          <IconMenu icon={Settings} title="Options">
+            {[
+              ...unloopOption,
+              { label: "Loop", onSelect: onLoop },
+              { label: "Move up", onSelect: onMoveUp },
+              { label: "Move down", onSelect: onMoveDown },
+              { label: "Remove", onSelect: onRemove },
+            ]}
+          </IconMenu>
+        </HStack>
       </footer>
     </div>
   );
@@ -214,32 +275,13 @@ function PeriodEditor(
     });
   }, [onChange, timer]);
 
-  const updateColor = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      onChange({ ...timer, color: event.target.value });
-    },
-    [onChange, timer],
-  );
-
   return (
     <div className={classes["period-editor"]}>
-      <HStack gap="0.5rem">
-        <input
-          type="text"
-          value={timer.name}
-          onChange={(event) => updateName(event.target.value)}
-        />
-        <label className={classes["color-picker"]}>
-          <Palette className={classes["icon"]} />
-          <input
-            type="color"
-            value={timer.color}
-            onChange={updateColor}
-            className={classes["color-input"]}
-          />
-        </label>
-      </HStack>
-
+      <input
+        type="text"
+        value={timer.name}
+        onChange={(event) => updateName(event.target.value)}
+      />
       <SecondsEditor value={timer.seconds} onChange={updateSeconds} />
     </div>
   );
@@ -253,16 +295,6 @@ interface SecondsEditorProps {
 function SecondsEditor(
   { value, onChange }: SecondsEditorProps,
 ) {
-  const decrement = useCallback(() => {
-    if (value > 1) {
-      onChange(value - 1);
-    }
-  }, [onChange, value]);
-
-  const increment = useCallback(() => {
-    onChange(value + 1);
-  }, [onChange, value]);
-
   const minutes = useMemo(() => new NumberBox(Math.floor(value / 60)), [value]);
   const seconds = useMemo(() => new NumberBox(value % 60), [value]);
 
@@ -276,13 +308,11 @@ function SecondsEditor(
 
   return (
     <div className={classes["seconds-editor"]}>
-      <IconButton icon={Minus} onClick={decrement} />
       <div className={classes["seconds-editor-value"]}>
         <TimePartInput value={minutes} onChange={setMinutes} />
         <span className={classes["separator"]}>:</span>
         <TimePartInput value={seconds} onChange={setSeconds} />
       </div>
-      <IconButton icon={Plus} onClick={increment} />
     </div>
   );
 }
