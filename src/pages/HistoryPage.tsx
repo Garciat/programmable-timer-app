@@ -112,6 +112,16 @@ export function HistoryPage() {
                       <Hourglass size="0.8rem" />
                       <span>{formatSeconds(record.presetDuration)}</span>
                     </HStack>
+                    {record.data.map(({ key, value }, index) => (
+                      <HStack
+                        key={index}
+                        className={styles["record-data-item"]}
+                      >
+                        <span>{key}</span>
+                        <span>:&nbsp;</span>
+                        <span>{value}</span>
+                      </HStack>
+                    ))}
                   </HStack>
                 </VStack>
                 <VStack kind="aside" className={styles["record-trailer"]}>

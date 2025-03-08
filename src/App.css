@@ -11,6 +11,8 @@
   --background-color-alt: light-dark(#000, #fff);
   --text-color-alt: light-dark(#fff, #000);
 
+  --text-color-secondary: light-dark(#666666, #999999);
+
   --background-color-off1: light-dark(#ccc, #222);
   --text-color-off1: light-dark(#000, #fff);
 

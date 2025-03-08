@@ -18,7 +18,7 @@
     > article {
       align-items: stretch;
       justify-content: flex-start;
-      gap: 1rem;
+      gap: 0.5rem;
 
       cursor: pointer;
       margin: 0 -0.5rem;
@@ -46,6 +46,8 @@
         align-items: stretch;
         justify-content: space-between;
 
+        overflow: hidden;
+
         > header {
           justify-content: flex-start;
 
@@ -56,9 +58,18 @@
 
         > footer {
           justify-content: flex-start;
+          gap: 0.25rem;
 
           font-size: 0.8rem;
-          opacity: 0.6;
+          color: var(--text-color-secondary);
+
+          > .record-data-item {
+            font-size: 0.6rem;
+            padding: 0.2rem 0.3rem;
+            border-radius: var(--radius);
+            background-color: rgba(180, 180, 180, 0.2);
+            color: var(--text-color);
+          }
         }
       }
 
