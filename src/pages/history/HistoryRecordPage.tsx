@@ -94,25 +94,6 @@ export function HistoryRecordPage({ editing }: HistoryRecordPageProps) {
     navigate(routeHistoryRecord(record.recordId));
   }, [record]);
 
-  const setUpdatedAt = useCallback((value: string) => {
-    if (!record) {
-      return;
-    }
-    setRecord({
-      ...record,
-      completedAt: DateTime.fromISO(value).toUTC().toJSDate(),
-    });
-  }, [record]);
-
-  const dateTimeFormat = new Intl.DateTimeFormat(navigator.language, {
-    dateStyle: "medium",
-    timeStyle: "short",
-    hour12: false,
-  });
-
-  const dateLocalISO = record &&
-    DateTime.fromJSDate(record.completedAt).toLocal().toISO()?.slice(0, 16);
-
   const historyRecordView = record && (
     <>
       <VStack />
@@ -123,51 +104,15 @@ export function HistoryRecordPage({ editing }: HistoryRecordPageProps) {
         <small>Completed</small>
         <h1>{record.presetName}</h1>
       </VStack>
-      <VStack className={styles["record-details"]}>
-        <VStack kind="section">
-          <h2>Details</h2>
-          <HStack kind="article">
-            <HStack kind="header">
-              <p>Completed</p>
-            </HStack>
-            <p>
-              {editing
-                ? (
-                  <input
-                    type="datetime-local"
-                    value={dateLocalISO}
-                    onChange={(e) => setUpdatedAt(e.target.value)}
-                  />
-                )
-                : dateTimeFormat.format(record.completedAt)}
-            </p>
-          </HStack>
-          <HStack kind="article">
-            <HStack kind="header">
-              <p>Duration</p>
-            </HStack>
-            <p>{formatSeconds(record.presetDuration)}</p>
-          </HStack>
-        </VStack>
-        {editing
-          ? (
-            <HistoryRecordDataEditor
-              record={record}
-              onChange={setRecord}
-            />
-          )
-          : <HistoryRecordDataView record={record} />}
-        <VStack grow={1} />
-        <HStack kind="footer">
-          <HStack grow={1} />
-          {editing && (
-            <button type="button" onClick={handleSave} className="primary">
-              <Save />
-              <span>Save</span>
-            </button>
-          )}
-        </HStack>
-      </VStack>
+      {editing
+        ? (
+          <HistoryRecordEditor
+            record={record}
+            onChange={setRecord}
+            onSave={handleSave}
+          />
+        )
+        : <HistoryRecordView record={record} />}
     </>
   );
 
@@ -204,6 +149,96 @@ export function HistoryRecordPage({ editing }: HistoryRecordPageProps) {
         {historyRecordView}
       </VFrame>
     </BaseLayout>
+  );
+}
+
+function HistoryRecordView({ record }: { record: HistoryRecord }) {
+  const dateTimeFormat = new Intl.DateTimeFormat(navigator.language, {
+    dateStyle: "medium",
+    timeStyle: "short",
+    hour12: false,
+  });
+
+  return (
+    <VStack className={styles["record-details"]}>
+      <VStack kind="section">
+        <h2>Details</h2>
+        <HStack kind="article">
+          <HStack kind="header">
+            <p>Completed</p>
+          </HStack>
+          <p>{dateTimeFormat.format(record.completedAt)}</p>
+        </HStack>
+        <HStack kind="article">
+          <HStack kind="header">
+            <p>Duration</p>
+          </HStack>
+          <p>{formatSeconds(record.presetDuration)}</p>
+        </HStack>
+      </VStack>
+      <HistoryRecordDataView record={record} />
+    </VStack>
+  );
+}
+
+interface HistoryRecordEditorProps {
+  record: HistoryRecord;
+  onChange: (record: HistoryRecord) => void;
+  onSave: () => void;
+}
+
+function HistoryRecordEditor(
+  { record, onChange, onSave }: HistoryRecordEditorProps,
+) {
+  const setUpdatedAt = useCallback((value: string) => {
+    if (!record) {
+      return;
+    }
+    onChange({
+      ...record,
+      completedAt: DateTime.fromISO(value).toUTC().toJSDate(),
+    });
+  }, [record]);
+
+  const dateLocalISO = record &&
+    DateTime.fromJSDate(record.completedAt).toLocal().toISO()?.slice(0, 16);
+
+  return (
+    <VStack className={styles["record-details"]}>
+      <VStack kind="section">
+        <h2>Details</h2>
+        <HStack kind="article">
+          <HStack kind="header">
+            <p>Completed</p>
+          </HStack>
+          <p>
+            <input
+              type="datetime-local"
+              value={dateLocalISO}
+              onChange={(e) => setUpdatedAt(e.target.value)}
+            />
+          </p>
+        </HStack>
+        <HStack kind="article">
+          <HStack kind="header">
+            <p>Duration</p>
+          </HStack>
+          <p>{formatSeconds(record.presetDuration)}</p>
+        </HStack>
+      </VStack>
+      <HistoryRecordDataEditor
+        record={record}
+        onChange={onChange}
+      />
+      <VStack grow={1} />
+      <HStack kind="footer">
+        <HStack grow={1} />
+        <button type="button" onClick={onSave} className="primary">
+          <Save />
+          <span>Save</span>
+        </button>
+      </HStack>
+    </VStack>
   );
 }
 
