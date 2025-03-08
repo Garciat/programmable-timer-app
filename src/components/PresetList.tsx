@@ -1,5 +1,13 @@
 import { useCallback } from "react";
-import { BookCheck, Pencil, Play, QrCode, Share, Trash2 } from "lucide-react";
+import {
+  BookCheck,
+  Hourglass,
+  Pencil,
+  Play,
+  QrCode,
+  Share,
+  Trash2,
+} from "lucide-react";
 
 import { useAudioContext } from "lib/audio/context.tsx";
 import { HStack, VStack } from "lib/box/mod.ts";
@@ -77,12 +85,13 @@ export function PresetList({ presets }: PresetListProps) {
           gap="0.5rem"
         >
           <HStack kind="header" justify="space-between">
-            <h2>
-              {preset.name}
-            </h2>
-            <span>
-              {formatSeconds(duration(preset.root))}
-            </span>
+            <h2>{preset.name}</h2>
+            <HStack gap="0.5rem">
+              <HStack>
+                <Hourglass size={16} />
+                <span>{formatSeconds(duration(preset.root))}</span>
+              </HStack>
+            </HStack>
           </HStack>
           <PresetDisplay preset={preset} />
           <HStack kind="footer" justify="space-between">
