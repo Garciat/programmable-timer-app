@@ -86,64 +86,7 @@ export function HistoryRecordPage({ editing }: HistoryRecordPageProps) {
     navigate(routeHistoryRecord(record.recordId));
   }, [record]);
 
-  const copyDataItems = useCallback(async () => {
-    if (!record) {
-      return;
-    }
-    if (!confirm("Do you want to copy all data from the previous record?")) {
-      return;
-    }
-    const db = await openHistoryDB();
-    const previous = await getNewestRecordByPresetId(
-      db,
-      record.presetId,
-      record.completedAt,
-    );
-    if (!previous) {
-      return alert("No previous record found for this preset.");
-    }
-    setRecord({
-      ...record,
-      data: [...record.data, ...previous.data],
-    });
-  }, [record]);
-
-  const insertDataItem = useCallback(() => {
-    if (!record) {
-      return;
-    }
-    setRecord({
-      ...record,
-      data: [...record.data, { key: "Key", value: "Value" }],
-    });
-  }, [record]);
-
-  const updateDataItem = useCallback(
-    (index: number, field: keyof HistoryRecordDataItem, value: string) => {
-      if (!record) {
-        return;
-      }
-      setRecord({
-        ...record,
-        data: record.data.map((item, i) =>
-          i === index ? { ...item, [field]: value } : item
-        ),
-      });
-    },
-    [record],
-  );
-
-  const deleteDataItem = useCallback((index: number) => {
-    if (!record) {
-      return;
-    }
-    setRecord({
-      ...record,
-      data: record.data.filter((_, i) => i !== index),
-    });
-  }, [record]);
-
-  const setDateTimes = useCallback((value: string) => {
+  const setUpdatedAt = useCallback((value: string) => {
     if (!record) {
       return;
     }
@@ -161,42 +104,6 @@ export function HistoryRecordPage({ editing }: HistoryRecordPageProps) {
 
   const dateLocalISO = record &&
     DateTime.fromJSDate(record.completedAt).toLocal().toISO()?.slice(0, 16);
-
-  const DataItemView = (props: { item: HistoryRecordDataItem }) => (
-    <HStack kind="article">
-      <HStack kind="header">
-        <p>{props.item.key}</p>
-      </HStack>
-      <HStack gap="0.5rem">
-        <p>{props.item.value}</p>
-      </HStack>
-    </HStack>
-  );
-
-  const DataItemEditor = (
-    props: { item: HistoryRecordDataItem; index: number },
-  ) => (
-    <HStack kind="article">
-      <HStack kind="header" className={styles["editing"]}>
-        <input
-          type="text"
-          value={props.item.key}
-          onChange={(e) => updateDataItem(props.index, "key", e.target.value)}
-        />
-      </HStack>
-      <HStack gap="0.5rem">
-        <input
-          type="text"
-          value={props.item.value}
-          onChange={(e) => updateDataItem(props.index, "value", e.target.value)}
-        />
-        <IconButton
-          icon={Trash2}
-          onClick={() => deleteDataItem(props.index)}
-        />
-      </HStack>
-    </HStack>
-  );
 
   const historyRecordView = record && (
     <>
@@ -221,7 +128,7 @@ export function HistoryRecordPage({ editing }: HistoryRecordPageProps) {
                   <input
                     type="datetime-local"
                     value={dateLocalISO}
-                    onChange={(e) => setDateTimes(e.target.value)}
+                    onChange={(e) => setUpdatedAt(e.target.value)}
                   />
                 )
                 : dateTimeFormat.format(record.completedAt)}
@@ -234,25 +141,14 @@ export function HistoryRecordPage({ editing }: HistoryRecordPageProps) {
             <p>{formatSeconds(record.presetDuration)}</p>
           </HStack>
         </VStack>
-        <VStack kind="section">
-          <HStack kind="header">
-            <h2>Data</h2>
-            {editing && (
-              <HStack kind="aside" gap="0.5rem">
-                <IconButton icon={Copy} onClick={copyDataItems} />
-                <IconButton icon={Plus} onClick={insertDataItem} />
-              </HStack>
-            )}
-          </HStack>
-          {!editing && record.data.length === 0 && (
-            <p>No data associated with this record.</p>
-          )}
-          {record.data.map((item, index) => (
-            editing
-              ? <DataItemEditor key={index} item={item} index={index} />
-              : <DataItemView key={index} item={item} />
-          ))}
-        </VStack>
+        {editing
+          ? (
+            <HistoryRecordDataEditor
+              record={record}
+              onChange={setRecord}
+            />
+          )
+          : <HistoryRecordDataView record={record} />}
         <VStack grow={1} />
         <HStack kind="footer">
           <IconButton icon={Trash2} onClick={handleDeleteRecord} />
@@ -295,5 +191,128 @@ export function HistoryRecordPage({ editing }: HistoryRecordPageProps) {
         {historyRecordView}
       </VFrame>
     </BaseLayout>
+  );
+}
+
+function HistoryRecordDataView({ record }: { record: HistoryRecord }) {
+  return (
+    <VStack kind="section">
+      <HStack kind="header">
+        <h2>Data</h2>
+      </HStack>
+      {record.data.length === 0 && <p>No data associated with this record.</p>}
+      {record.data.map((item, index) => (
+        <HStack key={index} kind="article">
+          <HStack kind="header">
+            <p>{item.key}</p>
+          </HStack>
+          <HStack gap="0.5rem">
+            <p>{item.value}</p>
+          </HStack>
+        </HStack>
+      ))}
+    </VStack>
+  );
+}
+
+interface HistoryRecordDataEditorProps {
+  record: HistoryRecord;
+  onChange: (record: HistoryRecord) => void;
+}
+
+function HistoryRecordDataEditor(
+  { record, onChange }: HistoryRecordDataEditorProps,
+) {
+  const copyDataItems = useCallback(async () => {
+    if (!record) {
+      return;
+    }
+    if (!confirm("Do you want to copy all data from the previous record?")) {
+      return;
+    }
+    const db = await openHistoryDB();
+    const previous = await getNewestRecordByPresetId(
+      db,
+      record.presetId,
+      record.completedAt,
+    );
+    if (!previous) {
+      return alert("No previous record found for this preset.");
+    }
+    onChange({
+      ...record,
+      data: [...record.data, ...previous.data],
+    });
+  }, [record]);
+
+  const insertDataItem = useCallback(() => {
+    if (!record) {
+      return;
+    }
+    onChange({
+      ...record,
+      data: [...record.data, { key: "Key", value: "Value" }],
+    });
+  }, [record]);
+
+  const updateDataItem = useCallback(
+    (index: number, field: keyof HistoryRecordDataItem, value: string) => {
+      if (!record) {
+        return;
+      }
+      const item = record.data[index];
+      const newItem = { ...item, [field]: value };
+      const items = [...record.data];
+      items[index] = newItem;
+      onChange({
+        ...record,
+        data: items,
+      });
+    },
+    [record],
+  );
+
+  const deleteDataItem = useCallback((index: number) => {
+    if (!record) {
+      return;
+    }
+    onChange({
+      ...record,
+      data: record.data.filter((_, i) => i !== index),
+    });
+  }, [record]);
+
+  return (
+    <VStack kind="section">
+      <HStack kind="header">
+        <h2>Data</h2>
+        <HStack kind="aside" gap="0.5rem">
+          <IconButton icon={Copy} onClick={copyDataItems} />
+          <IconButton icon={Plus} onClick={insertDataItem} />
+        </HStack>
+      </HStack>
+      {record.data.map((item, index) => (
+        <HStack key={index} kind="article">
+          <HStack kind="header" className={styles["editing"]}>
+            <input
+              type="text"
+              value={item.key}
+              onChange={(e) => updateDataItem(index, "key", e.target.value)}
+            />
+          </HStack>
+          <HStack gap="0.5rem">
+            <input
+              type="text"
+              value={item.value}
+              onChange={(e) => updateDataItem(index, "value", e.target.value)}
+            />
+            <IconButton
+              icon={Trash2}
+              onClick={() => deleteDataItem(index)}
+            />
+          </HStack>
+        </HStack>
+      ))}
+    </VStack>
   );
 }
