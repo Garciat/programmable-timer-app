@@ -1,13 +1,5 @@
 import { useCallback } from "react";
-import {
-  BookCheck,
-  Hourglass,
-  Pencil,
-  Play,
-  QrCode,
-  Share,
-  Trash2,
-} from "lucide-react";
+import { Hourglass, Play, Settings, Share } from "lucide-react";
 
 import { useAudioContext } from "lib/audio/context.tsx";
 import { HStack, VStack } from "lib/box/mod.ts";
@@ -19,6 +11,7 @@ import { TimerPreset } from "src/app/types.ts";
 import { createHistoryRecord } from "src/app/history/preset.ts";
 import { useAppPresetDelete } from "src/state/context.tsx";
 import { IconButton } from "src/components/IconButton.tsx";
+import { IconMenu } from "src/components/IconMenu.tsx";
 import { PresetDisplay } from "src/components/PresetDisplay.tsx";
 
 export interface PresetListProps {
@@ -96,22 +89,25 @@ export function PresetList({ presets }: PresetListProps) {
           <PresetDisplay preset={preset} />
           <HStack kind="footer" justify="space-between">
             <HStack justify="flex-start" gap="0.5rem">
-              <IconButton
-                icon={BookCheck}
-                onClick={() => handleCreateHistoryRecord(preset)}
-              />
-              <IconButton icon={Pencil} href={`/edit/${preset.id}`} />
+              <IconMenu icon={Settings} title="Preset options">
+                {{
+                  label: "Edit",
+                  onSelect: () =>
+                    navigate(`/edit/${preset.id}`, ["from-right"]),
+                }}
+                {{
+                  label: "Add history record",
+                  onSelect: () => handleCreateHistoryRecord(preset),
+                }}
+                {{
+                  label: "Share via QR",
+                  onSelect: () => navigate(`/qr/${preset.id}`, ["from-right"]),
+                }}
+                {{ label: "Delete", onSelect: () => deletePreset(preset) }}
+              </IconMenu>
               <IconButton
                 icon={Share}
                 onClick={() => sharePreset(preset)}
-              />
-              <IconButton
-                icon={QrCode}
-                href={`/qr/${preset.id}`}
-              />
-              <IconButton
-                icon={Trash2}
-                onClick={() => deletePreset(preset)}
               />
             </HStack>
             <HStack justify="flex-end" gap="0.5rem">

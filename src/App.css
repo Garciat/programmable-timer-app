@@ -36,7 +36,7 @@ body {
     Segoe UI Emoji;
 }
 
-button, label:has(> input), a.button {
+button, label:has(> input), label:has(> select), a.button {
   height: var(--form-element-height);
   box-sizing: border-box;
   display: inline-flex;
@@ -89,6 +89,22 @@ button, label:has(> input), a.button {
     &:focus {
       outline: none;
     }
+  }
+
+  &:has(> select) {
+    overflow: hidden;
+    position: relative;
+  }
+
+  > select {
+    all: unset;
+    appearance: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
   }
 }
 
