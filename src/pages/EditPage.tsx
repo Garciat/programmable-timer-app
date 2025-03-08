@@ -11,6 +11,7 @@ import { IconButton } from "src/components/IconButton.tsx";
 import { PresetEditor } from "src/components/PresetEditor.tsx";
 import { PresetTitleEditor } from "src/components/PresetTitleEditor.tsx";
 import { TitleBar, TitleBarText } from "src/components/TitleBar.tsx";
+import { routeHome } from "src/routes.ts";
 
 import stylesAll from "src/pages/all.module.css";
 
@@ -32,7 +33,7 @@ export function EditPage() {
     if (editedPreset) {
       setPreset(editedPreset);
     }
-    navigate("/");
+    navigate(routeHome());
   }, [navigate, setPreset, editedPreset]);
 
   // maybe use deep-equal?
@@ -48,7 +49,7 @@ export function EditPage() {
       title={editedPreset ? `Edit: ${editedPreset.name}` : "Not Found"}
     >
       <TitleBar
-        left={<IconButton icon={MoveLeft} href="/" />}
+        left={<IconButton icon={MoveLeft} href={routeHome()} />}
         middle={editedPreset
           ? (
             <PresetTitleEditor

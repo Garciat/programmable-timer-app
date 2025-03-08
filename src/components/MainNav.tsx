@@ -2,10 +2,11 @@ import { useLocation } from "react-router";
 import { CalendarCheck, Timer } from "lucide-react";
 
 import { HStack, VStack } from "lib/box/mod.ts";
+import { ifClass } from "lib/utils/style.ts";
 import { LinkButton } from "src/components/LinkButton.tsx";
+import { routeHistory, routeHome } from "src/routes.ts";
 
 import styles from "src/components/MainNav.module.css";
-import { ifClass } from "lib/utils/style.ts";
 
 export function MainNav() {
   const location = useLocation();
@@ -17,9 +18,9 @@ export function MainNav() {
       className={styles["main-nav"]}
     >
       <LinkButton
-        href="/"
+        href={routeHome()}
         className={`${styles["link"]} ${
-          ifClass(location.pathname === "/", styles["active"])
+          ifClass(location.pathname === routeHome(), styles["active"])
         }`}
       >
         <VStack>
@@ -28,9 +29,9 @@ export function MainNav() {
         </VStack>
       </LinkButton>
       <LinkButton
-        href="/history"
+        href={routeHistory()}
         className={`${styles["link"]} ${
-          ifClass(location.pathname === "/history", styles["active"])
+          ifClass(location.pathname === routeHistory(), styles["active"])
         }`}
       >
         <VStack>

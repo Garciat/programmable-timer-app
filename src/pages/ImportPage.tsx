@@ -12,6 +12,7 @@ import { IconButton } from "src/components/IconButton.tsx";
 import { PresetEditor } from "src/components/PresetEditor.tsx";
 import { PresetTitleEditor } from "src/components/PresetTitleEditor.tsx";
 import { TitleBar, TitleBarText } from "src/components/TitleBar.tsx";
+import { routeHome } from "src/routes.ts";
 
 import stylesAll from "src/pages/all.module.css";
 
@@ -32,13 +33,13 @@ export function ImportPage() {
     if (preset) {
       doPresetAdd(preset);
     }
-    navigate("/");
+    navigate(routeHome());
   }, [navigate, doPresetAdd, preset]);
 
   return (
     <BaseLayout title="Shared Timer">
       <TitleBar
-        left={<IconButton icon={MoveLeft} href="/" />}
+        left={<IconButton icon={MoveLeft} href={routeHome()} />}
         middle={preset
           ? <PresetTitleEditor preset={preset} onChange={setPreset} />
           : <TitleBarText value="Invalid Share" />}

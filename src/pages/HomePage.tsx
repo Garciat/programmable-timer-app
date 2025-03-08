@@ -7,6 +7,7 @@ import { MainNav } from "src/components/MainNav.tsx";
 import { PresetList } from "src/components/PresetList.tsx";
 import { TitleBar } from "src/components/TitleBar.tsx";
 import { BaseLayout } from "src/pages/BaseLayout.tsx";
+import { routeNewPreset, routeSettings } from "src/routes.ts";
 
 import stylesAll from "src/pages/all.module.css";
 
@@ -19,7 +20,7 @@ export function HomePage() {
         left={
           <IconButton
             icon={Menu}
-            href="/settings"
+            href={routeSettings()}
             transitions={["from-left"]}
           />
         }
@@ -32,7 +33,7 @@ export function HomePage() {
         right={
           <IconButton
             icon={Plus}
-            href="/new"
+            href={routeNewPreset()}
             transitions={["from-right"]}
           />
         }

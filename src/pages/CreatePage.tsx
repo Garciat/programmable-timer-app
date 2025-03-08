@@ -10,6 +10,7 @@ import { IconButton } from "src/components/IconButton.tsx";
 import { PresetEditor } from "src/components/PresetEditor.tsx";
 import { PresetTitleEditor } from "src/components/PresetTitleEditor.tsx";
 import { TitleBar } from "src/components/TitleBar.tsx";
+import { routeHome } from "src/routes.ts";
 
 import stylesAll from "src/pages/all.module.css";
 
@@ -40,7 +41,7 @@ export function CreatePage() {
 
   const savePreset = useCallback(() => {
     doPresetAdd(preset);
-    navigate("/");
+    navigate(routeHome());
   }, [navigate, doPresetAdd, preset]);
 
   return (
@@ -49,7 +50,7 @@ export function CreatePage() {
         left={
           <IconButton
             icon={MoveLeft}
-            href="/"
+            href={routeHome()}
             transitions={["from-right-backwards"]}
           />
         }

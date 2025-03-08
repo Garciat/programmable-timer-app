@@ -6,6 +6,7 @@ import {
 } from "lib/utils/binary.ts";
 import { TimerPresetSchema } from "src/app/schema.ts";
 import { TimerPreset } from "src/app/types.ts";
+import { routeImportPreset } from "src/routes.ts";
 
 const ENCODING_PLAIN_PREFIX = "p1_";
 const ENCODING_COMPRESSED_PREFIX = "c1_";
@@ -14,7 +15,7 @@ export async function generateShareURL(preset: TimerPreset) {
   const content = await encodeShare(preset);
 
   const url = new URL(globalThis.location.href);
-  url.pathname = `/import/${encodeURIComponent(content)}`;
+  url.pathname = routeImportPreset(encodeURIComponent(content));
 
   return url.toString();
 }

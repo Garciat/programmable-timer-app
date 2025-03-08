@@ -14,6 +14,18 @@ import { PlayPage } from "src/pages/PlayPage.tsx";
 import { QrPage } from "src/pages/QrPage.tsx";
 import { SettingsPage } from "src/pages/SettingsPage.tsx";
 import { ImportPage } from "src/pages/ImportPage.tsx";
+import {
+  routeEditPreset,
+  routeHistory,
+  routeHistoryRecord,
+  routeHistoryRecordEdit,
+  routeHome,
+  routeImportPreset,
+  routeNewPreset,
+  routePlayPreset,
+  routeQrPreset,
+  routeSettings,
+} from "src/routes.ts";
 
 import "src/App.css";
 import "src/transitions.css";
@@ -26,22 +38,25 @@ export function App() {
           <AppStateLocalStorage />
           <AppInstallPromptListener />
           <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/new" element={<CreatePage />} />
-            <Route path="/edit/:presetId" element={<EditPage />} />
-            <Route path="/play/:presetId" element={<PlayPage />} />
-            <Route path="/qr/:presetId" element={<QrPage />} />
-            <Route path="/import/:content" element={<ImportPage />} />
-            <Route path="/history" element={<HistoryPage />} />
+            <Route path={routeHome()} element={<HomePage />} />
+            <Route path={routeNewPreset()} element={<CreatePage />} />
+            <Route path={routeEditPreset(":presetId")} element={<EditPage />} />
+            <Route path={routePlayPreset(":presetId")} element={<PlayPage />} />
+            <Route path={routeQrPreset(":presetId")} element={<QrPage />} />
             <Route
-              path="/history/record/:recordId"
+              path={routeImportPreset(":content")}
+              element={<ImportPage />}
+            />
+            <Route path={routeHistory()} element={<HistoryPage />} />
+            <Route
+              path={routeHistoryRecord(":recordId")}
               element={<HistoryRecordPage />}
             />
             <Route
-              path="/history/record/:recordId/edit"
+              path={routeHistoryRecordEdit(":recordId")}
               element={<HistoryRecordPage editing />}
             />
-            <Route path="/settings" element={<SettingsPage />} />
+            <Route path={routeSettings()} element={<SettingsPage />} />
           </Routes>
         </TransientStateProvider>
       </AppStateContextProvider>

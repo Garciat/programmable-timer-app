@@ -12,6 +12,7 @@ import { BaseLayout } from "src/pages/BaseLayout.tsx";
 import { IconButton } from "src/components/IconButton.tsx";
 import { TimerPlayer } from "src/components/TimerPlayer.tsx";
 import { TitleBar, TitleBarText } from "src/components/TitleBar.tsx";
+import { routeHome } from "src/routes.ts";
 
 import stylesAll from "src/pages/all.module.css";
 
@@ -55,7 +56,7 @@ export function PlayPage() {
           left={
             <IconButton
               icon={MoveLeft}
-              href="/"
+              href={routeHome()}
               transitions={["from-bottom-backwards"]}
             />
           }

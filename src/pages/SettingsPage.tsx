@@ -13,6 +13,7 @@ import { SoundSection } from "src/pages/settings/SoundSection.tsx";
 import { VoiceSection } from "src/pages/settings/VoiceSection.tsx";
 import { IconButton } from "src/components/IconButton.tsx";
 import { TitleBar, TitleBarText } from "src/components/TitleBar.tsx";
+import { routeHome } from "src/routes.ts";
 
 import stylesAll from "src/pages/all.module.css";
 import styles from "src/pages/settings/all.module.css";
@@ -69,7 +70,7 @@ export function SettingsPage() {
         left={
           <IconButton
             icon={MoveLeft}
-            href="/"
+            href={routeHome()}
             transitions={["from-left-backwards"]}
           />
         }

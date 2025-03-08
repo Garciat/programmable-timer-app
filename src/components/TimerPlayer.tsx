@@ -28,6 +28,7 @@ import { actionsAtTime, timeForRelativePeriod } from "src/app/actions.ts";
 import { duration, flatten } from "src/app/flatten.ts";
 import { useAppSettingsVoice, useAppSoundSettings } from "src/state/utils.ts";
 import { IconButton } from "src/components/IconButton.tsx";
+import { routeHistoryRecordEdit } from "src/routes.ts";
 
 import classes from "src/components/TimerPlayer.module.css";
 
@@ -284,7 +285,7 @@ function FinishedActionRenderer() {
     const recordId = await createHistoryRecord(preset);
     setSaved(true);
     await sleep(200);
-    await navigate(`/history/record/${recordId}/edit`, ["from-right"]);
+    await navigate(routeHistoryRecordEdit(recordId), ["from-right"]);
   }, [preset.id, preset.name, preset.root]);
 
   return (

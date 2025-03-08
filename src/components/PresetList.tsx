@@ -13,6 +13,12 @@ import { useAppPresetDelete } from "src/state/context.tsx";
 import { IconButton } from "src/components/IconButton.tsx";
 import { IconMenu } from "src/components/IconMenu.tsx";
 import { PresetDisplay } from "src/components/PresetDisplay.tsx";
+import {
+  routeEditPreset,
+  routeHistoryRecordEdit,
+  routePlayPreset,
+  routeQrPreset,
+} from "src/routes.ts";
 
 export interface PresetListProps {
   presets: TimerPreset[];
@@ -65,7 +71,7 @@ export function PresetList({ presets }: PresetListProps) {
 
   const handleCreateHistoryRecord = useCallback(async (preset: TimerPreset) => {
     const recordId = await createHistoryRecord(preset);
-    await navigate(`/history/record/${recordId}/edit`, ["from-right"]);
+    await navigate(routeHistoryRecordEdit(recordId), ["from-right"]);
   }, []);
 
   return (
@@ -93,7 +99,7 @@ export function PresetList({ presets }: PresetListProps) {
                 {{
                   label: "Edit",
                   onSelect: () =>
-                    navigate(`/edit/${preset.id}`, ["from-right"]),
+                    navigate(routeEditPreset(preset.id), ["from-right"]),
                 }}
                 {{
                   label: "Add history record",
@@ -101,7 +107,8 @@ export function PresetList({ presets }: PresetListProps) {
                 }}
                 {{
                   label: "Share via QR",
-                  onSelect: () => navigate(`/qr/${preset.id}`, ["from-right"]),
+                  onSelect: () =>
+                    navigate(routeQrPreset(preset.id), ["from-right"]),
                 }}
                 {{ label: "Delete", onSelect: () => deletePreset(preset) }}
               </IconMenu>
@@ -113,7 +120,7 @@ export function PresetList({ presets }: PresetListProps) {
             <HStack justify="flex-end" gap="0.5rem">
               <IconButton
                 icon={Play}
-                href={`/play/${preset.id}`}
+                href={routePlayPreset(preset.id)}
                 transitions={["from-bottom"]}
                 onClick={beforePlay}
               />

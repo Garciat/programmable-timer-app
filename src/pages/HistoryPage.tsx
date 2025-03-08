@@ -10,6 +10,7 @@ import { HistoryRecord } from "src/app/history/types.ts";
 import { BaseLayout } from "src/pages/BaseLayout.tsx";
 import { MainNav } from "src/components/MainNav.tsx";
 import { TitleBar } from "src/components/TitleBar.tsx";
+import { routeHistoryRecord } from "src/routes.ts";
 
 import stylesAll from "src/pages/all.module.css";
 import styles from "src/pages/HistoryPage.module.css";
@@ -55,7 +56,7 @@ export function HistoryPage() {
   }, [records]);
 
   const openRecordView = useCallback((record: HistoryRecord) => {
-    navigate(`/history/record/${record.recordId}`, ["from-right"]);
+    navigate(routeHistoryRecord(record.recordId), ["from-right"]);
   }, [navigate]);
 
   const dateFormat = new Intl.DateTimeFormat(navigator.language, {

@@ -28,6 +28,11 @@ import { HistoryRecord, HistoryRecordDataItem } from "src/app/history/types.ts";
 import { IconButton } from "src/components/IconButton.tsx";
 import { TitleBar } from "src/components/TitleBar.tsx";
 import { BaseLayout } from "src/pages/BaseLayout.tsx";
+import {
+  routeHistory,
+  routeHistoryRecord,
+  routeHistoryRecordEdit,
+} from "src/routes.ts";
 
 import stylesAll from "src/pages/all.module.css";
 import styles from "src/pages/history/HistoryRecordPage.module.css";
@@ -62,7 +67,7 @@ export function HistoryRecordPage({ editing }: HistoryRecordPageProps) {
     }
     const db = await openHistoryDB();
     await deleteRecord(db, record.recordId);
-    await navigate("/history");
+    await navigate(routeHistory());
   }, [record, navigate]);
 
   const handleSave = useCallback(async () => {
@@ -71,12 +76,15 @@ export function HistoryRecordPage({ editing }: HistoryRecordPageProps) {
     }
     const db = await openHistoryDB();
     await updateHistoryRecord(db, record);
-    await navigate(`/history/record/${record.recordId}`);
+    await navigate(routeHistoryRecord(record.recordId));
   }, [record]);
 
   const handleCancel = useCallback(() => {
-    navigate(`/history/record/${recordId}`);
-  }, []);
+    if (!record) {
+      return;
+    }
+    navigate(routeHistoryRecord(record.recordId));
+  }, [record]);
 
   const copyDataItems = useCallback(async () => {
     if (!record) {
@@ -260,7 +268,7 @@ export function HistoryRecordPage({ editing }: HistoryRecordPageProps) {
         left={
           <IconButton
             icon={MoveLeft}
-            href="/history"
+            href={routeHistory()}
             transitions={["from-right-backwards"]}
           />
         }
@@ -272,10 +280,10 @@ export function HistoryRecordPage({ editing }: HistoryRecordPageProps) {
         }
         right={editing
           ? <IconButton icon={X} onClick={handleCancel} />
-          : (
+          : record && (
             <IconButton
               icon={Pencil}
-              href={`/history/record/${recordId}/edit`}
+              href={routeHistoryRecordEdit(record.recordId)}
             />
           )}
       />

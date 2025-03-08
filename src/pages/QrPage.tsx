@@ -11,6 +11,7 @@ import { TitleBar, TitleBarText } from "src/components/TitleBar.tsx";
 import { BaseLayout } from "src/pages/BaseLayout.tsx";
 
 import stylesAll from "src/pages/all.module.css";
+import { routeHome } from "src/routes.ts";
 
 export function QrPage() {
   const { presetId } = useParams();
@@ -30,7 +31,7 @@ export function QrPage() {
         left={
           <IconButton
             icon={MoveLeft}
-            href="/"
+            href={routeHome()}
           />
         }
         middle={
