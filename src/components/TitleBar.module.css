@@ -1,5 +1,6 @@
 .title-bar {
-  height: 4.5rem;
+  flex-basis: 3.5rem;
+  flex-shrink: 0;
   padding: 0 1rem;
 }
 .title-bar.hide-shadow {
