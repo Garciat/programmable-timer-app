@@ -189,12 +189,22 @@ function SequenceItemEditor({
     return [];
   }, [timer.kind, onUnloop]);
 
-  const setItemColor = useCallback((value: string) => {
+  const setItemColor = useCallback((value: string | undefined) => {
     if (timer.kind !== "period") {
       return;
     }
     onChange({ ...timer, color: value });
   }, [onChange, timer]);
+
+  const unsetColorOption = useMemo(() => {
+    if (timer.kind === "period" && timer.color) {
+      return [{
+        label: "Unset color",
+        onSelect: () => setItemColor(undefined),
+      }];
+    }
+    return [];
+  }, [timer, setItemColor]);
 
   return (
     <div
@@ -213,7 +223,7 @@ function SequenceItemEditor({
               <Palette className={classes["icon"]} />
               <input
                 type="color"
-                defaultValue={timer.color}
+                value={timer.color ?? "#000000"}
                 onChange={(event) => setItemColor(event.target.value)}
                 className={classes["color-input"]}
               />
@@ -222,6 +232,7 @@ function SequenceItemEditor({
           <IconMenu icon={Settings} title="Options">
             {[
               ...unloopOption,
+              ...unsetColorOption,
               { label: "Loop", onSelect: onLoop },
               { label: "Move up", onSelect: onMoveUp },
               { label: "Move down", onSelect: onMoveDown },
