@@ -24,7 +24,15 @@
       margin: 0 -0.5rem;
       padding: 0.5rem;
 
-      &:hover, &:active {
+      /* https://stackoverflow.com/a/79365826/612169 */
+      @media (any-hover: hover) {
+        &:hover {
+          border-radius: var(--radius);
+          background-color: rgba(100, 100, 100, 0.5);
+        }
+      }
+
+      &:active {
         border-radius: var(--radius);
         background-color: rgba(100, 100, 100, 0.5);
       }
