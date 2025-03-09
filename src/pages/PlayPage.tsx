@@ -35,10 +35,10 @@ export function PlayPage() {
     audioContext.resume();
   }
 
-  function handleColorChange(color: string) {
+  function handleColorChange(color: string | undefined) {
     setColor({
-      backgroundColor: color,
-      color: contrastForegroundColor(color),
+      backgroundColor: color ?? "transparent",
+      color: color ? contrastForegroundColor(color) : "inherit",
     });
   }
 

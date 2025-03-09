@@ -44,7 +44,7 @@ function useCurrentPreset() {
 
 export interface TimerPlayerProps {
   preset: TimerPreset;
-  onColorChange: (color: string) => void;
+  onColorChange: (color: string | undefined) => void;
 }
 
 export function TimerPlayer({ preset, onColorChange }: TimerPlayerProps) {
@@ -136,7 +136,7 @@ function ActionsRenderer(
   props: {
     actions: PlayerAction[];
     active: boolean;
-    onColorChange: (color: string) => void;
+    onColorChange: (color: string | undefined) => void;
   },
 ) {
   const { actions, active } = props;
@@ -245,15 +245,12 @@ function BeepActionRenderer() {
 function DisplayActionRenderer(
   props: {
     action: PlayerDisplay;
-    onColorChange: (color: string) => void;
+    onColorChange: (color: string | undefined) => void;
   },
 ) {
   const { round, seconds, text } = props.action;
 
   useEffect(() => {
-    if (props.action.backgroundColor === undefined) {
-      return;
-    }
     props.onColorChange(props.action.backgroundColor);
   }, [props.action.backgroundColor]);
 
