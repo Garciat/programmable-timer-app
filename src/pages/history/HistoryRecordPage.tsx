@@ -284,9 +284,11 @@ function HistoryRecordDataEditor(
     if (!previous) {
       return alert("No previous record found for this preset.");
     }
+    const existingKeys = new Set(record.data.map((item) => item.key));
+    const newData = previous.data.filter((item) => !existingKeys.has(item.key));
     onChange({
       ...record,
-      data: [...record.data, ...previous.data],
+      data: [...record.data, ...newData],
     });
   }, [record]);
 
