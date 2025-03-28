@@ -26,6 +26,7 @@ import { createHistoryRecord } from "src/app/history/preset.ts";
 import { PlayerAction, PlayerDisplay, TimerPreset } from "src/app/types.ts";
 import { actionsAtTime, timeForRelativePeriod } from "src/app/actions.ts";
 import { duration, flatten } from "src/app/flatten.ts";
+import { useAppPlayerSession } from "src/state/context.tsx";
 import { useAppSettingsVoice, useAppSoundSettings } from "src/state/utils.ts";
 import { IconButton } from "src/components/IconButton.tsx";
 import { routeHistoryRecordEdit } from "src/routes.ts";
@@ -44,13 +45,19 @@ function useCurrentPreset() {
 
 export interface TimerPlayerProps {
   preset: TimerPreset;
+  initSeconds: number;
   onColorChange: (color: string | undefined) => void;
 }
 
-export function TimerPlayer({ preset, onColorChange }: TimerPlayerProps) {
-  const [time, setTime] = useState(0);
+export function TimerPlayer(
+  { preset, initSeconds, onColorChange }: TimerPlayerProps,
+) {
+  const [time, setTime] = useState(initSeconds);
   const [paused, setPaused] = useState(false);
   const [hasWakeLock, setHasWakeLock] = useState(false);
+  const [_session, { update: updatePlayerSession }] = useAppPlayerSession();
+
+  const startDateTime = useMemo(() => new Date(), []);
 
   const resumePlayer = useCallback(() => {
     setPaused(false);
@@ -92,6 +99,14 @@ export function TimerPlayer({ preset, onColorChange }: TimerPlayerProps) {
   useEffect(() => {
     setPaused((prev) => prev || done);
   }, [done]);
+
+  useEffect(() => {
+    updatePlayerSession({
+      presetId: preset.id,
+      startDateTime,
+      secondsElapsed: time,
+    });
+  }, [preset.id, startDateTime, time, updatePlayerSession]);
 
   const running = !paused && !done;
 
@@ -274,6 +289,7 @@ function DisplayActionRenderer(
 }
 
 function FinishedActionRenderer() {
+  const [_session, { clear: clearPlayerSession }] = useAppPlayerSession();
   const navigate = useNavigateTransition();
   const preset = useCurrentPreset();
   const [saved, setSaved] = useState(false);
@@ -284,6 +300,10 @@ function FinishedActionRenderer() {
     await sleep(200);
     await navigate(routeHistoryRecordEdit(recordId), ["from-right"]);
   }, [preset.id, preset.name, preset.root]);
+
+  useEffect(() => {
+    clearPlayerSession();
+  }, [clearPlayerSession]);
 
   return (
     <VStack grow={1} gap="2rem" className={classes["timer-finished-display"]}>

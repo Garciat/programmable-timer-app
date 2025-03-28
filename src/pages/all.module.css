@@ -2,3 +2,9 @@
   padding: 1rem;
   padding-bottom: max(1rem, env(safe-area-inset-bottom));
 }
+
+.session-display {
+  padding: 1rem;
+  border-radius: var(--radius);
+  background-color: var(--color-notice);
+}

@@ -2,6 +2,7 @@
   color-scheme: light dark;
 
   --color-accent: #007bff;
+  --color-notice: light-dark(#ffe371, #564500);
 
   --color-window-background: light-dark(#fff, #000);
 

@@ -1,6 +1,11 @@
 import { createContext, useContext, useMemo, useReducer } from "react";
 
-import { Action, AppState, UserSettings } from "src/state/types.ts";
+import {
+  Action,
+  AppState,
+  PlayerSession,
+  UserSettings,
+} from "src/state/types.ts";
 import { DEFAULT_APP_STATE } from "src/state/default.ts";
 import { TimerPreset } from "src/app/types.ts";
 
@@ -42,6 +47,27 @@ export function useAppState(): [AppState, (state: AppState) => void] {
   }, [dispatch]);
 
   return [state, setter];
+}
+
+export function useAppPlayerSession(): [
+  PlayerSession | undefined,
+  {
+    update: (playerSession: PlayerSession) => void;
+    clear: () => void;
+  },
+] {
+  const [state, dispatch] = useAppStateCore();
+
+  const setter = useMemo(() => ({
+    update: (playerSession: PlayerSession) => {
+      dispatch({ type: "updatePlayerSession", playerSession });
+    },
+    clear: () => {
+      dispatch({ type: "clearPlayerSession" });
+    },
+  }), [dispatch]);
+
+  return [state.playerSession, setter];
 }
 
 export function useAppPresets(): TimerPreset[] {
@@ -142,6 +168,18 @@ function appStateReducer(state: AppState, action: Action): AppState {
       return {
         ...state,
         settings: action.updater(state.settings),
+        version: state.version + 1,
+      };
+    case "updatePlayerSession":
+      return {
+        ...state,
+        playerSession: action.playerSession,
+        version: state.version + 1,
+      };
+    case "clearPlayerSession":
+      return {
+        ...state,
+        playerSession: undefined,
         version: state.version + 1,
       };
     default:

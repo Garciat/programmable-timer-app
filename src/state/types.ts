@@ -4,6 +4,13 @@ export interface AppState {
   version: number;
   presets: TimerPreset[];
   settings: UserSettings;
+  playerSession?: PlayerSession;
+}
+
+export interface PlayerSession {
+  presetId: string;
+  startDateTime: Date;
+  secondsElapsed: number;
 }
 
 export interface UserSettings {
@@ -25,4 +32,6 @@ export type Action =
   | {
     type: "updateSettings";
     updater: (settings: UserSettings) => UserSettings;
-  };
+  }
+  | { type: "updatePlayerSession"; playerSession: PlayerSession }
+  | { type: "clearPlayerSession" };

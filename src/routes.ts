@@ -10,8 +10,15 @@ export function routeEditPreset(presetId: string) {
   return `/presets/${presetId}/edit`;
 }
 
-export function routePlayPreset(presetId: string) {
-  return `/presets/${presetId}/play`;
+export function routePlayPreset(
+  presetId: string,
+  { start }: { start?: number } = {},
+) {
+  let uri = `/presets/${presetId}/play`;
+  if (start) {
+    uri += `?start=${start}`;
+  }
+  return uri;
 }
 
 export function routeQrPreset(presetId: string) {

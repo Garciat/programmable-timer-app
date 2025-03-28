@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useParams } from "react-router";
+import { useMemo, useState } from "react";
+import { useLocation, useParams } from "react-router";
 import { MoveLeft, Volume2, VolumeOff, VolumeX } from "lucide-react";
 
 import { contrastForegroundColor } from "lib/utils/color.ts";
@@ -18,10 +18,21 @@ import stylesAll from "src/pages/all.module.css";
 
 export function PlayPage() {
   const { presetId } = useParams();
+  const location = useLocation();
   const [preset] = useAppPreset(presetId ?? "");
 
   const audioContext = useAudioContext();
   const audioContextState = useAudioContextState();
+
+  const queryParams = useMemo(
+    () => new URLSearchParams(location.search),
+    [location.search],
+  );
+
+  const initSeconds = useMemo(() => {
+    const value = queryParams.get("start");
+    return value ? parseInt(value, 10) : 0;
+  }, [queryParams]);
 
   const [color, setColor] = useState<
     { backgroundColor: string; color: string } | null
@@ -69,7 +80,13 @@ export function PlayPage() {
           className={stylesAll["content-frame"]}
         >
           {preset
-            ? <TimerPlayer preset={preset} onColorChange={handleColorChange} />
+            ? (
+              <TimerPlayer
+                preset={preset}
+                initSeconds={initSeconds}
+                onColorChange={handleColorChange}
+              />
+            )
             : (
               <p style={{ textAlign: "center" }}>
                 This preset does not exist.
