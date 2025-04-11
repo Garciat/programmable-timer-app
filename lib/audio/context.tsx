@@ -32,7 +32,9 @@ export function useAudioContext(): AudioContext {
   return audioContext;
 }
 
-export function useAudioContextState(): AudioContextState {
+// iOS Safari has an additional state "interrupted" when the user leaves the page
+// See: https://developer.mozilla.org/en-US/docs/Web/API/BaseAudioContext/state#resuming_interrupted_play_states_in_ios_safari
+export function useAudioContextState(): AudioContextState | "interrupted" {
   const audioContext = useAudioContext();
 
   const subscribe = useCallback((callback: () => void) => {

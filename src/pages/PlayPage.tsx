@@ -56,6 +56,7 @@ export function PlayPage() {
   const audioButton = switching(audioContextState, {
     running: () => <IconButton icon={Volume2} onClick={suspendAudio} />,
     suspended: () => <IconButton icon={VolumeOff} onClick={resumeAudio} />,
+    interrupted: () => <IconButton icon={VolumeOff} onClick={resumeAudio} />,
     closed: () => <IconButton icon={VolumeX} disabled />,
   });
 
