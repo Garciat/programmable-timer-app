@@ -1,19 +1,19 @@
 import { useEffect } from "react";
 
 export function ReactWakeLock(
-  props: { onChanged?: (active: boolean) => void },
+  { onChanged }: { onChanged?: (active: boolean) => void },
 ) {
-  if (!("wakeLock" in navigator)) {
-    return;
-  }
-
   useEffect(() => {
+    if (!("wakeLock" in navigator)) {
+      return;
+    }
+
     let wakeLock: WakeLockSentinel | null = null;
 
     function handleLockRelease() {
       if (wakeLock !== null) {
         wakeLock = null;
-        props.onChanged?.(false);
+        onChanged?.(false);
       }
     }
 
@@ -22,7 +22,7 @@ export function ReactWakeLock(
         try {
           wakeLock = await navigator.wakeLock.request("screen");
           wakeLock.addEventListener("release", handleLockRelease);
-          props.onChanged?.(true);
+          onChanged?.(true);
         } catch (err) {
           console.error("Failed to acquire wake lock:", err);
         }
@@ -41,7 +41,7 @@ export function ReactWakeLock(
       }
       document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
-  }, []);
+  }, [onChanged]);
 
   return null;
 }
