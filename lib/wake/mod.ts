@@ -3,8 +3,8 @@ import { useEffect } from "react";
 export function ReactWakeLock(
   { onChanged }: { onChanged?: (active: boolean) => void },
 ) {
-  useEffect(() => {
     if (!("wakeLock" in navigator)) {
+      onChanged?.(false);
       return;
     }
 
