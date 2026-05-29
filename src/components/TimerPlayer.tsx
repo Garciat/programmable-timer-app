@@ -55,7 +55,7 @@ export function TimerPlayer(
   const [time, setTime] = useState(initSeconds);
   const [paused, setPaused] = useState(false);
   const [hasWakeLock, setHasWakeLock] = useState(false);
-  const [_session, { update: updatePlayerSession }] = useAppPlayerSession();
+  const [_session, { update: updatePlayerSession, clear: clearPlayerSession }] = useAppPlayerSession();
 
   const startDateTime = useMemo(() => new Date(), []);
 
@@ -107,6 +107,13 @@ export function TimerPlayer(
       secondsElapsed: time,
     });
   }, [preset.id, startDateTime, time, updatePlayerSession]);
+
+  // Clear the player session immediately when the timer finishes
+  useEffect(() => {
+    if (done) {
+      clearPlayerSession();
+    }
+  }, [done, clearPlayerSession]);
 
   const running = !paused && !done;
 
@@ -289,7 +296,6 @@ function DisplayActionRenderer(
 }
 
 function FinishedActionRenderer() {
-  const [_session, { clear: clearPlayerSession }] = useAppPlayerSession();
   const navigate = useNavigateTransition();
   const preset = useCurrentPreset();
   const [saved, setSaved] = useState(false);
@@ -300,10 +306,6 @@ function FinishedActionRenderer() {
     await sleep(200);
     await navigate(routeHistoryRecordEdit(recordId), ["from-right"]);
   }, [preset.id, preset.name, preset.root]);
-
-  useEffect(() => {
-    clearPlayerSession();
-  }, [clearPlayerSession]);
 
   return (
     <VStack grow={1} gap="2rem" className={classes["timer-finished-display"]}>
